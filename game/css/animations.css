@@ -1,0 +1,75 @@
+/* ════════════════════════════════════════════════════════════════
+   FLAGMASTER v3 — animations.css
+   ════════════════════════════════════════════════════════════════ */
+
+@keyframes float {
+  0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}
+}
+@keyframes pop-in {
+  from{opacity:0;transform:scale(.78) translateY(14px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+@keyframes slide-up {
+  from{opacity:0;transform:translateY(38px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes slide-in-right {
+  from{opacity:0;transform:translateX(38px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes fade-in {
+  from{opacity:0}to{opacity:1}
+}
+@keyframes fade-scale-in {
+  from{opacity:0;transform:scale(.93)}
+  to{opacity:1;transform:scale(1)}
+}
+@keyframes shake {
+  0%{transform:translateX(0)}15%{transform:translateX(-6px)rotate(-1deg)}
+  30%{transform:translateX(6px)rotate(1deg)}45%{transform:translateX(-3px)}
+  60%{transform:translateX(3px)}75%{transform:translateX(-1.5px)}100%{transform:translateX(0)}
+}
+@keyframes pulse-correct {
+  0%{transform:scale(1)}40%{transform:scale(1.04)}70%{transform:scale(.98)}100%{transform:scale(1)}
+}
+@keyframes score-pop {
+  0%{transform:scale(1)}50%{transform:scale(1.32);color:var(--gold)}100%{transform:scale(1)}
+}
+@keyframes streak-burst {
+  0%{transform:scale(1)}30%{transform:scale(1.38)rotate(-5deg);filter:brightness(1.5)}
+  60%{transform:scale(.94)rotate(3deg)}100%{transform:scale(1)rotate(0);filter:brightness(1)}
+}
+@keyframes timer-urgent-pulse {
+  0%,100%{opacity:1}50%{opacity:.55}
+}
+@keyframes hero-bounce {
+  0%{transform:scale(.7)translateY(-12px);opacity:0}
+  60%{transform:scale(1.12)translateY(0);opacity:1}
+  80%{transform:scale(.95)}
+  100%{transform:scale(1)}
+}
+@keyframes mode-card-select {
+  0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}
+}
+@keyframes toast-in {
+  from{opacity:0;transform:translateX(-50%)translateY(18px)scale(.92)}
+  to{opacity:1;transform:translateX(-50%)translateY(0)scale(1)}
+}
+@keyframes toast-out {
+  from{opacity:1;transform:translateX(-50%)translateY(0)scale(1)}
+  to{opacity:0;transform:translateX(-50%)translateY(18px)scale(.92)}
+}
+
+/* ── Applied classes ──────────────────────────────────────────── */
+.screen.entering        { animation:fade-scale-in .38s cubic-bezier(.34,1.2,.64,1) forwards; }
+.card-3d-wrap.slide-in  { animation:slide-in-right .38s cubic-bezier(.34,1.2,.64,1) forwards; }
+.hud-stat-value.pop     { animation:score-pop .38s ease; }
+.streak-stat.burst      { animation:streak-burst .5s ease; }
+.timer-container.urgent { animation:timer-urgent-pulse .6s ease-in-out infinite; }
+.hero-visual.hero-anim  { animation:hero-bounce .45s cubic-bezier(.34,1.56,.64,1); }
+.mode-card--selected    { animation:mode-card-select .22s ease; }
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}

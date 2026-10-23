@@ -1,0 +1,521 @@
+/* ════════════════════════════════════════════════════════════════
+   css/profile.css — Perfil de jugador (antes "Tus estadísticas")
+   Cabecera con avatar · código de amigo · pestañas · modal añadir amigo
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Tarjeta de cabecera ─────────────────────────────────────── */
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.1rem 1.1rem 1rem;
+}
+
+.profile-identity {
+  display: flex;
+  align-items: center;
+  gap: .95rem;
+  min-width: 0;
+}
+
+/* Acotado a la cabecera: .profile-avatar es también la clase del avatar del
+   chip de perfil del inicio (css/profile-pill.css) y no debe heredar esto. */
+.profile-identity .profile-avatar {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-2));
+  box-shadow: 0 4px 18px var(--gold-glow);
+}
+
+.profile-avatar-img,
+.profile-avatar-initial {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.profile-avatar-img {
+  display: block;
+  object-fit: cover;
+  background: var(--bg-3);
+}
+
+.profile-avatar-initial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-3);
+  color: var(--gold);
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.profile-identity-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .3rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-nickname {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.15;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-meta {
+  font-size: .8rem;
+  color: var(--text-2);
+  line-height: 1.3;
+}
+
+/* Estado de sincronización con la nube */
+.profile-sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  padding: .16rem .55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  background: var(--card-bg);
+}
+.profile-sync-badge:empty { display: none; }
+.profile-sync-badge--synced  { color: var(--green); border-color: var(--green-bd); background: var(--green-bg); }
+.profile-sync-badge--syncing { color: var(--gold);  border-color: var(--gold);     background: var(--gold-dim); }
+.profile-sync-badge--pending { color: var(--gold);  border-color: var(--gold-dim); background: var(--gold-dim); }
+
+/* ── Insignias (estrellas, racha, amigos) ────────────────────── */
+.profile-badges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .5rem;
+}
+
+.profile-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .2rem;
+  padding: .6rem .3rem;
+  border-radius: var(--r-md);
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.profile-badge-val {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.profile-badge-label {
+  font-size: .64rem;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+/* ── Código de amigo ─────────────────────────────────────────── */
+.profile-code-block {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.profile-code-label {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-3);
+}
+
+.profile-code-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: .45rem .5rem .45rem .9rem;
+}
+.profile-code {
+  flex: 1;
+  min-width: 0;
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: .28em;
+  color: var(--gold);
+  user-select: all;
+  -webkit-user-select: all;
+}
+.profile-code--empty {
+  color: var(--text-3);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.profile-code-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s, transform .15s;
+}
+.profile-code-btn:active:not(:disabled) { transform: scale(.92); }
+.profile-code-btn:focus-visible { outline: 2px solid var(--border-sel); outline-offset: 2px; }
+.profile-code-btn:disabled { opacity: .4; cursor: default; }
+
+.profile-code-btn--add {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: var(--gold-dim);
+}
+
+/* Feedback visual al copiar: el icono cambia a ✓ en verde */
+.profile-code-btn .profile-icon-check { display: none; }
+.profile-code-btn--done {
+  color: var(--green);
+  border-color: var(--green-bd);
+  background: var(--green-bg);
+  animation: profile-pop .3s cubic-bezier(.34,1.56,.64,1);
+}
+.profile-code-btn--done .profile-icon-copy  { display: none; }
+.profile-code-btn--done .profile-icon-check { display: block; }
+
+@keyframes profile-pop {
+  0%   { transform: scale(.85); }
+  60%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.profile-code-hint {
+  font-size: .75rem;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+
+/* ── Pestañas ────────────────────────────────────────────────── */
+.profile-tabs {
+  display: flex;
+  gap: .35rem;
+  background: var(--bg-2);
+  border-radius: var(--r-md);
+  padding: .25rem;
+  flex-shrink: 0;
+}
+.profile-tab {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: .82rem;
+  font-weight: 700;
+  padding: .55rem .35rem;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background .15s, color .15s;
+}
+.profile-tab:focus-visible { outline: 2px solid var(--border-sel); outline-offset: 1px; }
+
+/* Pantallas estrechas (≤ 380 px): etiquetas largas (FR/PT) sin recortar */
+@media (max-width: 380px) {
+  .profile-tabs { gap: .2rem; }
+  .profile-tab  { font-size: .74rem; padding: .5rem .2rem; }
+}
+
+.profile-tab--active {
+  background: var(--card-bg-h);
+  color: var(--text);
+  box-shadow: var(--sh-card);
+}
+
+.profile-panel { display: flex; flex-direction: column; gap: .75rem; }
+.profile-panel[hidden] { display: none; }
+
+/* El renderer de estadísticas ya aplica su propio padding horizontal */
+.profile-panel .stats-body { padding-top: 0; }
+
+/* ── Estados vacíos ──────────────────────────────────────────── */
+.profile-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+  padding: 1.6rem 1rem;
+  text-align: center;
+}
+.profile-empty-icon { font-size: 2.4rem; line-height: 1; opacity: .85; }
+.profile-empty-text { font-size: .88rem; color: var(--text-2); line-height: 1.5; max-width: 300px; }
+.profile-empty-cta  { margin-top: .35rem; padding: .65rem 1.4rem; font-size: .92rem; }
+
+/* ── Lista de amigos (futuro) ────────────────────────────────── */
+.profile-friend-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.profile-friend {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem .9rem;
+}
+.profile-friend-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  color: var(--gold);
+  font-weight: 800;
+}
+.profile-friend-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .1rem; }
+.profile-friend-name { font-weight: 700; font-size: .92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-friend-code { font-size: .72rem; color: var(--text-3); letter-spacing: .12em; font-weight: 700; }
+.profile-friend-flag { font-size: 1.3rem; flex-shrink: 0; }
+.profile-friend-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  margin-left: auto;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-3);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color .15s, background .15s;
+}
+.profile-friend-remove:hover { color: var(--red); background: var(--red-bg); }
+.profile-friend-remove:disabled { opacity: .45; cursor: default; }
+
+/* ── Trofeos ─────────────────────────────────────────────────── */
+.profile-ach-link {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  width: 100%;
+  padding: .85rem 1rem;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: .92rem;
+  text-align: left;
+  cursor: pointer;
+}
+.profile-ach-link:active { transform: scale(.98); }
+.profile-ach-icon  { font-size: 1.4rem; line-height: 1; }
+.profile-ach-text  { flex: 1; font-weight: 700; }
+.profile-ach-count { font-size: .78rem; font-weight: 700; color: var(--gold); }
+.profile-ach-arrow { font-size: 1.3rem; color: var(--text-3); line-height: 1; }
+
+.profile-trophy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .55rem;
+}
+.profile-trophy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+  padding: .8rem .4rem;
+  text-align: center;
+}
+.profile-trophy-icon { font-size: 1.7rem; line-height: 1; }
+.profile-trophy-name { font-size: .7rem; font-weight: 700; line-height: 1.25; }
+
+/* ── Modal añadir amigo ──────────────────────────────────────── */
+.profile-add-friend-form { gap: .75rem; }
+
+.profile-add-friend-desc {
+  font-size: .86rem;
+  color: var(--text-2);
+  line-height: 1.45;
+  text-align: center;
+}
+
+.profile-code-input {
+  text-align: center;
+  text-transform: uppercase;
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: .35em;
+  padding-left: calc(1rem + .35em); /* compensa el letter-spacing final para centrar */
+}
+.profile-code-input::placeholder { color: var(--text-3); opacity: .6; }
+
+.profile-add-friend-feedback {
+  min-height: 1.2em;
+  font-size: .8rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+}
+.profile-add-friend-feedback--error { color: var(--red); }
+.profile-add-friend-feedback--info  { color: var(--gold); }
+.profile-add-friend-feedback--ok    { color: var(--green); }
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .6rem;
+  margin-top: .5rem;
+}
+
+#modal-add-friend .btn-primary:disabled {
+  opacity: .45;
+  filter: grayscale(.4);
+  box-shadow: none;
+  cursor: default;
+  transform: none;
+}
+
+#modal-remove-friend .btn-danger:disabled {
+  opacity: .45;
+  filter: grayscale(.4);
+  box-shadow: none;
+  cursor: default;
+  transform: none;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Maratón — "Mejores rachas" (js/marathon-rank-ui.js)
+   Reutiliza .profile-card / .profile-tabs / .profile-friend*; aquí solo
+   lo propio del ranking. Márgenes laterales reducidos para que cada fila
+   quepa completa (posición · avatar · nombre/país · racha).
+   ════════════════════════════════════════════════════════════════ */
+.subscreen-content--tight { padding-left: .75rem; padding-right: .75rem; }
+#marathon-rank-list { overflow-y: auto; }
+
+.marathon-rank-row { gap: .6rem; padding: .65rem .9rem; min-height: 60px; }
+.marathon-rank-row--me { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), var(--sh-card); }
+.marathon-rank-pos {
+  width: 1.6rem;
+  flex-shrink: 0;
+  text-align: center;
+  font-weight: 800;
+  font-size: .9rem;
+  color: var(--text-2);
+}
+.marathon-rank-row--top .marathon-rank-pos { font-size: 1.25rem; }
+
+/* Columna de posición: número/medalla y, debajo, el movimiento del día (estilo tabla deportiva) */
+.marathon-rank-pos-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .15rem;
+  width: 2.3rem;
+  flex-shrink: 0;
+}
+.marathon-rank-pos-col .marathon-rank-pos { width: auto; line-height: 1.1; }
+
+/* ▲ +3 · – · ▼ -2 · NUEVO — respecto al último cierre diario */
+.marathon-rank-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: .1rem;
+  padding: .08rem .3rem;
+  border-radius: 999px;
+  font-size: .66rem;
+  font-weight: 800;
+  line-height: 1.1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  vertical-align: middle;
+  animation: marathon-delta-in .5s var(--ease-pop, ease-out) .35s backwards;
+}
+.marathon-rank-delta-arrow { font-size: .5rem; }
+.marathon-rank-delta--up   { color: var(--green); background: var(--green-bg); }
+.marathon-rank-delta--down { color: var(--red);   background: var(--red-bg); }
+.marathon-rank-delta--same { color: var(--text-2); opacity: .6; padding-inline: .45rem; }
+.marathon-rank-delta--new  {
+  color: var(--gold);
+  background: rgba(255, 208, 64, .15);
+  font-size: .52rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+/* En la cabecera (badge "Posición") el indicador acompaña al número */
+.profile-badge-val .marathon-rank-delta { font-size: .66rem; }
+@keyframes marathon-delta-in { from { opacity: 0; transform: translateY(4px) scale(.85); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .marathon-rank-delta { animation: none; } }
+
+/* Top 1: el nº1 vigente lleva la corona en el borde */
+.marathon-rank-row--crown { border-color: var(--gold); }
+/* La foto se recorta dentro del círculo de 38 px (acotado al ranking: el <img> es absoluto) */
+#screen-marathon-ranking .profile-friend-avatar { position: relative; overflow: hidden; }
+.marathon-rank-avatar-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.marathon-rank-streak {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-weight: 900;
+  font-size: 1.05rem;
+  color: var(--gold);
+  white-space: nowrap;
+}
+.marathon-rank-streak small { font-size: .8rem; }
+
+/* Acceso al ranking dentro de la tarjeta Maratón del inicio */
+.marathon-rank-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: transparent;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+.marathon-rank-btn:active { transform: scale(.92); }

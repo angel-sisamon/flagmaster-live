@@ -78,10 +78,13 @@ function main() {
       const gained = new Map();
       votes.filter(([, v]) => v.index === 0).sort((a, b) => a[1].at - b[1].at)
         .forEach(([pid], pos) => gained.set(pid, pointsForPosition(pos)));
+      votes.forEach(([pid]) => rec.onChat(audience.find(p => p.user.pid === pid).user));
+      audience.forEach(p => { if (rand() < 0.15) rec.onChat(p.user); });   // charla que no es un voto
       rec.onRoundEnd({ question: { mode: pickOne(MODES), correct: c, correctIndex: 0 }, startedAt, votes, gained });
       if (rand() < 0.3) rec.onLike(pickOne(audience).user, 5 + Math.floor(rand() * 40));
       if (rand() < 0.05) rec.onGift(pickOne(audience).user, pickOne([1, 1, 5, 10, 99]));
       if (rand() < 0.04) rec.onFollow(pickOne(audience).user);
+      if (rand() < 0.03) rec.onShare(pickOne(audience).user);
       rec.onViewers(audience.length + Math.floor(rand() * 30));
       t += 30000;
     }

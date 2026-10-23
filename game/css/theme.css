@@ -1,0 +1,864 @@
+/* ════════════════════════════════════════════════════════════════
+   FLAGMASTER — theme.css
+   Sistema visual "LIVE" (solo tema oscuro). Se carga justo después
+   de styles.css y solo contiene estilos: no renombra IDs ni clases.
+
+   Emojis y banderas: Twemoji © Twitter, Inc. y colaboradores (CC-BY 4.0)
+   · Twemoji Mozilla v0.7.0 (fuente COLR, código Apache-2.0)
+   · country-flag-emoji-polyfill (MIT)
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Fuente de banderas (solo los rangos de banderas) ─────────── */
+@font-face {
+  font-family:'Twemoji Country Flags';
+  font-display:swap;
+  src:url('../assets/fonts/TwemojiCountryFlags.woff2') format('woff2');
+  unicode-range:U+1F1E6-1F1FF, U+1F3F4, U+E0062-E0063, U+E0065, U+E0067,
+                U+E006C, U+E006E, U+E0073-E0074, U+E0077, U+E007F;
+}
+
+/* ── Fuente de emojis (Twemoji completo) ─────────────────────────
+   Solo rangos de emoji: el texto, los dígitos y las flechas/formas
+   tipográficas (← → ↔ ▶ ▾) siguen con la fuente del sistema. Las
+   banderas las sirve antes 'Twemoji Country Flags' (más ligera). */
+@font-face {
+  font-family:'Twemoji';
+  font-display:swap;
+  src:url('../assets/fonts/TwemojiMozilla.ttf') format('truetype');
+  unicode-range:U+200D, U+203C, U+2049, U+20E3, U+2139, U+231A-23FF, U+24C2,
+                U+2600-27BF, U+2934-2935, U+2B05-2B55, U+3030, U+303D,
+                U+3297, U+3299, U+FE0F, U+1F000-1FAFF;
+}
+
+/* ── Tokens ───────────────────────────────────────────────────── */
+:root {
+  color-scheme: dark;
+  --orb-1: rgba(90,50,255,0.4); --orb-2: rgba(255,80,180,0.22); --orb-3: rgba(30,190,255,0.2);
+  --glass:    rgba(255,255,255,0.09);
+  --glass-bd: rgba(255,255,255,0.2);
+  --ink:      #1a1a2e;              /* texto oscuro sobre oro */
+  --bg-grad:  linear-gradient(-45deg,#1c0b40,#3d0d5f,#0b2c60,#0b4a5c,#4b0f3f);
+  --bg-mesh:  radial-gradient(circle at 20% 30%,rgba(255,80,180,.3),transparent 40%),
+              radial-gradient(circle at 80% 20%,rgba(80,160,255,.28),transparent 42%),
+              radial-gradient(circle at 50% 80%,rgba(255,208,64,.2),transparent 45%);
+  --bg-dim:   rgba(10,6,30,.25);
+  --ease-pop:    cubic-bezier(.34,1.3,.64,1);
+  --ease-bounce: cubic-bezier(.34,1.46,.64,1);
+  --font: 'Twemoji Country Flags', 'Twemoji', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Los controles de formulario no heredan la fuente por defecto: así
+   las banderas de botones, selects e inputs también salen en Twemoji. */
+button, input, select, textarea, option { font-family:inherit; }
+
+/* Unidad proporcional: 1 % del ancho de una columna vertical (máx. 520px) */
+.screen { --u: calc(min(100vw, 520px) / 100); }
+
+/* ── Fondo global fijo (todas las pantallas salvo la home) ───────
+   Se pinta una sola vez en <body>: no se repinta ni parpadea al
+   cambiar de pantalla. Capas: velo · malla de luces · degradado. */
+html { background:#1c0b40; }
+body {
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(var(--bg-dim), var(--bg-dim)),
+    var(--bg-mesh),
+    var(--bg-grad);
+  background-size:100% 100%, 125% 125%, 125% 125%, 125% 125%, 400% 400%;
+  background-position:0 0, 40% 45%, 40% 45%, 40% 45%, 30% 50%;
+  background-repeat:no-repeat;
+  transition:none;
+}
+.app-bg--static {
+  background:var(--bg-grad); background-size:400% 400%; background-position:30% 50%;
+}
+.app-bg--static::before {
+  content:""; position:absolute; inset:-25%; background:var(--bg-mesh);
+  transform:translate(-2%,-1%) rotate(4deg);
+}
+
+/* Las pantallas secundarias dejan ver el fondo global; sus orbes
+   (blur 80px, caros en Android) se ocultan. */
+.game-bg, .results-bg,
+.screen:not(#screen-home) > .home-bg { background:transparent; }
+.game-bg .orb, .results-bg .orb,
+.screen:not(#screen-home) > .home-bg .orb { display:none; }
+
+/* ── Tipografía ───────────────────────────────────────────────── */
+.title-gold {
+  background:linear-gradient(135deg,var(--gold),var(--gold-2));
+  -webkit-background-clip:text; background-clip:text;
+  color:transparent; -webkit-text-fill-color:transparent; font-weight:900;
+}
+
+/* ── Tarjeta de cristal ───────────────────────────────────────── */
+.glass-card {
+  padding:calc(var(--u)*2.6) calc(var(--u)*4); border-radius:calc(var(--u)*5);
+  background:var(--glass); border:1px solid var(--glass-bd);
+  backdrop-filter:blur(5px) saturate(140%); -webkit-backdrop-filter:blur(5px) saturate(140%);
+  box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+/* ── Animaciones compartidas ──────────────────────────────────── */
+@keyframes card-in { from{opacity:0;transform:translateY(24px) scale(.96)} to{opacity:1;transform:none} }
+@keyframes row-in  { from{opacity:0;transform:translateX(-18px)} to{opacity:1;transform:none} }
+@keyframes rise    { from{opacity:0;transform:translateY(40px) scale(.8)} to{opacity:1;transform:none} }
+@keyframes bob     { 0%,100%{transform:translateY(0) rotate(-4deg)} 50%{transform:translateY(-10px) rotate(4deg)} }
+/* "shake" ya existe en animations.css (respuesta incorrecta): este es el del reloj */
+@keyframes timer-shake { 0%,100%{transform:scale(1) rotate(0)} 25%{transform:scale(1.12) rotate(-6deg)} 75%{transform:scale(1.12) rotate(6deg)} }
+
+/* ── Componentes compartidos: píldoras e inputs ──────────────── */
+.chip, .lang-btn {
+  border-radius:999px; background:rgba(0,0,0,.25); border:1.5px solid var(--glass-bd);
+  color:var(--text); font-weight:800;
+}
+.chip:hover, .lang-btn:hover { border-color:var(--gold); }
+.chip.active, .lang-btn.active {
+  background:var(--gold); border-color:var(--gold); color:var(--ink);
+  box-shadow:0 0 16px var(--gold-glow);
+}
+.name-input, .continent-select, .continent-select--settings {
+  background-color:rgba(0,0,0,.3); border:1.5px solid var(--glass-bd); color:var(--text);
+}
+.name-input:focus, .continent-select:focus, .continent-select--settings:focus { border-color:var(--gold); }
+.continent-select option, .continent-select--settings option { background:#1c0b40; color:var(--text); }
+
+/* CTA principal en oro (la variante morada de leaderboard se respeta) */
+.btn-primary,
+.btn-play-main:not(.btn-play-main--leaderboard) {
+  background:linear-gradient(135deg,var(--gold),var(--gold-2));
+  color:var(--ink); font-weight:900;
+  box-shadow:0 4px 20px rgba(255,208,64,.32);
+}
+.btn-play-main:not(.btn-play-main--leaderboard):active {
+  box-shadow:0 2px 10px rgba(255,208,64,.28);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   HOME — fondo animado "sala de espera"
+   ════════════════════════════════════════════════════════════════ */
+.app-bg--animated {
+  background:var(--bg-grad); background-size:400% 400%;
+  animation:bg-gradient 22s ease infinite;
+}
+@keyframes bg-gradient { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
+.bg-mesh-layer {
+  position:absolute; inset:-25%; background:var(--bg-mesh); pointer-events:none;
+  animation:bg-mesh 26s ease-in-out infinite alternate; will-change:transform;
+}
+@keyframes bg-mesh {
+  from{transform:translate(-4%,-3%) rotate(0) scale(1)}
+  to  {transform:translate(4%,3%) rotate(12deg) scale(1.08)}
+}
+
+.float-flags { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+.float-flag {
+  position:absolute; bottom:-4rem; opacity:.22; line-height:1;
+  animation:flag-float linear infinite; will-change:transform;
+}
+@keyframes flag-float { from{transform:translateY(0) rotate(-8deg)} to{transform:translateY(-120vh) rotate(8deg)} }
+
+/* Ahorro de batería: todo lo decorativo se congela fuera de la home */
+#screen-home:not(.active) .app-bg--animated,
+#screen-home:not(.active) .bg-mesh-layer,
+#screen-home:not(.active) .float-flag,
+#screen-home:not(.active) .hero-visual-ring { animation-play-state:paused; }
+
+/* Marca y globo */
+#screen-home .home-brand-name { font-size:1.45rem; font-weight:900; letter-spacing:-.03em; line-height:1; }
+#screen-home .home-brand-icon { animation:bob 3s ease-in-out infinite; display:inline-block; }
+#screen-home .hero-visual-ring {
+  background:radial-gradient(circle at 35% 30%, rgba(255,255,255,.22), transparent 70%), var(--glass);
+  border:1.5px solid var(--glass-bd);
+  box-shadow:0 0 40px var(--gold-glow), 0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.18);
+  animation:bob 3s ease-in-out infinite;
+}
+#screen-home .hero-visual { filter:drop-shadow(0 6px 16px rgba(0,0,0,.45)); }
+
+/* Píldora de perfil */
+#screen-home .home-profile-pill {
+  background:var(--glass); border-color:var(--glass-bd);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); font-weight:800;
+}
+#screen-home .home-profile-pill:hover { border-color:var(--gold); }
+#screen-home .profile-pill--connected { border-color:var(--green-bd); background:var(--green-bg); }
+#screen-home .profile-icon { background:rgba(0,0,0,.3); }
+#screen-home .profile-status-dot { border-color:#1c0b40; }
+
+/* Tarjetas de modo y cabeceras de grupo: cristal */
+#screen-home .mode-card,
+#screen-home .mode-group-header {
+  background:var(--glass); border:1.5px solid var(--glass-bd);
+  border-radius:calc(var(--u)*4.5);
+  backdrop-filter:blur(8px) saturate(140%); -webkit-backdrop-filter:blur(8px) saturate(140%);
+  box-shadow:0 10px 30px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.18);
+}
+#screen-home .mode-card::before { display:none; }
+#screen-home .mode-card:hover,
+#screen-home .mode-group-header:hover { background:rgba(255,255,255,.13); }
+#screen-home .mode-group-header--open {
+  background:rgba(255,255,255,.12);
+  border-bottom-left-radius:0; border-bottom-right-radius:0;
+  border-bottom-color:rgba(255,255,255,.08);
+}
+#screen-home .mode-group-children { border-width:1.5px;
+  border-bottom-left-radius:calc(var(--u)*4.5); border-bottom-right-radius:calc(var(--u)*4.5); }
+#screen-home .mode-group-children--open { border-color:var(--glass-bd); background:rgba(0,0,0,.18); }
+/* Hijas: sin blur (rendimiento), solo fondo translúcido */
+#screen-home .mode-card--child {
+  background:rgba(255,255,255,.04); border-radius:0;
+  backdrop-filter:none; -webkit-backdrop-filter:none; box-shadow:none;
+}
+#screen-home .mode-card--child:last-child {
+  border-bottom-left-radius:calc(var(--u)*4.5 - 2px) !important;
+  border-bottom-right-radius:calc(var(--u)*4.5 - 2px) !important;
+}
+#screen-home .mode-card--selected:not(.mode-card--child) {
+  border-color:var(--gold);
+  background:linear-gradient(135deg, rgba(255,208,64,.24), rgba(255,159,0,.08));
+  box-shadow:0 0 0 1px var(--gold), 0 0 22px var(--gold-glow);
+}
+#screen-home .mode-card--child.mode-card--selected {
+  background:linear-gradient(90deg, rgba(255,208,64,.26), rgba(255,208,64,.06)) !important;
+  box-shadow:inset 3px 0 0 var(--gold) !important;
+}
+#screen-home .mode-card-name, #screen-home .mode-group-name { font-weight:900; letter-spacing:-.01em; }
+#screen-home .mode-card-desc { color:var(--text-2); font-weight:700; }
+#screen-home .mode-card-lock {
+  border-color:var(--glass-bd); border-radius:999px; background:rgba(0,0,0,.25); font-weight:800;
+}
+
+/* Entrada escalonada de la lista de modos (sin "fill" final para no
+   bloquear el :active de las tarjetas) */
+#screen-home .mode-list > * { animation:card-in .5s var(--ease-pop) backwards; }
+#screen-home .mode-list > :nth-child(2) { animation-delay:.08s; }
+#screen-home .mode-list > :nth-child(3) { animation-delay:.16s; }
+#screen-home .mode-list > :nth-child(4) { animation-delay:.24s; }
+#screen-home .mode-list > :nth-child(5) { animation-delay:.32s; }
+#screen-home .mode-list > :nth-child(n+6) { animation-delay:.4s; }
+
+/* Racha diaria y banner de recuperación */
+#screen-home .daily-streak-banner { font-weight:900; letter-spacing:.02em; text-shadow:0 0 14px var(--gold-glow); }
+#screen-home .recovery-banner {
+  background:var(--glass); border:1.5px solid var(--glass-bd); border-radius:calc(var(--u)*4);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+}
+
+/* Barra inferior: botones de icono en círculo de cristal + CTA oro */
+#screen-home .home-action-icon-btn {
+  width:48px; height:48px; background:var(--glass); border:1.5px solid var(--glass-bd);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 6px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.18);
+}
+#screen-home .home-action-icon-btn:hover { border-color:var(--gold); }
+#screen-home .btn-play-main {
+  min-height:60px; border-radius:999px; letter-spacing:.08em; font-weight:900;
+}
+#screen-home .btn-play-main::before { border-radius:999px; }
+
+/* Variante "Ranking Global" (texto largo): puede ocupar dos líneas */
+#screen-home .btn-play-main--leaderboard { border-radius:24px; line-height:1.1; padding:.3rem .8rem; }
+@media (max-width:400px) {
+  #screen-home .home-action-bar { gap:.45rem; }
+  #screen-home .home-action-icon-btn { width:44px; height:44px; font-size:1.1rem; }
+  #screen-home .btn-play-main--leaderboard { font-size:.9rem; letter-spacing:.01em; }
+}
+
+/* Horizontal con poca altura: el héroe cede espacio a la lista */
+@media (max-height:520px) {
+  #screen-home .hero-visual-ring { width:56px; height:56px; }
+  #screen-home .hero-visual { font-size:2rem; }
+  #screen-home .home-hero { padding:0; }
+  #screen-home .btn-play-main { min-height:48px; }
+  #screen-home .home-action-icon-btn { width:44px; height:44px; }
+}
+
+/* ── POC: botonera acoplada (ocupa todo el ancho inferior) ──────
+   Sustituye a los botones flotantes: barra de cristal de borde a
+   borde, 4 accesos con icono+etiqueta y JUGAR central más grande
+   que sobresale por arriba. Cancela el padding de .home-shell. */
+/* .screen ya reserva las zonas seguras y .home-shell las vuelve a sumar:
+   en la home las deja solo a .home-shell para que la botonera, al
+   cancelar ese padding, llegue al borde real (barra de gestos incluida) */
+#screen-home { padding-bottom:0; padding-left:0; padding-right:0; }
+#screen-home .home-dock {
+  display:grid; grid-template-columns:1fr 1fr 2fr 1fr 1fr; align-items:end; gap:0;
+  margin:calc(var(--u)*3) calc(-1 * max(1rem, var(--sal))) calc(-.6rem - var(--sab))
+         calc(-1 * max(1rem, var(--sar)));
+  padding:.45rem max(.5rem, var(--sal)) calc(.45rem + var(--sab)) max(.5rem, var(--sar));
+  background:linear-gradient(180deg, rgba(40,20,80,.78), rgba(20,8,48,.92));
+  border-top:1.5px solid var(--glass-bd);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 -10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.12);
+  border-radius:calc(var(--u)*6) calc(var(--u)*6) 0 0;
+}
+#screen-home .home-dock .home-action-icon-btn {
+  width:auto; height:auto; min-height:56px; border-radius:16px;
+  flex-direction:column; gap:.2rem; padding:.35rem .1rem;
+  background:transparent; border:none; box-shadow:none;
+  backdrop-filter:none; -webkit-backdrop-filter:none;
+  color:var(--text-2); font-size:inherit;
+}
+#screen-home .home-dock .home-action-icon-btn:hover,
+#screen-home .home-dock .home-action-icon-btn:focus-visible { background:rgba(255,255,255,.08); color:var(--text); }
+#screen-home .home-dock .home-action-icon-btn:active { transform:scale(.92); background:rgba(255,255,255,.12); }
+#screen-home .home-dock .dock-ico { font-size:1.45rem; line-height:1; }
+/* Separadores verticales discretos: Ajustes | Duelos y Logros | Perfil
+   (línea de 1px que se desvanece arriba y abajo) */
+#screen-home .home-dock #btn-duels-home,
+#screen-home .home-dock #btn-stats-home { position:relative; }
+#screen-home .home-dock #btn-duels-home::before,
+#screen-home .home-dock #btn-stats-home::before {
+  content:''; position:absolute; left:0; top:18%; bottom:18%; width:1px;
+  background:linear-gradient(180deg, transparent, rgba(255,255,255,.18) 30%, rgba(255,255,255,.18) 70%, transparent);
+  pointer-events:none;
+}
+#screen-home .home-dock .dock-lbl {
+  font-size:.68rem; font-weight:800; letter-spacing:.02em; line-height:1.1;
+  max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+#screen-home .home-dock .btn-play-main {
+  max-width:none; width:100%; min-height:72px; margin-top:-26px;
+  font-size:1.45rem; border-radius:24px;
+  box-shadow:0 5px 0 #7a3800, 0 10px 30px rgba(255,159,0,.55), 0 0 0 4px rgba(20,8,48,.9);
+}
+#screen-home .home-dock .btn-play-main::before { border-radius:24px 24px 0 0; }
+#screen-home .home-dock .btn-play-main--leaderboard {
+  font-size:.9rem; line-height:1.15; padding:.3rem .5rem;
+  box-shadow:0 5px 0 #312e81, 0 10px 30px rgba(79,70,229,.5), 0 0 0 4px rgba(20,8,48,.9);
+}
+@media (max-width:400px) {
+  #screen-home .home-dock .btn-play-main { font-size:1.25rem; }
+  #screen-home .home-dock .btn-play-main--leaderboard { font-size:.8rem; }
+  #screen-home .home-dock .dock-ico { font-size:1.3rem; }
+}
+@media (max-height:520px) {
+  #screen-home .home-dock .home-action-icon-btn { min-height:44px; flex-direction:row; gap:.35rem; }
+  #screen-home .home-dock .btn-play-main { min-height:52px; margin-top:-14px; }
+}
+
+/* ── Barra superior acoplada (espejo de la botonera) ─────────────
+   Cristal de borde a borde que sube hasta el borde real de la pantalla
+   (bajo la barra de estado). Cancela el padding superior de .home-shell
+   igual que .home-dock cancela el inferior. Marca | ⭐ estrellas · perfil */
+#screen-home { padding-top:0; }
+#screen-home .home-topbar {
+  position:relative; z-index:2;
+  margin:calc(-.6rem - var(--sat)) calc(-1 * max(1rem, var(--sal))) calc(var(--u)*2)
+         calc(-1 * max(1rem, var(--sar)));
+  padding:calc(.55rem + var(--sat)) max(1rem, var(--sar)) .6rem max(1rem, var(--sal));
+  gap:.6rem;
+  background:linear-gradient(0deg, rgba(40,20,80,.78), rgba(20,8,48,.92));
+  border-bottom:1.5px solid var(--glass-bd);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 -1px 0 rgba(255,255,255,.12);
+  border-radius:0 0 calc(var(--u)*6) calc(var(--u)*6);
+}
+#screen-home .home-brand { min-width:0; flex-shrink:0; }
+#screen-home .home-topbar-actions { min-width:0; gap:.45rem; }
+#screen-home .home-topbar .home-profile-pill { min-width:0; }
+#screen-home .home-topbar .profile-name { max-width:9rem; }
+
+/* Estrellas: misma píldora de cristal que el perfil, en clave oro */
+#screen-home .home-stars {
+  display:flex; align-items:center; gap:.3rem; flex-shrink:0;
+  min-height:32px; padding:.2rem .7rem .2rem .45rem;
+  border-radius:var(--r-xl);
+  background:linear-gradient(180deg, rgba(255,208,64,.2), rgba(255,208,64,.08));
+  border:1.5px solid rgba(255,208,64,.45);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 0 14px rgba(255,208,64,.12);
+  font-family:var(--font); font-weight:900; line-height:1;
+}
+#screen-home .home-stars-ico {
+  font-size:1rem; filter:drop-shadow(0 0 6px var(--gold-glow));
+}
+#screen-home .home-stars-val {
+  font-size:.88rem; color:var(--gold); font-variant-numeric:tabular-nums;
+  text-shadow:0 1px 0 rgba(0,0,0,.35);
+}
+#screen-home .home-stars.pop .home-stars-ico { animation:stars-pop .45s var(--ease-pop, ease-out); }
+@keyframes stars-pop { 0%{transform:scale(1)} 40%{transform:scale(1.35) rotate(-12deg)} 100%{transform:scale(1)} }
+
+@media (max-width:400px) {
+  #screen-home .home-brand-name { font-size:1.25rem; }
+  #screen-home .home-topbar .profile-name { max-width:5.5rem; }
+  #screen-home .home-stars { padding:.2rem .55rem .2rem .4rem; }
+}
+@media (max-width:340px) {
+  #screen-home .home-topbar .profile-name { display:none; }
+}
+@media (max-height:520px) {
+  #screen-home .home-topbar { padding-top:calc(.35rem + var(--sat)); padding-bottom:.4rem; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PARTIDA (#screen-game) — también la usan duelos, torneos, diario…
+   Orden visual: HUD → progreso → reloj → bandera → opciones → feedback
+   ════════════════════════════════════════════════════════════════ */
+#screen-game .game-layout { gap:calc(var(--u)*3); padding:0 calc(var(--u)*4) calc(var(--u)*5); }
+#screen-game .question-zone { gap:calc(var(--u)*3); padding-bottom:0; }
+
+/* HUD */
+#screen-game .game-hud { padding:calc(var(--u)*2.5) 0 0; gap:calc(var(--u)*2); }
+#screen-game .btn-icon-only,
+.subscreen-header .btn-icon-only,
+.modal-header .btn-icon-only {
+  width:44px; height:44px; background:var(--glass); border:1.5px solid var(--glass-bd); color:var(--text);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 6px 18px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.18);
+}
+#screen-game .btn-icon-only:hover,
+.subscreen-header .btn-icon-only:hover,
+.modal-header .btn-icon-only:hover { border-color:var(--gold); }
+#screen-game .hud-stat {
+  background:var(--glass); border:1.5px solid var(--glass-bd); border-radius:999px;
+  padding:.35rem .85rem; min-height:36px; font-size:.95rem;
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+}
+#screen-game .hud-stat-value { font-weight:900; }
+#screen-game #hud-score { color:var(--gold); }
+#screen-game .hud-progress-text {
+  font-weight:900; letter-spacing:.08em; color:var(--text);
+  padding:.35rem .8rem; border-radius:999px; background:rgba(0,0,0,.25); border:1.5px solid var(--glass-bd);
+}
+#screen-game .hud-global-timer { border-radius:999px; background:rgba(0,0,0,.25); border-color:var(--gold);
+  box-shadow:0 0 16px var(--gold-glow); }
+#screen-game .hud-global-timer-val { font-weight:900; }
+
+/* Barra de progreso */
+#screen-game .progress-bar-track { height:6px; background:rgba(255,255,255,.14); border-radius:999px; margin:0; }
+#screen-game .progress-bar-fill { background:linear-gradient(90deg,var(--gold),var(--gold-2));
+  box-shadow:0 0 10px var(--gold-glow); border-radius:999px; }
+
+/* Reloj circular */
+#screen-game .timer-container { margin:0; }
+#screen-game .timer-ring, #screen-game .timer-svg { width:calc(var(--u)*22); height:calc(var(--u)*22); }
+#screen-game .timer-ring { border-radius:50%; background:rgba(10,10,30,.5);
+  box-shadow:0 0 calc(var(--u)*6) var(--gold-glow); }
+#screen-game .timer-track { stroke:rgba(255,255,255,.14); stroke-width:3.5; }
+#screen-game .timer-fill  { stroke-width:3.5; }
+#screen-game .timer-text  { font-size:calc(var(--u)*8); font-weight:900; }
+/* Últimos 5 s (ui.js añade .urgent a #timer-container): tiembla y en rojo */
+#screen-game .timer-container.urgent { animation:none; }
+#screen-game .timer-container.urgent .timer-ring {
+  animation:timer-shake .5s ease-in-out infinite;
+  box-shadow:0 0 calc(var(--u)*7) rgba(239,68,68,.55);
+}
+#screen-game .timer-container.urgent .timer-text { color:var(--red); }
+
+/* Tarjeta de la bandera */
+#screen-game .card-3d-wrap, #screen-game .card-flipper { min-height:calc(var(--u)*56); }
+#screen-game .card-face {
+  border-radius:calc(var(--u)*6); background:var(--glass); border:1px solid var(--glass-bd);
+  backdrop-filter:blur(8px) saturate(140%); -webkit-backdrop-filter:blur(8px) saturate(140%);
+  box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.18);
+}
+#screen-game .flag-emoji-lg { font-size:calc(var(--u)*34); filter:drop-shadow(0 6px 16px rgba(0,0,0,.45)); }
+#screen-game .flag-emoji-md { font-size:calc(var(--u)*22); filter:drop-shadow(0 6px 16px rgba(0,0,0,.45)); }
+#screen-game .flag-emoji-reveal { font-size:calc(var(--u)*24); filter:drop-shadow(0 6px 16px rgba(0,0,0,.45)); }
+#screen-game .flag-capital-question,
+#screen-game .country-prompt { font-size:calc(var(--u)*4.6); font-weight:800; }
+#screen-game .country-prompt { color:var(--text-2); letter-spacing:.1em; }
+#screen-game .country-name {
+  font-size:calc(var(--u)*9); font-weight:900; letter-spacing:-.03em; line-height:1;
+  background:none; -webkit-text-fill-color:currentColor; color:var(--text);
+}
+#screen-game .reveal-name { font-size:calc(var(--u)*6); font-weight:900; letter-spacing:-.03em; }
+#screen-game .reveal-capital { color:var(--text-2); font-weight:700; }
+
+/* Opciones */
+#screen-game .options-grid { gap:calc(var(--u)*2.5); }
+#screen-game .option-btn {
+  min-height:calc(var(--u)*19); padding:calc(var(--u)*3); gap:calc(var(--u)*2.2);
+  border-radius:calc(var(--u)*4.5); border-width:2px; background:var(--glass); border-color:var(--glass-bd);
+  font-size:calc(var(--u)*4.4); font-weight:800;
+  /* Guion automático en nombres largos ("Centroafri-cana") en vez de cortar sin guion */
+  -webkit-hyphens:auto; hyphens:auto; word-break:normal; overflow-wrap:break-word;
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  box-shadow:0 6px 20px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.14);
+  animation-timing-function:var(--ease-bounce);
+}
+#screen-game .option-btn:not(:disabled):hover { border-color:var(--gold); }
+#screen-game .option-badge {
+  width:calc(var(--u)*8); height:calc(var(--u)*8); font-size:calc(var(--u)*4.2); font-weight:900;
+  background:var(--gold); border-color:var(--gold); color:var(--ink);
+}
+#screen-game .option-flag-emoji  { font-size:calc(var(--u)*13); filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));
+  flex:1; text-align:center; }
+#screen-game .option-flag-inline { font-size:calc(var(--u)*6); }
+#screen-game .option-btn.correct {
+  background:rgba(34,197,94,.24); border-color:var(--green); box-shadow:0 0 18px rgba(34,197,94,.6);
+}
+#screen-game .option-btn.wrong { background:rgba(239,68,68,.22); border-color:var(--red);
+  box-shadow:0 0 14px rgba(239,68,68,.4); }
+#screen-game .option-btn.correct .option-badge { background:var(--green); border-color:var(--green); color:#fff; }
+#screen-game .option-btn.wrong .option-badge   { background:var(--red);   border-color:var(--red);   color:#fff; }
+#screen-game .option-btn.dimmed { opacity:.32; }
+
+/* Feedback y siguiente */
+#screen-game .feedback-bar {
+  border-radius:999px; padding:calc(var(--u)*2.6) calc(var(--u)*4); font-weight:800;
+  background:var(--glass); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border:1.5px solid var(--glass-bd); color:var(--text);
+}
+#screen-game .feedback-bar.correct-feedback { border-color:var(--green-bd); color:#86efac; box-shadow:0 0 16px rgba(34,197,94,.3); }
+#screen-game .feedback-bar.wrong-feedback   { border-color:var(--red-bd);   color:#fca5a5; box-shadow:0 0 16px rgba(239,68,68,.3); }
+#screen-game .btn-next { border-radius:999px; min-height:52px; font-size:1.05rem; letter-spacing:.04em; }
+
+/* Pantallas bajas: pregunta, reloj y 4 opciones sin scroll */
+@media (max-height:700px) {
+  #screen-game .game-layout { gap:calc(var(--u)*2); }
+  #screen-game .question-zone { gap:calc(var(--u)*2); }
+  #screen-game .card-3d-wrap, #screen-game .card-flipper { min-height:calc(var(--u)*44); }
+  #screen-game .flag-emoji-lg { font-size:calc(var(--u)*27); }
+  #screen-game .flag-emoji-md { font-size:calc(var(--u)*17); }
+  #screen-game .timer-ring, #screen-game .timer-svg { width:calc(var(--u)*16); height:calc(var(--u)*16); }
+  #screen-game .timer-text { font-size:calc(var(--u)*6); }
+  #screen-game .option-btn { min-height:calc(var(--u)*16); padding:calc(var(--u)*2.4); }
+  #screen-game .option-flag-emoji { font-size:calc(var(--u)*11); }
+  #screen-game .feedback-bar { padding:calc(var(--u)*2) calc(var(--u)*4); }
+  #screen-game .btn-next { min-height:46px; }
+}
+@media (max-height:520px) {
+  #screen-game .game-hud { padding-top:.4rem; }
+  #screen-game .card-3d-wrap, #screen-game .card-flipper { min-height:120px; }
+  #screen-game .flag-emoji-lg { font-size:4.6rem; }
+  #screen-game .flag-emoji-md { font-size:3rem; }
+  #screen-game .flag-emoji-reveal { font-size:3.4rem; }
+  #screen-game .country-name { font-size:1.6rem; }
+  #screen-game .timer-ring, #screen-game .timer-svg { width:52px; height:52px; }
+  #screen-game .timer-text { font-size:1.1rem; }
+  #screen-game .option-btn { min-height:52px; padding:.5rem .7rem; font-size:.9rem; }
+  #screen-game .option-badge { width:24px; height:24px; font-size:.8rem; }
+  #screen-game .option-flag-emoji { font-size:2.4rem; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   COMPONENTES GENERALES (resultados, rankings, duelos, torneos,
+   perfil, logros y modales). Selectores con prefijo de pantalla o
+   doble clase donde hace falta ganar a los CSS que se cargan después.
+   ════════════════════════════════════════════════════════════════ */
+
+/* Tarjeta base → cristal */
+.card {
+  background:var(--glass); border:1px solid var(--glass-bd); border-radius:var(--r-lg);
+  backdrop-filter:blur(8px) saturate(140%); -webkit-backdrop-filter:blur(8px) saturate(140%);
+  box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+/* Botones secundarios: píldoras de cristal */
+.btn { border-radius:999px; font-weight:800; }
+.btn-ghost, .btn--outline {
+  background:rgba(0,0,0,.25); border:1.5px solid var(--glass-bd); color:var(--text); font-weight:800;
+}
+.btn-ghost:hover, .btn--outline:hover { background:rgba(0,0,0,.35); border-color:var(--gold); }
+
+/* Toggles */
+.toggle-track { background:rgba(0,0,0,.3); border-color:var(--glass-bd); }
+.toggle-switch input:checked + .toggle-track { box-shadow:0 0 14px var(--gold-glow); }
+.toggle-switch input:checked + .toggle-track .toggle-thumb { background:var(--ink); }
+.toggle-switch input:focus-visible + .toggle-track { outline:2px solid var(--gold); outline-offset:2px; }
+.toggle-label-text { font-weight:700; }
+.setting-label { font-weight:800; letter-spacing:.1em; color:var(--text-2); }
+
+/* ── Modales ──────────────────────────────────────────────────── */
+.modal-overlay, .duel-modal-overlay {
+  background:rgba(10,6,30,.55);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+}
+.modal-panel, .modal-panel.card, .modal-panel.modal-panel-lb,
+.duel-modal-overlay .duel-modal-panel, .onboarding-box {
+  background:rgba(30,16,60,.85); border:1px solid var(--glass-bd);
+  backdrop-filter:blur(10px) saturate(140%); -webkit-backdrop-filter:blur(10px) saturate(140%);
+  box-shadow:0 24px 70px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18);
+}
+.modal-panel, .onboarding-box { border-radius:28px; }
+.modal-header, .modal-footer, .lb-header { border-color:rgba(255,255,255,.1); }
+.modal-title, .duel-modal-title, .ob-title, .review-title, .update-title { font-weight:900; letter-spacing:-.02em; }
+.ob-mode-pill { background:rgba(0,0,0,.25); border:1.5px solid var(--glass-bd); color:var(--text); font-weight:800; }
+.daily-info-row { background:rgba(255,255,255,.06); border-color:var(--glass-bd); border-radius:16px; }
+
+/* Toasts sobre cualquier fondo: más opacos para el contraste */
+.achievement-toast, .profile-toast {
+  background:rgba(30,16,60,.92); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+}
+.soft-update-banner { background:linear-gradient(135deg,var(--gold),var(--gold-2)); color:var(--ink); font-weight:800; }
+
+/* ── Cabeceras de subpantalla ─────────────────────────────────── */
+.subscreen-title { font-size:1.35rem; font-weight:900; letter-spacing:-.03em; line-height:1; }
+.subscreen-content > * { animation:card-in .5s var(--ease-pop) backwards; }
+.subscreen-content > :nth-child(2) { animation-delay:.08s; }
+.subscreen-content > :nth-child(3) { animation-delay:.16s; }
+.subscreen-content > :nth-child(4) { animation-delay:.24s; }
+.subscreen-content > :nth-child(n+5) { animation-delay:.32s; }
+.subscreen-content > .subscreen-header { animation:none; }
+
+/* ── Pestañas segmentadas → píldoras ──────────────────────────── */
+.screen .duels-tabs, .screen .tournament-tabs, .screen .profile-tabs {
+  background:rgba(0,0,0,.25); border:1.5px solid var(--glass-bd); border-radius:999px; padding:.25rem;
+}
+.screen .duels-tab, .screen .tournament-tab, .screen .profile-tab {
+  border-radius:999px; color:var(--text-2); font-weight:800;
+}
+.screen .duels-tab--active, .screen .tournament-tab--active, .screen .profile-tab--active,
+.modal-panel .lb-tab--active {
+  background:var(--gold); color:var(--ink); box-shadow:0 0 16px var(--gold-glow);
+}
+.modal-panel .lb-period-tabs { background:rgba(0,0,0,.25); border-color:var(--glass-bd); }
+.screen .duel-chip { border-radius:999px; background:rgba(0,0,0,.25); border:1.5px solid var(--glass-bd);
+  color:var(--text); font-weight:800; }
+.screen .duel-chip.active, .duel-modal-overlay .duel-chip.active {
+  background:var(--gold); border-color:var(--gold); color:var(--ink); box-shadow:0 0 16px var(--gold-glow);
+}
+.duel-modal-overlay .duel-chip { border-radius:999px; background:rgba(0,0,0,.25); border:1.5px solid var(--glass-bd);
+  color:var(--text); font-weight:800; }
+.duel-modal-overlay .duel-chip:focus:not(.active) { background:rgba(0,0,0,.25); color:var(--text); }
+.screen .lb-geo-select, .modal-panel .lb-geo-select { background-color:rgba(0,0,0,.3); border-color:var(--glass-bd); }
+
+/* ── Filas de ranking (oro/plata/bronce) ──────────────────────── */
+.modal-panel .lb-entry, .screen .tournament-ranking-row, .screen .marathon-rank-row {
+  background:rgba(255,255,255,.06); border:1px solid transparent; border-radius:14px;
+  backdrop-filter:none; -webkit-backdrop-filter:none; box-shadow:none; font-weight:800;
+}
+.modal-panel .lb-entry { margin-bottom:.3rem; }
+/* 1º */
+.modal-panel .lb-entry--top1,
+.screen .tournament-ranking-list > .tournament-ranking-row:nth-child(1),
+#marathon-rank-list > .marathon-rank-row--top:nth-child(1) {
+  background:linear-gradient(90deg,rgba(255,208,64,.38),rgba(255,208,64,.08));
+  border-color:rgba(255,208,64,.65); box-shadow:0 0 22px rgba(255,208,64,.25);
+}
+/* 2º */
+.modal-panel .lb-entry--top2,
+.screen .tournament-ranking-list > .tournament-ranking-row:nth-child(2),
+#marathon-rank-list > .marathon-rank-row--top:nth-child(2) {
+  background:linear-gradient(90deg,rgba(210,220,240,.3),rgba(210,220,240,.06)); border-color:rgba(210,220,240,.5);
+}
+/* 3º */
+.modal-panel .lb-entry--top3,
+.screen .tournament-ranking-list > .tournament-ranking-row:nth-child(3),
+#marathon-rank-list > .marathon-rank-row--top:nth-child(3) {
+  background:linear-gradient(90deg,rgba(205,127,50,.34),rgba(205,127,50,.06)); border-color:rgba(205,127,50,.55);
+}
+/* Mi fila: borde oro (se combina con el color del puesto) */
+.modal-panel .lb-entry--me, .screen .tournament-ranking-row--me, .screen .marathon-rank-row--me {
+  border-color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold), 0 0 18px var(--gold-glow);
+}
+/* Posición en --text-2 y 900; puntos en oro */
+.screen .tournament-ranking-pos, .screen .marathon-rank-pos, .lb-pos-num { color:var(--text-2); font-weight:900; }
+.lb-pos-num { background:rgba(0,0,0,.25); border-color:var(--glass-bd); }
+.screen .tournament-ranking-score, .screen .marathon-rank-streak,
+.modal-panel .lb-result-score, .lb-score-num { color:var(--gold); font-weight:900; }
+.screen .tournament-ranking-flag, .modal-panel .lb-entry .lb-flag { filter:drop-shadow(0 2px 4px rgba(0,0,0,.4)); }
+/* Barras de progreso de puntuación */
+.lb-score-bar-track { background:rgba(255,255,255,.12); border-radius:999px; }
+.lb-score-bar-fill  { background:linear-gradient(90deg,var(--gold),var(--gold-2)); border-radius:999px; }
+/* Entrada escalonada de las filas */
+.tournament-ranking-list > *, #marathon-rank-list > * {
+  animation:row-in .45s var(--ease-pop) backwards;
+}
+.tournament-ranking-list > :nth-child(2), #marathon-rank-list > :nth-child(2) { animation-delay:.05s; }
+.tournament-ranking-list > :nth-child(3), #marathon-rank-list > :nth-child(3) { animation-delay:.1s; }
+.tournament-ranking-list > :nth-child(4), #marathon-rank-list > :nth-child(4) { animation-delay:.15s; }
+.tournament-ranking-list > :nth-child(n+5), #marathon-rank-list > :nth-child(n+5) { animation-delay:.2s; }
+.lb-my-position { background:rgba(30,16,60,.95); border-top-color:var(--gold); }
+
+/* ── POC: ranking del reto diario a pantalla completa ────────────
+   Mismo esqueleto que "Mejores rachas": cabecera, mi tarjeta, pestañas
+   y filas .marathon-rank-row. La pantalla entera hace scroll (sin
+   scroll anidado) y mi posición queda pegada abajo si no salgo. */
+#screen-daily-ranking .profile-friend-avatar { position:relative; overflow:hidden; }
+#screen-daily-ranking .lb-share-slot { width:44px; height:44px; flex-shrink:0; }
+#screen-daily-ranking .lb-share-btn { position:static; font-size:1.05rem; }
+#screen-daily-ranking .lb-period-tabs { margin:0; overflow:visible; }
+#screen-daily-ranking .lb-tab { padding:.55rem .35rem; text-transform:none; letter-spacing:.01em; font-size:.85rem; }
+#screen-daily-ranking .lb-tab--active { background:var(--gold); color:var(--ink); box-shadow:0 0 16px var(--gold-glow); }
+#screen-daily-ranking .lb-header {
+  padding:.55rem .6rem .6rem; border:1.5px solid var(--glass-bd); border-radius:18px; background:var(--glass);
+  gap:.35rem;
+}
+#screen-daily-ranking .lb-date-nav { padding:0; gap:.75rem; }
+#screen-daily-ranking .lb-nav-btn {
+  width:44px; height:44px; font-size:1.4rem; line-height:1; color:var(--text);
+  background:rgba(0,0,0,.25); border-color:var(--glass-bd);
+}
+#screen-daily-ranking .lb-nav-btn:not(:disabled):hover { border-color:var(--gold); }
+#screen-daily-ranking .lb-date-label { font-size:1.2rem; }
+#screen-daily-ranking .lb-swipe-hint { margin:0; font-size:.68rem; opacity:.7; }
+#screen-daily-ranking .lb-geo-filter-row { padding:0; width:100%; }
+#screen-daily-ranking .lb-geo-select { min-height:40px; border-radius:999px; font-size:.85rem; }
+#screen-daily-ranking .lb-swipe-area { flex:none; overflow:visible; min-height:30vh; }
+#screen-daily-ranking .lb-list { padding:0; }
+#screen-daily-ranking .lb-my-position {
+  position:sticky; bottom:0; margin:0 -.75rem calc(-1.5rem - var(--sab)); padding-bottom:calc(.6rem + var(--sab));
+  border-radius:16px 16px 0 0;
+}
+
+/* Tarjeta: aviso de "no has jugado" + botón de jugar día perdido */
+#lb-me .lb-me-notice {
+  display:flex; align-items:center; gap:.6rem; padding:.7rem .85rem;
+  border-radius:14px; background:rgba(0,0,0,.25); border:1.5px dashed var(--glass-bd);
+  color:var(--text-2); font-weight:800; font-size:.9rem; line-height:1.3;
+}
+#lb-me .lb-me-notice-icon { font-size:1.4rem; line-height:1; flex-shrink:0; }
+#lb-me .btn-lb-play-missed {
+  width:100%; min-height:48px; margin-top:.6rem; padding:.6rem 1rem;
+  border:none; border-radius:999px; cursor:pointer; font-family:inherit;
+  font-size:.95rem; font-weight:900; letter-spacing:.01em; color:var(--ink);
+  background:linear-gradient(170deg, var(--gold) 0%, var(--gold-2) 70%);
+  box-shadow:0 4px 0 #7a3800, 0 6px 20px rgba(255,159,0,.4);
+  transition:transform .15s, box-shadow .15s;
+}
+#lb-me .btn-lb-play-missed:active { transform:translateY(3px); box-shadow:0 1px 0 #7a3800, 0 2px 10px rgba(255,159,0,.35); }
+
+/* ── Rankings (diario y maratón): final de lista completo ─────────
+   .subscreen-content tiene min-height:100% y, como hijo flex de .screen,
+   se encogía a la altura de la pantalla: la lista desbordaba sin el
+   padding final y la última fila quedaba pegada al borde (y bajo la
+   barra de gestos). Aquí no se encoge, la pantalla entera hace scroll
+   (sin scroll interno que recorte bordes/brillos) y el hueco final
+   incluye la zona segura inferior. */
+#screen-daily-ranking, #screen-marathon-ranking { padding-bottom:0; }
+#screen-daily-ranking > .subscreen-content,
+#screen-marathon-ranking > .subscreen-content {
+  flex-shrink:0; padding-bottom:calc(1.5rem + var(--sab));
+}
+#screen-marathon-ranking #marathon-rank-list { overflow:visible; }
+/* Medallas y "mi fila" como en la maratón */
+#lb-list > .marathon-rank-row--top:nth-child(1) {
+  background:linear-gradient(90deg,rgba(255,208,64,.38),rgba(255,208,64,.08));
+  border-color:rgba(255,208,64,.65); box-shadow:0 0 22px rgba(255,208,64,.25);
+}
+#lb-list > .marathon-rank-row--top:nth-child(2) {
+  background:linear-gradient(90deg,rgba(210,220,240,.3),rgba(210,220,240,.06)); border-color:rgba(210,220,240,.5);
+}
+#lb-list > .marathon-rank-row--top:nth-child(3) {
+  background:linear-gradient(90deg,rgba(205,127,50,.34),rgba(205,127,50,.06)); border-color:rgba(205,127,50,.55);
+}
+#screen-daily-ranking .marathon-rank-row--me {
+  border-color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold), 0 0 18px var(--gold-glow);
+}
+#lb-list > * { animation:row-in .45s var(--ease-pop) backwards; }
+#lb-list > :nth-child(2) { animation-delay:.05s; }
+#lb-list > :nth-child(3) { animation-delay:.1s; }
+#lb-list > :nth-child(4) { animation-delay:.15s; }
+#lb-list > :nth-child(n+5) { animation-delay:.2s; }
+
+/* ── Tarjetas de duelos y torneos ─────────────────────────────── */
+.screen .duel-card, .screen .tournament-card, .screen .tournament-history-card {
+  background:var(--glass); border:1.5px solid var(--glass-bd); border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.16);
+}
+.screen .duel-card, .screen .tournament-card { animation:card-in .5s var(--ease-pop) backwards; }
+.screen .duel-card-status, .screen .tournament-card-status { border-radius:999px; font-weight:800; letter-spacing:.06em; }
+.screen .duel-score-pill { background:rgba(0,0,0,.25); border-radius:999px; font-weight:800; }
+.screen .duel-score-pill--winner { background:var(--green-bg); border:1px solid var(--green-bd); color:#86efac; }
+.screen .duel-score-pill--loser  { background:var(--red-bg);   border:1px solid var(--red-bd);   color:#fca5a5; }
+.screen .duel-result-player--winner { box-shadow:0 0 22px rgba(255,208,64,.25); }
+.screen .tournament-card-name, .screen .tournament-detail-name, .duels-section-title { font-weight:900; letter-spacing:-.02em; }
+/* Restos de la paleta anterior (fondos opacos azul marino) → cristal */
+.screen .tournament-detail-info, .screen .duel-result-player {
+  background:var(--glass); border:1.5px solid var(--glass-bd); border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.16);
+}
+.screen .duel-card-status--expired { background:rgba(0,0,0,.3); }
+.duel-created-code-display, .duel-share-code-row, .screen .profile-code-row {
+  background:rgba(0,0,0,.3); border:1.5px solid var(--glass-bd); border-radius:16px;
+}
+.duel-copy-btn, .screen .profile-code-btn { background:rgba(255,255,255,.1); border-color:var(--glass-bd); }
+.duel-modal-overlay .duel-field input[type="text"],
+.duel-modal-overlay .duel-join-input, .duel-modal-overlay input, .screen .profile-code-input {
+  background:rgba(0,0,0,.3); border:1.5px solid var(--glass-bd); color:var(--text);
+}
+.duel-modal-overlay input:focus, .screen .profile-code-input:focus { border-color:var(--gold); outline:none; }
+
+/* ── Estadísticas, logros y perfil: rejilla de tiles ──────────── */
+.screen .stat-card, .screen .profile-badge, .screen .profile-trophy, .screen .achievement-card {
+  background:var(--glass); border:1.5px solid var(--glass-bd); border-radius:18px;
+  backdrop-filter:none; -webkit-backdrop-filter:none;
+  box-shadow:0 8px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.14);
+}
+.screen .stat-val, .screen .profile-badge-val { font-weight:900; letter-spacing:-.03em; font-size:1.7rem; line-height:1; }
+.screen .stat-val { color:var(--gold); }
+.screen .stat-label, .screen .profile-badge-label { font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--text-2); }
+.screen .achievement-unlocked {
+  border-color:var(--gold); background:linear-gradient(135deg,rgba(255,208,64,.22),rgba(255,159,0,.06));
+  box-shadow:0 0 0 1px var(--gold), 0 0 18px var(--gold-glow);
+}
+.screen .ach-name { font-weight:900; }
+.screen .stats-mode-row, .screen .wrong-country-row {
+  background:rgba(255,255,255,.06); border-color:var(--glass-bd); border-radius:14px;
+}
+.screen .stats-mode-header-row { background:transparent; border:0; }
+.screen .stats-section-title { font-weight:900; letter-spacing:.08em; text-transform:uppercase; color:var(--text-2); font-size:.78rem; }
+.screen .wrong-flag { filter:drop-shadow(0 2px 6px rgba(0,0,0,.45)); }
+.screen .profile-friend { border-radius:16px; }
+.screen .profile-nickname { font-weight:900; letter-spacing:-.02em; }
+
+/* ── Resultados ───────────────────────────────────────────────── */
+/* Si el contenido supera la altura, que crezca y haga scroll (no se corta por arriba) */
+#screen-results .results-content { flex-shrink:0; }
+#screen-results .results-trophy { animation:bob 3s ease-in-out infinite, pop-in .6s var(--ease-bounce); }
+#screen-results .results-title  { font-size:1.9rem; font-weight:900; letter-spacing:-.03em; line-height:1; }
+#screen-results .results-subtitle { font-weight:700; letter-spacing:.1em; text-transform:uppercase; font-size:.78rem; }
+#screen-results .results-score-big { border-radius:28px; padding:1rem 2.2rem; }
+#screen-results .results-score-num {
+  font-size:4.2rem; font-weight:900; letter-spacing:-.04em;
+  background:linear-gradient(135deg,var(--gold),var(--gold-2));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:var(--gold);
+  filter:drop-shadow(0 0 18px rgba(255,208,64,.35));
+}
+#screen-results .results-score-denom { font-weight:900; color:var(--text-2); }
+#screen-results .results-stats { border-radius:24px; }
+#screen-results .result-stat-value { font-size:1.6rem; font-weight:900; }
+#screen-results #res-correct { color:#4ade80; text-shadow:0 0 22px rgba(34,197,94,.55); }
+#screen-results #res-wrong   { color:#f87171; text-shadow:0 0 22px rgba(239,68,68,.5); }
+#screen-results #res-streak  { color:#ff9f45; }
+#screen-results .result-stat-label { font-weight:800; letter-spacing:.1em; color:var(--text-2); }
+#screen-results .result-stat-divider { background:var(--glass-bd); }
+#screen-results .results-new-record {
+  background:var(--gold); color:var(--ink); border-color:var(--gold); font-weight:900; box-shadow:0 0 18px var(--gold-glow);
+}
+#screen-results .results-daily-badge { font-weight:900; box-shadow:0 0 16px rgba(34,197,94,.3); }
+#screen-results .result-ach-badge {
+  background:var(--green-bg); border:1px solid var(--green-bd); font-weight:800; border-radius:999px;
+}
+#screen-results .result-ach-badge:first-child { background:var(--gold); border-color:var(--gold); color:var(--ink); }
+#screen-results .weekly-summary-card { border-radius:22px; }
+#screen-results .weekly-stat-value { font-weight:900; color:var(--gold); }
+#screen-results .results-player-badge { font-weight:800; }
+
+/* ════════════════════════════════════════════════════════════════
+   ACCESIBILIDAD
+   ════════════════════════════════════════════════════════════════ */
+/* --text-3 a .45 queda por debajo de AA (≈4.2:1) sobre el morado: se sube a .58 */
+:root { --text-3: rgba(246,246,255,0.58); }
+
+/* Foco visible en todos los controles */
+button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible,
+[role="tab"]:focus-visible, .mode-card:focus-visible, .mode-group-header:focus-visible {
+  outline:2px solid var(--gold); outline-offset:2px;
+}
+
+/* Áreas táctiles ≥ 44px */
+.chip, .lang-btn, .duel-chip, #screen-home .home-profile-pill,
+.screen .duels-tab, .screen .tournament-tab, .screen .profile-tab { min-height:44px; }
+.setting-info-btn { min-width:44px; min-height:44px; }
+
+/* ── Android forced-dark (MIUI/HyperOS): sin texto recortado ──── */
+html.forced-dark .title-gold,
+html.forced-dark #screen-results .results-score-num {
+  -webkit-text-fill-color:initial; background:none; color:var(--gold);
+}
+
+/* ── Movimiento reducido ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .app-bg--animated, .bg-mesh-layer, .float-flag,
+  #screen-home .home-brand-icon, #screen-home .hero-visual-ring,
+  #screen-home .mode-list > *,
+  #screen-game .timer-container.urgent .timer-ring,
+  .subscreen-content > *, .tournament-ranking-list > *, #marathon-rank-list > *, #lb-list > *,
+  .screen .duel-card, .screen .tournament-card, #screen-results .results-trophy { animation:none !important; }
+  .float-flags { display:none; }
+}

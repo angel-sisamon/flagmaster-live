@@ -4,7 +4,7 @@
  *
  *   data/sessions/AAAA-MM/*.json  +  data/moderation.json
  *        ↓
- *   site/data/index.json          meses disponibles, campeones y totales históricos
+ *   site/data/index.json          meses disponibles (con su evolución), campeones y totales históricos
  *   site/data/months/AAAA-MM.json clasificación y estadísticas de cada mes
  *   site/data/alltime.json        histórico: jugadores, récords y salón de la fama
  *
@@ -95,7 +95,9 @@ function main() {
       playerMonths.get(p.id)[month] = [p.pts, p.pos];
     }
     const champion = agg.players.find(p => p.pos === 1);
-    months.push({ id: month, lives: agg.totals.lives, players: agg.totals.players,
+    const mt = agg.totals;
+    months.push({ id: month, lives: mt.lives, players: mt.players, newPlayers: mt.newPlayers, participants: mt.participants,
+      answers: mt.answers, messages: mt.messages, minutes: mt.minutes,
       champion: champion ? { ...pick(champion), pts: champion.pts } : null });
     writeJson(path.join(OUT_DIR, 'months', `${month}.json`), { month, generatedAt, ...agg });
     console.log(`📅 ${month}: ${agg.totals.lives} directos · ${agg.totals.players} jugadores · ${agg.totals.answers} respuestas`);
@@ -110,6 +112,8 @@ function main() {
   const fastestAvg = best(ps, p => (p.avg ? 1e9 - p.avg : 0), 30);
   const loyal = best(ps, p => p.lives);
   const supporter = best(ps, p => p.gifts);
+  const chatty = best(ps, p => p.msgs);
+  const firsts = best(ps, p => p.first);
 
   writeJson(path.join(OUT_DIR, 'alltime.json'), {
     generatedAt,
@@ -121,6 +125,8 @@ function main() {
       fastestAvg: record(fastestAvg, fastestAvg && fastestAvg.avg),
       loyal: record(loyal, loyal && loyal.lives),
       supporter: record(supporter, supporter && supporter.gifts),
+      chatty: record(chatty, chatty && chatty.msgs),
+      firsts: record(firsts, firsts && firsts.first),
     },
     champions: months.filter(m => m.champion).map(m => ({ month: m.id, ...m.champion })),
     countries: hist.countries,

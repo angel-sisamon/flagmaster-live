@@ -73,7 +73,7 @@ function createRecorder({ enabled, dataDir, stateDir, timeZone, host, resumeWind
       updatedAt: date.toISOString(),
       endedAt: null,
       roomId: null,
-      totals: { games: 0, rounds: 0, answers: 0, correct: 0, likes: 0, gifts: 0, follows: 0, shares: 0, joins: 0, peakViewers: 0 },
+      totals: { games: 0, rounds: 0, answers: 0, correct: 0, likes: 0, gifts: 0, follows: 0, shares: 0, joins: 0, messages: 0, peakViewers: 0 },
       games: [],
       questions: [],
       players: {},
@@ -194,6 +194,17 @@ function createRecorder({ enabled, dataDir, stateDir, timeZone, host, resumeWind
     snapshotSoon();
   }
 
+  /* Cada mensaje del chat (votos y comandos incluidos). "|| 0": una sesión retomada de una versión anterior no tenía el campo */
+  function onChat(user) {
+    if (!ensure()) return;
+    session.totals.messages = (session.totals.messages || 0) + 1;
+    if (user) {
+      const p = player(user.pid, user.handle, user.nickname);
+      p.msgs = (p.msgs || 0) + 1;
+    }
+    snapshotSoon();
+  }
+
   function onLike(user, count) {
     if (!ensure()) return;
     session.totals.likes += count;
@@ -281,7 +292,7 @@ function createRecorder({ enabled, dataDir, stateDir, timeZone, host, resumeWind
   }
 
   return {
-    onGameStart, onRoundEnd, onGameEnd, onJoin, onLike, onGift, onFollow, onShare, onViewers, setRoom,
+    onGameStart, onRoundEnd, onGameEnd, onJoin, onChat, onLike, onGift, onFollow, onShare, onViewers, setRoom,
     finish, recover, flush: snapshotNow,
     current: () => publicSession(),
     info: () => (session ? { id: session.id, month: session.month, startedAt: session.startedAt, totals: session.totals } : null),

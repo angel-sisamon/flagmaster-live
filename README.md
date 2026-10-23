@@ -15,6 +15,7 @@ TikTok LIVE ──chat/likes/regalos──▶ server/ ──Socket.io──▶ p
 
 | Carpeta | Qué hay |
 |---|---|
+| `game/` | Copia del juego (index, css, js, assets) con la que se juega el directo. Se actualiza con `npm run sync:game` |
 | `server/` | Servidor del directo (Node). `index.js` conecta las piezas de `src/`: `tiktok.js` (conexión), `game.js` (rondas y puntos), `recorder.js` (graba cada directo), `standings.js` (TOP del mes en directo), `moderation.js` (`!optout`), `publisher.js` (sube a GitHub), `live-page.js` (página del directo) |
 | `client/` | Capa LIVE que se inyecta sobre el juego: pantallas, estilos, voz, fuegos artificiales y textos |
 | `shared/stats.js` | Cálculo de clasificaciones, común al servidor y a la web |
@@ -23,10 +24,19 @@ TikTok LIVE ──chat/likes/regalos──▶ server/ ──Socket.io──▶ p
 | `scripts/` | `aggregate.js` (sesiones → JSON de la web), `publish.js`, `demo-data.js`, `serve-site.js` |
 | `site/` | Web estática de clasificaciones (Vanilla JS). `site/data/` lo genera Actions |
 
-El juego **no se copia**: el servidor sirve el `www/` del repo flag-master (`FLAGMASTER_WWW`, por defecto
-`../flagmaster-capacitor/www`) y le añade la capa de `client/`. De ahí salen también países y modos, así que
-directo y app nunca se desincronizan. Usa la rama `development` (o `main` una vez publicada): una versión
-antigua del juego muestra "Actualización requerida".
+El directo es **independiente del repo del juego**: juega con su propia copia en `game/`, que solo cambia cuando
+tú lo decides. El servidor sirve esa copia y le añade la capa de `client/` (de ahí salen también países y modos), y
+desactiva el aviso de "Actualización requerida" para que una versión mínima nueva de la app no bloquee el directo.
+
+Para traer una versión nueva del juego (por ejemplo, tras añadir países):
+
+```
+npm run sync:game                 # rama development de ../flagmaster-capacitor/www
+npm run sync:game -- main         # u otra rama, tag o commit
+```
+
+Se copia desde git, así que da igual en qué rama tengas abierto el juego. `game/VERSION.json` dice qué versión hay.
+Prueba el directo y haz commit de `game/`.
 
 ## Hacer un directo
 
@@ -48,10 +58,13 @@ Si algo no se pudo subir, se reintenta al arrancar o con `npm run publish:data`.
 
 ## Qué se guarda de cada directo
 
-Por jugador: @usuario, nick, puntos, respuestas, aciertos, veces 1º en acertar, partidas jugadas y ganadas, mejor
+Por jugador: @usuario, nick, puntos, mensajes en el chat, respuestas, aciertos, veces 1º en acertar, partidas jugadas y ganadas, mejor
 racha, acierto más rápido y tiempo medio, aciertos por tipo de pregunta, likes, diamantes regalados, follows y shares.
 Por pregunta: país, modo, votos, aciertos y reparto A/B/C/D. Por directo: duración, partidas, rondas, récord de
-espectadores, likes, regalos, follows, shares y entradas.
+espectadores, mensajes, likes, regalos, follows, shares y entradas.
+
+La web muestra además los totales históricos (jugadores únicos, quién repite, horas en directo, países distintos,
+mensajes…), la evolución de jugadores por mes y récords como "más veces 1º" o "más mensajes".
 
 El id del jugador es el id numérico de TikTok **cifrado** (no cambia aunque cambie el @, y el real nunca se publica).
 
@@ -60,6 +73,15 @@ El id del jugador es el id numérico de TikTok **cifrado** (no cambia aunque cam
 - `npm run demo` → genera directos simulados y abre la web en `http://localhost:8080`.
 - `npm run build:site && npm run serve:site` → la web con los datos reales de `data/`.
 - Ajustes (enlace de Play Store con UTM, App Store, cuenta de TikTok, mínimos de las tablas): `site/js/config.js`.
+
+### Visitas de la web
+
+GitHub no da estadísticas de visitas de Pages (Insights → Traffic es solo del repo). La web trae
+[GoatCounter](https://www.goatcounter.com) preparado: gratis, sin cookies (no hace falta banner de consentimiento).
+Crea una cuenta, elige un código (p. ej. `flagmaster-live`) y ponlo en `goatcounter` de `site/js/config.js`.
+Cuenta visitas por pantalla (portada, meses, fichas de jugador), procedencia, país y dispositivo, y los clics en
+Google Play / App Store / TikTok (`download-android`, `download-ios`, `tiktok`). Las descargas reales se ven en
+Play Console → Adquisición de usuarios (el enlace lleva UTM `tiktok_live`).
 
 ### Activar GitHub Pages (una vez)
 

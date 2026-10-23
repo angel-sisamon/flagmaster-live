@@ -79,6 +79,19 @@ button { font: inherit; color: inherit; }
 .hero h1 span { background: linear-gradient(135deg, var(--gold), var(--gold-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .hero p { margin: 0; color: var(--text-2); font-size: 1.02rem; max-width: 52ch; }
 .hero-live { display: inline-block; margin-top: 14px; font-weight: 800; }
+.hero-counters { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 16px 0 0; color: var(--text-2); font-size: .95rem; }
+.hero-counters b { color: var(--text); font-size: 1.15rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+
+/* Jugadores por mes (una serie: barras finas, valor del último mes visible, el resto al pasar el dedo) */
+.growth { list-style: none; margin: 0; padding: 22px 0 0; display: flex; align-items: flex-end; gap: 2px; height: 190px; }
+.growth-col { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end;
+  align-items: center; position: relative; outline: none; cursor: default; }
+.growth-bar { width: min(100%, 26px); border-radius: 4px 4px 0 0; background: var(--gold); opacity: .55; transition: opacity .15s; }
+.growth-col--last .growth-bar, .growth-col:hover .growth-bar, .growth-col:focus-visible .growth-bar { opacity: 1; }
+.growth-val { font-size: .78rem; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; margin-bottom: 4px;
+  visibility: hidden; white-space: nowrap; }
+.growth-col--last .growth-val, .growth-col:hover .growth-val, .growth-col:focus-visible .growth-val { visibility: visible; }
+.growth-label { margin-top: 6px; font-size: .72rem; color: var(--text-3); white-space: nowrap; overflow: hidden; max-width: 100%; }
 
 .stores { display: flex; flex-direction: column; gap: 12px; }
 .store { display: flex; align-items: center; gap: 14px; padding: 16px 22px; border-radius: 18px; min-height: 76px;

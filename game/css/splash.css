@@ -1,0 +1,45 @@
+/* ══════════════════════════════════════
+   SPLASH SCREEN INTERNA — FlagMaster
+   Imagen: 1536×2752 px (ratio 9:16)
+   ══════════════════════════════════════ */
+
+#screen-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  /* Fondo base igual que la splash nativa del SO — transición invisible */
+  background-color: #0a0a16;
+
+  /* Imagen 9:16 → contain sin recorte relevante en portrait */
+  background-image: url('../assets/splash.png');
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  /* Sin scroll ni desbordamiento */
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+
+  /* Evita cualquier interacción mientras está activo */
+  pointer-events: all;
+  touch-action: none;
+
+  /* Estado inicial: visible */
+  opacity: 1;
+  /* Transición de salida: 500ms ease-out */
+  transition: opacity 0.5s ease-out;
+}
+
+/* Estado: iniciando fade-out */
+#screen-splash.splash--hidden {
+  opacity: 0;
+  pointer-events: none;
+  touch-action: none;
+}
+
+/* Estado: eliminado del flujo tras la transición */
+#screen-splash.splash--gone {
+  display: none !important;
+}

@@ -83,3 +83,26 @@ test('ignora sesiones con otro formato', () => {
   const agg = aggregate([{ schema: 99, id: 'x', players: {}, questions: [] }, null]);
   assert.strictEqual(agg.totals.lives, 0);
 });
+
+test('totales globales: participantes, mensajes, repetidores y países distintos', () => {
+  const q = code => ({ code, mode: 'guess-flag', votes: 2, ok: 1 });
+  const agg = aggregate([
+    session('a', '2026-10-01T20:00:00Z', {
+      ana: P({ pts: 10, ans: 2, ok: 1, msgs: 5 }), mudo: P({ likes: 3 }), charla: P({ msgs: 4 }),
+    }, { questions: [q('ES'), q('FR')], totals: { messages: 9, answers: 2, correct: 1 } }),
+    session('b', '2026-10-08T20:00:00Z', { ana: P({ pts: 5, ans: 1, ok: 1, msgs: 1 }) },
+      { questions: [q('ES')], totals: { messages: 1, answers: 1, correct: 1 } }),
+  ]);
+  const s = agg.totals;
+  assert.deepStrictEqual([s.players, s.participants, s.chatters, s.returning, s.countries, s.messages], [1, 3, 2, 1, 2, 10]);
+  assert.strictEqual(agg.lives[0].messages, 9);
+  assert.strictEqual(agg.players.find(p => p.id === 'ana').msgs, 6);
+});
+
+test('sesiones grabadas antes de contar mensajes: valen 0, no rompen la suma', () => {
+  const old = P({ pts: 1, ans: 1, ok: 1 });
+  delete old.msgs;
+  const agg = aggregate([session('a', '2026-10-01T20:00:00Z', { x: old })]);
+  assert.strictEqual(agg.players[0].msgs, 0);
+  assert.strictEqual(agg.totals.messages, 0);
+});

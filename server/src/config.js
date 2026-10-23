@@ -21,8 +21,9 @@ module.exports = {
   TIKTOK_USERNAME,
   EULER_API_KEY: process.env.EULER_API_KEY || '',
 
-  // Carpeta www del juego (repo flag-master): se sirve tal cual y de ahí salen países y modos
-  GAME_DIR: process.env.FLAGMASTER_WWW || path.join(ROOT, '..', 'flagmaster-capacitor', 'www'),
+  // Copia del juego que usa el directo (game/, se actualiza con "npm run sync:game"): se sirve tal cual
+  // y de ahí salen países y modos. FLAGMASTER_WWW permite probar con otra carpeta del juego.
+  GAME_DIR: process.env.FLAGMASTER_WWW || path.join(ROOT, 'game'),
   CLIENT_DIR: path.join(ROOT, 'client'),
 
   // Datos: data/ va al repo (fuente de la web); server/.live/ es estado local (copia de seguridad del directo)

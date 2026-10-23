@@ -169,6 +169,7 @@ function handleCommand(user, text) {
 
 function handleChat(user, text) {
   if (!user) return;
+  recorder.onChat(user);
   if (game.vote(user, text)) return;
   handleCommand(user, String(text || ''));
 }

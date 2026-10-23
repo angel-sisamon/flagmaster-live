@@ -48,6 +48,9 @@ test('graba aciertos, rachas, tiempos y primer puesto; guarda la sesión al cerr
   rec.onRoundEnd({ question: Q, startedAt: t.now, votes: [vote(ana, 1, t.now + 1500), vote(luis, 0, t.now + 500)],
     gained: new Map([[ana.pid, 10]]) });
   rec.onLike(ana, 20);
+  rec.onChat(ana);
+  rec.onChat(ana);
+  rec.onChat(luis);
   rec.onGift(luis, 5);
   rec.onGameEnd({ ranking: [[ana.pid, { points: 18 }]] });
   t.now += 3600e3;
@@ -61,7 +64,8 @@ test('graba aciertos, rachas, tiempos y primer puesto; guarda la sesión al cerr
   assert.deepStrictEqual([l.pts, l.ok, l.streak, l.first, l.gifts], [10, 1, 1, 1, 5]);
   assert.deepStrictEqual(a.modes, { 'guess-flag': [2, 2] });
   assert.ok(!('_g' in a), 'los campos internos no se publican');
-  assert.deepStrictEqual([s.totals.rounds, s.totals.answers, s.totals.correct], [2, 4, 3]);
+  assert.deepStrictEqual([s.totals.rounds, s.totals.answers, s.totals.correct, s.totals.messages], [2, 4, 3, 3]);
+  assert.deepStrictEqual([a.msgs, l.msgs], [2, 1]);
   assert.strictEqual(s.questions[0].es, 'España');
   assert.ok(!fs.existsSync(path.join(dir, 'state', 'current-session.json')));
 });
@@ -101,10 +105,13 @@ test('la página LIVE inyecta la capa sobre el index del juego', () => {
   const dir = tmpDir();
   const client = path.join(dir, 'client');
   fs.mkdirSync(client);
-  fs.writeFileSync(path.join(dir, 'index.html'), '<html><head><title>x</title></head><body><p>$1</p><script src="js/main.js"></script></body></html>');
+  fs.writeFileSync(path.join(dir, 'index.html'), '<html><head><title>x</title></head><body><p>$1</p><script src="js/update-checker.js"></script><script src="js/main.js"></script></body></html>');
   fs.writeFileSync(path.join(client, 'live-screens.html'), '<div id="screen-live-lobby">$&</div>');
   const html = composeLivePage(dir, client);
   assert.ok(html.includes('<link rel="stylesheet" href="live/live-mode.css"/>\n</head>'));
   assert.ok(html.indexOf('js/main.js') < html.indexOf('live/live-mode.js'), 'los scripts LIVE van después de los del juego');
   assert.ok(html.includes('<div id="screen-live-lobby">$&</div>'), 'sin sustituciones de patrón');
+  const noCheck = html.indexOf('UpdateChecker.check = function');
+  assert.ok(noCheck > html.indexOf('js/update-checker.js') && noCheck < html.indexOf('js/main.js'),
+    'el aviso de actualización obligatoria se desactiva antes de que arranque el juego');
 });

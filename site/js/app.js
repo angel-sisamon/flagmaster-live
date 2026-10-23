@@ -139,18 +139,24 @@
 
   function storesHtml() {
     const ios = C.appStoreUrl
-      ? `<a class="store" href="${esc(C.appStoreUrl)}" rel="noopener">${APPLE_ICON}<span><small>${t('play_small')}</small><b>${t('ios_big')}</b></span></a>`
+      ? `<a class="store" data-track="download-ios" href="${esc(C.appStoreUrl)}" rel="noopener">${APPLE_ICON}<span><small>${t('play_small')}</small><b>${t('ios_big')}</b></span></a>`
       : `<span class="store store--ios" aria-disabled="true">${APPLE_ICON}<span><small>${t('ios_small')}</small><b>${t('ios_big')}</b></span><span class="store-soon">${t('soon')}</span></span>`;
     return `<div class="stores">
-      <a class="store store--play" href="${esc(C.playStoreUrl)}" rel="noopener">${PLAY_ICON}<span><small>${t('play_small')}</small><b>${t('play_big')}</b></span></a>
+      <a class="store store--play" data-track="download-android" href="${esc(C.playStoreUrl)}" rel="noopener">${PLAY_ICON}<span><small>${t('play_small')}</small><b>${t('play_big')}</b></span></a>
       ${ios}</div>`;
   }
 
-  function heroHtml() {
+  function heroCounters(s) {
+    if (!s || !s.players) return '';
+    return `<p class="hero-counters"><span><b>${nf(s.players)}</b> ${t('s_players_all').toLowerCase()}</span><span><b>${nf(s.lives)}</b> ${t('s_lives').toLowerCase()}</span>` +
+      (s.messages ? `<span><b>${nf(s.messages)}</b> ${t('s_messages').toLowerCase()}</span>` : `<span><b>${nf(s.answers)}</b> ${t('s_answers').toLowerCase()}</span>`) + '</p>';
+  }
+
+  function heroHtml(totals) {
     return `<section class="hero">
       <div><span class="hero-badge"><i></i>TikTok LIVE</span>
-        <h1>${t('hero_title')}</h1><p>${esc(t('hero_sub'))}</p>
-        ${C.tiktokUser ? `<a class="hero-live" href="https://www.tiktok.com/@${encodeURIComponent(C.tiktokUser)}/live" rel="noopener">▶ ${t('follow_live')} · @${esc(C.tiktokUser)}</a>` : ''}
+        <h1>${t('hero_title')}</h1><p>${esc(t('hero_sub'))}</p>${heroCounters(totals)}
+        ${C.tiktokUser ? `<a class="hero-live" data-track="tiktok" href="https://www.tiktok.com/@${encodeURIComponent(C.tiktokUser)}/live" rel="noopener">▶ ${t('follow_live')} · @${esc(C.tiktokUser)}</a>` : ''}
       </div>${storesHtml()}</section>`;
   }
 
@@ -158,13 +164,51 @@
     return `<div class="stat"><b><i>${icon}</i>${value}</b><span>${label}</span></div>`;
   }
 
+  const hours = min => (min / 60).toLocaleString(SiteI18n.lang(), { maximumFractionDigits: min < 600 ? 1 : 0 });
+  const opt = (v, icon, label, fmt) => (v ? stat(icon, fmt ? fmt(v) : nf(v), label) : '');
+
+  /* Cifras de un periodo (mes o histórico). Las que valen 0 no se muestran (p. ej. mensajes en directos antiguos) */
+  function totalsHtml(s, alltime) {
+    return `<div class="stats">
+      ${stat('👥', nf(s.players), t(alltime ? 's_players_all' : 's_players'))}${alltime ? opt(s.returning, '🔁', t('s_returning')) : opt(s.newPlayers, '✨', t('s_new'))}
+      ${opt(s.participants > s.players && s.participants, '🙋', t('s_participants'))}
+      ${stat('📺', nf(s.lives), t('s_lives'))}${opt(s.minutes, '⏱️', t('s_hours'), hours)}
+      ${opt(s.rounds, '🏳️', t('s_rounds'))}${opt(alltime && s.countries, '🌍', t('s_countries'))}
+      ${opt(s.messages, '💬', t('s_messages'))}${stat('✍️', nf(s.answers), t('s_answers'))}
+      ${opt(alltime && s.correct, '✅', t('s_correct'))}${stat('🎯', s.accuracy + '%', t('s_accuracy'))}
+      ${opt(s.likes, '❤️', t('s_likes'))}${opt(s.gifts, '💎', t('s_gifts'))}
+      ${opt(s.follows, '➕', t('s_follows'))}${opt(s.shares, '🔗', t('s_shares'))}${opt(s.peakViewers, '👀', t('s_peak'))}
+    </div>`;
+  }
+
   function statsHtml(d) {
-    const s = d.totals;
-    return `<section class="section"><h2 class="section-title">${t('stats_title')}</h2><div class="stats">
-      ${stat('📺', nf(s.lives), t('s_lives'))}${stat('👥', nf(s.players), t('s_players'))}${stat('✨', nf(s.newPlayers), t('s_new'))}
-      ${stat('💬', nf(s.answers), t('s_answers'))}${stat('🎯', s.accuracy + '%', t('s_accuracy'))}${stat('❤️', nf(s.likes), t('s_likes'))}
-      ${s.peakViewers ? stat('👀', nf(s.peakViewers), t('s_peak')) : ''}${s.gifts ? stat('💎', nf(s.gifts), t('s_gifts')) : ''}
-    </div></section>`;
+    return `<section class="section"><h2 class="section-title">${t('stats_title')}</h2>${totalsHtml(d.totals, false)}</section>`;
+  }
+
+  /* Jugadores por mes: una barra por mes (el último, con su valor siempre visible; el resto al pasar el dedo) */
+  function growthHtml(months) {
+    const list = months.slice().reverse().slice(-12);
+    if (list.length < 2) return '';
+    const max = Math.max(...list.map(m => m.players), 1);
+    const short = key => {
+      const [y, m] = key.split('-').map(Number);
+      return new Intl.DateTimeFormat(SiteI18n.lang(), { month: 'short', timeZone: 'UTC' }).format(Date.UTC(y, m - 1, 1)).replace('.', '');
+    };
+    return `<div class="card"><h3 class="card-title">📈 ${t('growth_title')}</h3>
+      <ol class="growth" aria-label="${esc(t('growth_title'))}">` + list.map((m, i) => {
+      const tip = `${monthLabel(m.id)}: ${t('players_n', { n: nf(m.players) })}${m.newPlayers ? ' · ' + nf(m.newPlayers) + ' ' + t('s_new').toLowerCase() : ''} · ${m.lives === 1 ? t('live_1') : t('lives_n', { n: nf(m.lives) })}`;
+      return `<li class="growth-col${i === list.length - 1 ? ' growth-col--last' : ''}" tabindex="0" title="${esc(tip)}" aria-label="${esc(tip)}">
+        <span class="growth-val">${nf(m.players)}</span>
+        <span class="growth-bar" style="height:${Math.max(3, Math.round(m.players / max * 100))}%"></span>
+        <span class="growth-label">${esc(short(m.id))}</span></li>`;
+    }).join('') + '</ol></div>';
+  }
+
+  function globalHtml(index, all) {
+    const s = index.totals;
+    if (!s || !s.lives) return '';
+    return `<section class="section"><h2 class="section-title">🌐 ${t('global_title')}</h2>${totalsHtml(s, true)}
+      <div class="grid-2" style="margin-top:16px">${growthHtml(index.months)}${all ? flagCards(all.countries, 20, true) : ''}</div></section>`;
   }
 
   function flagList(list, bad) {
@@ -174,21 +218,27 @@
       <span class="flag-pct">${c.pct}%</span></li>`).join('') + '</ul>';
   }
 
-  function flagsHtml(d) {
-    const asked = d.countries.filter(c => c.votes >= 10);
+  /* Más difíciles y más fáciles (solo banderas con votos suficientes para que el % signifique algo) */
+  function flagCards(countries, minVotes, alltime) {
+    const asked = countries.filter(c => c.votes >= minVotes);
     if (asked.length < 4) return '';
     const hard = asked.slice().sort((a, b) => a.pct - b.pct || b.votes - a.votes).slice(0, 5);
     const easy = asked.slice().sort((a, b) => b.pct - a.pct || b.votes - a.votes).slice(0, 5);
-    return `<section class="section"><h2 class="section-title">${t('flags_title')}</h2><div class="grid-2">
-      <div class="card"><h3 class="card-title">😵 ${t('hardest')}</h3>${flagList(hard, true)}</div>
-      <div class="card"><h3 class="card-title">😎 ${t('easiest')}</h3>${flagList(easy, false)}</div></div></section>`;
+    const sfx = alltime ? '_all' : '';
+    return `<div class="card"><h3 class="card-title">😵 ${t('hardest' + sfx)}</h3>${flagList(hard, true)}</div>
+      <div class="card"><h3 class="card-title">😎 ${t('easiest' + sfx)}</h3>${flagList(easy, false)}</div>`;
+  }
+
+  function flagsHtml(d) {
+    const cards = flagCards(d.countries, 10, false);
+    return cards ? `<section class="section"><h2 class="section-title">${t('flags_title')}</h2><div class="grid-2">${cards}</div></section>` : '';
   }
 
   function livesHtml(d, tz) {
     if (!d.lives.length) return '';
     return `<section class="section"><h2 class="section-title">${t('lives_title')}</h2><div class="card"><ul class="lives">` +
       d.lives.slice().reverse().map(l => `<li class="live"><span class="live-date">${esc(dateLabel(l.startedAt, tz))}</span>
-        <span class="live-meta">${t('players_n', { n: nf(l.players) })} · ${l.accuracy}% · ${nf(l.rounds)} 🏳️</span>
+        <span class="live-meta">${t('players_n', { n: nf(l.players) })} · ${l.accuracy}% · ${nf(l.rounds)} 🏳️${l.messages ? ' · ' + nf(l.messages) + ' 💬' : ''}</span>
         ${l.winner ? `<a class="live-win" href="${playerLink(l.winner, d.month)}">👑 ${esc(name(l.winner))} · ${nf(l.winner.pts)} ${t('pts')}</a>` : ''}</li>`).join('') +
       '</ul></div></section>';
   }
@@ -200,6 +250,8 @@
     ['fastestAvg', '⏱️', r => secs(r.value)],
     ['loyal', '📅', r => t('lives_n', { n: nf(r.value) })],
     ['supporter', '💎', r => nf(r.value)],
+    ['firsts', '🥇', r => nf(r.value)],
+    ['chatty', '💬', r => nf(r.value)],
   ];
 
   function fameHtml(all) {
@@ -274,7 +326,7 @@
     const me = getMe();
     const mine = data && me ? data.players.find(p => p.id === me) : null;
 
-    app.innerHTML = heroHtml() +
+    app.innerHTML = heroHtml(index.totals) +
       `<section class="section"><div class="search"><input id="search" type="search" autocomplete="off" placeholder="${esc(t('search_ph'))}" aria-label="${esc(t('search_ph'))}"></div>
        <ul class="search-results" id="search-results" hidden></ul>
        ${mine ? `<p style="margin:12px 0 0"><a class="row row--me" href="${playerLink(mine, month)}"><span class="row-pos">${mine.pos || '–'}</span>
@@ -286,7 +338,7 @@
           <button type="button" class="icon-btn" data-go="${newer}" ${newer ? '' : 'disabled'} aria-label="${t('month_next')}">›</button>
         </div></div><div class="card">${body}</div></section>` +
       (data ? statsHtml(data) + flagsHtml(data) + livesHtml(data, tz) : '') +
-      fameHtml(all) + ctaHtml();
+      globalHtml(index, all) + fameHtml(all) + ctaHtml();
 
     app.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => {
       if (!b.dataset.go) return;
@@ -357,6 +409,7 @@
           ${stat('🔥', nf(p.streak), t('p_streak'))}${p.avg ? stat('⏱️', secs(p.avg), t('p_avg')) : ''}${p.fast ? stat('⚡', secs(p.fast), t('p_fast')) : ''}
           ${stat('📺', nf(p.lives), t('p_lives'))}${stat('🥇', nf(p.first), t('p_first'))}
           ${p.likes ? stat('❤️', nf(p.likes), t('s_likes')) : ''}${p.gifts ? stat('💎', nf(p.gifts), t('s_gifts')) : ''}
+          ${p.msgs ? stat('💬', nf(p.msgs), t('s_messages')) : ''}
         </div>
         <div class="grid-2" style="margin-top:16px">
           ${p.hist.length ? `<div class="card"><h3 class="card-title">📈 ${t('p_progress')}</h3>${sparkHtml(p.hist.map(x => x[1]), labels)}</div>` : ''}
@@ -370,6 +423,7 @@
       allBlock = `<section class="section"><h2 class="section-title">🌍 ${t('p_alltime')}</h2><div class="stats">
           ${stat('🏅', '#' + h.pos, t('p_pos'))}${stat('⭐', nf(h.pts), t('p_points'))}${stat('🎯', h.acc + '%', t('p_acc'))}
           ${stat('🔥', nf(h.streak), t('p_streak'))}${stat('📺', nf(h.lives), t('p_lives'))}${stat('🏆', nf(h.best), t('r_bestLive'))}
+          ${stat('🥇', nf(h.first), t('p_first'))}${h.msgs ? stat('💬', nf(h.msgs), t('s_messages')) : ''}
         </div>
         ${months.length ? `<div class="card" style="margin-top:16px"><h3 class="card-title">🗓️ ${t('p_history')}</h3><ul class="champions">` +
           months.map(([m, [pts, pos]]) => `<li><a class="champion" href="${playerLink(h, m)}"><span class="champion-month">${esc(monthLabel(m))}</span>
@@ -390,6 +444,28 @@
       e.currentTarget.textContent = on ? '✓ ' + t('me_on') : t('me_btn');
     });
   }
+
+  /* ── Visitas (GoatCounter, opcional: SITE_CONFIG.goatcounter) ──
+   * Sin cookies ni datos personales. Cuenta cada pantalla (#/, #/m/…, #/p/…) y los clics en las tiendas y en TikTok. */
+  const analytics = (function () {
+    let ready = false;
+    const routePath = () => '/' + (location.hash.replace(/^#\/?/, '').split('?')[0] || '');
+    const count = vars => { if (ready && window.goatcounter && window.goatcounter.count) window.goatcounter.count(vars); };
+    if (C.goatcounter) {
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://gc.zgo.at/count.js';
+      s.dataset.goatcounter = `https://${C.goatcounter}.goatcounter.com/count`;
+      s.dataset.goatcounterSettings = '{"no_onload": true}';
+      s.onload = () => { ready = true; count({ path: routePath() }); };
+      document.head.appendChild(s);
+      document.addEventListener('click', e => {
+        const a = e.target.closest('[data-track]');
+        if (a) count({ path: a.dataset.track, title: a.textContent.trim().replace(/\s+/g, ' '), event: true });
+      });
+    }
+    return { view: () => count({ path: routePath() }) };
+  })();
 
   /* ── Arranque y rutas ───────────────────────────────── */
   function renderChrome(index) {
@@ -431,6 +507,7 @@
     if (path.startsWith('#/p/') || lastPath.startsWith('#/p/')) window.scrollTo(0, 0);
     lastPath = path;
     route();
+    analytics.view();
   });
   lastPath = location.hash.split('?')[0];
   route();

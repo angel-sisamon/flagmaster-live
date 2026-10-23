@@ -12,5 +12,7 @@ var SITE_CONFIG = {
   // Mínimos para las tablas de precisión y rapidez (evita que gane quien respondió 2 veces)
   minAnswersAccuracy: 30,
   minCorrectSpeed: 15,
-  pageSize: 20
+  pageSize: 20,
+  // Visitas: código de tu cuenta de goatcounter.com (lo que va antes de .goatcounter.com). Vacío = no se mide
+  goatcounter: ''
 };

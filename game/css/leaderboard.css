@@ -1,0 +1,478 @@
+/* ════════════════════════════════════════════════════════════════
+   LEADERBOARD — Ranking Global del Reto del Día
+   Estética Clash Royale: dorado, profundidad, brillo
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Modal overlay ────────────────────────────────────────────── */
+#modal-leaderboard {
+  opacity:0;
+  transition:opacity .25s ease;
+}
+#modal-leaderboard.lb-visible {
+  opacity:1;
+}
+
+/* ── Panel principal ──────────────────────────────────────────── */
+.modal-panel-lb {
+  display:flex; flex-direction:column;
+  max-width:420px;
+  max-height:88vh;
+  border:1.5px solid rgba(255,208,64,.2);
+  overflow:hidden;
+  background:linear-gradient(175deg, var(--bg-3) 0%, var(--bg-2) 40%, var(--bg) 100%);
+  box-shadow:0 24px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,208,64,.08),
+             inset 0 1px 0 rgba(255,255,255,.06);
+}
+/* ── Header con navegación de fecha ──────────────────────────── */
+.lb-header {
+  display:flex; flex-direction:column; align-items:center;
+  padding:.75rem 1rem .5rem;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+
+.lb-header-title {
+  font-size:.7rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.12em; color:var(--text-3);
+  position:absolute; top:.55rem; left:50%; transform:translateX(-50%);
+}
+
+.lb-date-nav {
+  display:flex; align-items:center; gap:.5rem;
+  margin:0 auto; padding-top:.6rem;
+}
+
+.lb-nav-btn {
+  width:34px; height:34px; border-radius:50%;
+  background:var(--card-bg); border:1.5px solid var(--border);
+  color:var(--text-2); cursor:pointer; outline:none;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.85rem; font-weight:800;
+  transition:all .18s;
+}
+.lb-nav-btn:active { transform:scale(.9); background:var(--card-bg-h); }
+.lb-nav-btn:disabled { opacity:.2; cursor:default; }
+.lb-nav-btn:disabled:active { transform:none; }
+
+.lb-date-center {
+  display:flex; flex-direction:column; align-items:center; gap:.15rem;
+  min-width:110px;
+}
+.lb-date-label {
+  font-size:1.1rem; font-weight:900; letter-spacing:-.02em;
+}
+.lb-today-badge {
+  display:inline-flex; align-items:center; gap:.25rem;
+  padding:.1rem .55rem; border-radius:var(--r-xl);
+  background:var(--green-bg); border:1px solid var(--green);
+  font-size:.6rem; font-weight:700; color:var(--green);
+  text-transform:uppercase; letter-spacing:.08em;
+}
+.lb-today-badge::before { content:''; width:5px; height:5px;
+  border-radius:50%; background:var(--green);
+  animation:lb-pulse 1.5s ease-in-out infinite;
+}
+@keyframes lb-pulse {
+  0%, 100% { opacity:1; transform:scale(1); }
+  50%      { opacity:.4; transform:scale(.7); }
+}
+
+.lb-close-btn {
+  position:absolute; top:.65rem; right:.65rem;
+  width:32px; height:32px; border-radius:50%;
+  background:var(--card-bg); border:1px solid var(--border);
+  color:var(--text-3); cursor:pointer; outline:none;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.8rem; transition:all .15s;
+}
+.lb-close-btn:active { transform:scale(.88); }
+.lb-share-btn {
+  position:absolute; top:.65rem; left:.65rem;
+  width:32px; height:32px; border-radius:50%;
+  background:var(--card-bg); border:1px solid var(--border);
+  color:var(--text-3); cursor:pointer; outline:none;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.8rem; transition:all .15s;
+}
+.lb-share-btn:active { transform:scale(.88); }
+
+/* ── Contador participantes ──────────────────────────────────── */
+.lb-participants {
+  text-align:center; padding:.45rem 0 .1rem;
+  font-size:.7rem; font-weight:600; color:var(--text-3);
+  text-transform:uppercase; letter-spacing:.06em;
+}
+
+/* ── Área swipeable ──────────────────────────────────────────── */
+.lb-swipe-area {
+  flex:1; overflow-y:auto; overflow-x:hidden;
+  min-height:40vh;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  will-change:transform, opacity;
+}
+
+/* ── Lista de entradas ───────────────────────────────────────── */
+.lb-list {
+  display:flex; flex-direction:column;
+  padding:.3rem .7rem .6rem;
+}
+
+/* ── Entrada individual ──────────────────────────────────────── */
+.lb-entry {
+  display:flex; align-items:center; gap:.6rem;
+  padding:.45rem .55rem;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  border-radius:var(--r-sm);
+  animation:lb-entry-in .35s cubic-bezier(.34,1.2,.64,1) backwards;
+  transition:background .15s;
+}
+@keyframes lb-entry-in {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.lb-entry:last-child { border-bottom:none; }
+
+/* ── Tu entrada (highlight) ──────────────────────────────────── */
+.lb-entry--me {
+  background:linear-gradient(135deg, rgba(255,208,64,.1), rgba(255,159,0,.05));
+  box-shadow:inset 0 0 0 1.5px var(--gold), 0 2px 12px rgba(255,208,64,.1);
+  border-bottom-color:transparent;
+}
+
+/* ── Podio: top 1-3 ──────────────────────────────────────────── */
+.lb-entry--top1 .lb-rank { font-size:1.5rem; }
+.lb-entry--top2 .lb-rank { font-size:1.3rem; }
+.lb-entry--top3 .lb-rank { font-size:1.2rem; }
+
+.lb-entry--top1 { padding:.75rem .55rem; }
+.lb-entry--top1 .lb-player-name { font-size:.95rem; }
+.lb-entry--top1 .lb-result-score {
+  font-size:1.3rem;
+  color:var(--gold);
+  background:linear-gradient(135deg, var(--gold), var(--gold-2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+/* ── Rank (posición) ─────────────────────────────────────────── */
+.lb-rank {
+  width:36px; text-align:center; flex-shrink:0;
+  font-size:1rem; line-height:1;
+}
+.lb-pos-num {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:26px; height:26px; border-radius:50%;
+  background:var(--card-bg); border:1px solid var(--border);
+  font-size:.72rem; font-weight:800; color:var(--text-3);
+}
+
+/* ── Nombre del jugador ──────────────────────────────────────── */
+.lb-player {
+  flex:1; min-width:0;
+  display:flex; flex-direction:column; gap:.25rem;
+}
+.lb-player-name {
+  font-size:.84rem; font-weight:700;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.lb-badge-you {
+  display:inline-block;
+  padding:.05rem .4rem; margin-left:.3rem;
+  border-radius:var(--r-xl);
+  background:var(--gold); color:#1a0e00;
+  font-size:.58rem; font-weight:800; text-transform:uppercase;
+  letter-spacing:.04em; vertical-align:middle;
+}
+
+/* ── Barra de progreso mini ──────────────────────────────────── */
+.lb-score-bar-track {
+  height:3px; border-radius:2px;
+  background:var(--card-bg);
+  overflow:hidden;
+}
+.lb-score-bar-fill {
+  height:100%; border-radius:2px;
+  background:linear-gradient(90deg, var(--gold), var(--gold-2));
+  transition:width .4s cubic-bezier(.34,1.2,.64,1);
+}
+.lb-entry--me .lb-score-bar-fill {
+  background:linear-gradient(90deg, var(--gold), #ffe88a);
+  box-shadow:0 0 6px rgba(255,208,64,.4);
+}
+
+/* ── Score (derecha) ─────────────────────────────────────────── */
+.lb-result {
+  flex-shrink:0;
+  display:flex; align-items:baseline; gap:.1rem;
+}
+.lb-result-score {
+  font-size:1.05rem; font-weight:900; color:var(--gold);
+}
+.lb-result-total {
+  font-size:.7rem; font-weight:600; color:var(--text-3);
+}
+
+/* ── Footer con botones ──────────────────────────────────────── */
+.lb-footer {
+  display:flex; gap:.5rem;
+  padding:.7rem 1rem .9rem;
+  border-top:1px solid var(--border);
+}
+.lb-footer .btn { flex:1; }
+
+.btn-lb-share {
+  background:linear-gradient(135deg,#7c3aed,#4f46e5);
+  color:#fff; border:none;
+  font-weight:700; font-size:.85rem;
+}
+.btn-lb-share:hover { filter:brightness(1.1); }
+
+.btn-lb-close-foot {
+  background:var(--card-bg); color:var(--text);
+  border:1.5px solid var(--border);
+  font-weight:600;
+}
+
+/* ── Estados: loading, empty, error ──────────────────────────── */
+.lb-loading {
+  display:flex; align-items:center; justify-content:center;
+  gap:.6rem; padding:3rem 1rem; color:var(--text-2); font-size:.88rem;
+}
+.lb-spinner {
+  width:22px; height:22px;
+  border:2.5px solid var(--border);
+  border-top-color:var(--gold);
+  border-radius:50%;
+  animation:lb-spin .65s linear infinite;
+}
+@keyframes lb-spin { to { transform:rotate(360deg); } }
+
+.lb-empty {
+  text-align:center; padding:2.5rem 1.5rem;
+  color:var(--text-3); font-size:.92rem; line-height:1.7;
+}
+.lb-empty-icon {
+  display:block; font-size:2.5rem; margin-bottom:.5rem;
+}
+
+.lb-error {
+  text-align:center; padding:2rem 1.5rem;
+  color:var(--red); font-size:.85rem; line-height:1.5;
+}
+
+/* ── Swipe hint (en el header, sutil) ───────────────────────── */
+.lb-swipe-hint {
+  text-align:center; margin:.25rem 0 0;
+  font-size:.58rem; color:var(--text-3);
+  letter-spacing:.03em; opacity:.5;
+}
+
+/* ── Pestañas Diario / Semanal ───────────────────────────── */
+.lb-period-tabs {
+  display: flex;
+  gap: 0;
+  margin: .6rem 1rem 0;
+  border-radius: var(--r-md, 10px);
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  background: var(--card-bg);
+}
+.lb-tab {
+  flex: 1;
+  padding: .5rem 0;
+  border: none;
+  background: transparent;
+  color: var(--text-3);
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.lb-tab--active {
+  background: linear-gradient(135deg, var(--gold-dim, rgba(255,208,64,.15)), rgba(255,159,0,.1));
+  color: var(--gold, #ffd040);
+  box-shadow: inset 0 -2px 0 var(--gold, #ffd040);
+}
+/* ── Filtro geográfico — dropdown compacto ───────────────── */
+.lb-geo-filter-row {
+  padding: .4rem 1rem .25rem;
+}
+.lb-geo-select {
+  width: 100%;
+  padding: .35rem .7rem;
+  border-radius: var(--r-md, 10px);
+  border: 1.5px solid var(--gold, #ffd040);
+  background: var(--card-bg);
+  color: var(--text);
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffd040' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .7rem center;
+  padding-right: 2rem;
+  transition: border-color .18s;
+}
+.lb-geo-select:focus { border-color: var(--gold, #ffd040); box-shadow: 0 0 0 2px rgba(255,208,64,.15); }
+/* ── Posición fija del jugador (fuera del swipe-area, al fondo) ── */
+.lb-my-position {
+  flex-shrink: 0;    /* no se encoge como hijo flex del panel */
+  background: var(--bg, #0a0a16);
+  border-top: 1.5px solid var(--gold, #ffd040);
+  padding: .5rem .7rem;
+  z-index: 2;
+}
+.lb-my-position-inner {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .45rem .55rem;
+  border-radius: var(--r-sm, 8px);
+  background: linear-gradient(135deg, rgba(255,208,64,.1), rgba(255,159,0,.05));
+  box-shadow: inset 0 0 0 1.5px var(--gold, #ffd040);
+}
+.lb-my-pos-rank {
+  font-size: .85rem;
+  font-weight: 900;
+  color: var(--gold, #ffd040);
+  min-width: 36px;
+  text-align: center;
+}
+.lb-my-pos-name {
+  flex: 1;
+  font-size: .82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lb-my-pos-score {
+  font-size: .95rem;
+  font-weight: 900;
+  color: var(--gold, #ffd040);
+}
+
+/* ── Badge de días jugados (modo semanal) ────────────────── */
+.lb-days-badge {
+  display: inline-block;
+  padding: .05rem .4rem;
+  margin-left: .3rem;
+  border-radius: var(--r-xl, 20px);
+  background: rgba(100,100,255,.15);
+  color: var(--text-3);
+  font-size: .55rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+/* ── Banner de recuperación de día (Home) ────────────────── */
+.recovery-banner {
+  margin: 0 1rem .5rem;
+  border-radius: var(--r-md, 10px);
+  border: 1.5px solid rgba(124, 58, 237, .3);
+  background: linear-gradient(135deg, rgba(124, 58, 237, .08), rgba(79, 70, 229, .05));
+  overflow: hidden;
+}
+.recovery-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .6rem .8rem;
+  gap: .6rem;
+}
+.recovery-banner-text {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex: 1;
+  min-width: 0;
+}
+.recovery-banner-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.recovery-banner-title {
+  font-size: .78rem;
+  font-weight: 700;
+  margin: 0;
+}
+.recovery-banner-sub {
+  font-size: .65rem;
+  color: var(--text-3);
+  margin: .1rem 0 0;
+}
+.btn-recovery {
+  flex-shrink: 0;
+  padding: .35rem .8rem;
+  border-radius: var(--r-xl, 20px);
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff;
+  border: none;
+  font-size: .72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .18s;
+}
+.btn-recovery:active { transform: scale(.95); }
+/* ── Resumen semanal en pantalla de resultados ───────────── */
+.results-weekly-summary {
+  margin: .8rem auto;
+  max-width: 340px;
+}
+.weekly-summary-card {
+  padding: .8rem 1rem;
+}
+.weekly-summary-header {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  margin-bottom: .6rem;
+}
+.weekly-summary-icon {
+  font-size: 1.1rem;
+}
+.weekly-summary-title {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-2);
+}
+.weekly-summary-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+}
+.weekly-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .15rem;
+  flex: 1;
+}
+.weekly-stat-value {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--gold, #ffd040);
+}
+.weekly-stat-label {
+  font-size: .62rem;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.weekly-stat-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+

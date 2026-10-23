@@ -10,6 +10,7 @@
  *   - scripts/aggregate.js     → JSON de la web (site/data/).
  *
  *   aggregate(sessions, opts)        → { totals, players, lives, countries, modes }
+ *   (totals: directos, minutos, jugadores únicos, participantes, mensajes, respuestas, likes, regalos…)
  *   monthKey(date, timeZone)         → 'AAAA-MM' en la zona horaria del directo
  *   compareRank(a, b)                → orden del ranking de puntos
  *   createModeration(json)           → { isHidden(player) } a partir de data/moderation.json
@@ -20,20 +21,25 @@
 const SCHEMA = 1;
 
 // Contadores que se suman tal cual entre sesiones (ver newPlayer)
-const COUNTERS = ['pts', 'ans', 'ok', 'first', 'wins', 'games', 'tms', 'likes', 'gifts', 'follows', 'shares'];
-const TOTALS = ['games', 'rounds', 'answers', 'correct', 'likes', 'gifts', 'follows', 'shares', 'joins'];
+// (los campos nuevos se añaden sin cambiar SCHEMA: en sesiones antiguas valen 0)
+const COUNTERS = ['pts', 'ans', 'ok', 'first', 'wins', 'games', 'tms', 'likes', 'gifts', 'follows', 'shares', 'msgs'];
+const TOTALS = ['games', 'rounds', 'answers', 'correct', 'likes', 'gifts', 'follows', 'shares', 'joins', 'messages'];
 
 /**
  * Jugador dentro de una sesión (y, sumado, dentro de un mes):
  *   u: @usuario · n: nick · pts: puntos · ans/ok: respuestas/aciertos · first: veces 1º en acertar
  *   wins: partidas ganadas · games: partidas jugadas · streak: mejor racha de aciertos seguidos
  *   fast: acierto más rápido (ms) · tms: suma de ms de los aciertos (media = tms / ok)
- *   likes · gifts (diamantes) · follows · shares · modes: { modo: [respuestas, aciertos] }
+ *   likes · gifts (diamantes) · follows · shares · msgs: mensajes en el chat (votos y comandos incluidos)
+ *   modes: { modo: [respuestas, aciertos] }
  */
 function newPlayer() {
   return { u: '', n: '', pts: 0, ans: 0, ok: 0, first: 0, wins: 0, games: 0, streak: 0, fast: 0, tms: 0,
-    likes: 0, gifts: 0, follows: 0, shares: 0, modes: {} };
+    likes: 0, gifts: 0, follows: 0, shares: 0, msgs: 0, modes: {} };
 }
+
+/* Ha hecho algo en el directo (aunque no haya respondido): escribir, dar like, regalar, seguir o compartir */
+const participated = p => num(p.ans) + num(p.msgs) + num(p.likes) + num(p.gifts) + num(p.follows) + num(p.shares) > 0;
 
 function monthKey(date, timeZone) {
   const parts = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit' })
@@ -101,7 +107,9 @@ function aggregate(sessions, opts) {
   const seenBefore = opts.seenBefore || new Set();
   const list = sortSessions(sessions);
 
-  const totals = { lives: list.length, minutes: 0, players: 0, newPlayers: 0, peakViewers: 0, accuracy: 0 };
+  // players: han respondido al menos una vez · participants: han hecho algo · returning: han jugado 2+ directos
+  const totals = { lives: list.length, minutes: 0, players: 0, newPlayers: 0, returning: 0, participants: 0, chatters: 0,
+    countries: 0, peakViewers: 0, accuracy: 0 };
   TOTALS.forEach(k => { totals[k] = 0; });
   const players = new Map();
   const countries = new Map();
@@ -145,16 +153,19 @@ function aggregate(sessions, opts) {
       id: s.id, startedAt: s.startedAt, endedAt: s.endedAt || null, minutes,
       games: num(t.games), rounds: num(t.rounds), answers: num(t.answers), accuracy: pct(num(t.correct), num(t.answers)),
       players: Object.values(s.players).filter(p => num(p.ans) > 0).length,
-      peakViewers: num(t.peakViewers), likes: num(t.likes),
+      peakViewers: num(t.peakViewers), likes: num(t.likes), messages: num(t.messages), gifts: num(t.gifts),
       winner: winner ? { id: winner.id, u: winner.u, n: winner.n, pts: winner.pts } : null,
     });
   });
 
   const visible = [];
   for (const p of players.values()) {
+    if (participated(p)) totals.participants++;
+    if (p.msgs > 0) totals.chatters++;
     if (p.ans > 0) {
       totals.players++;
       if (!seenBefore.has(p.id)) totals.newPlayers++;
+      if (p.lives > 1) totals.returning++;
     }
     if (moderation.isHidden(p) || (p.ans === 0 && p.likes === 0 && p.gifts === 0)) continue;
     p.acc = pct(p.ok, p.ans);
@@ -165,6 +176,7 @@ function aggregate(sessions, opts) {
   let pos = 0;
   visible.forEach(p => { p.pos = p.pts > 0 ? ++pos : 0; });
   totals.accuracy = pct(totals.correct, totals.answers);
+  totals.countries = countries.size;
 
   return {
     schema: SCHEMA,
