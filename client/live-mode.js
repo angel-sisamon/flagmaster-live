@@ -57,13 +57,8 @@ var LiveMode = (function () {
   var FINAL_REST_SHOWN = 7;                    // pantalla final: podio + puestos 4..10
   // Banner junto al reloj invitando a descargar la app. Cambia de lado y de texto en cada pregunta
   // para que no sea siempre el mismo elemento fijo en pantalla.
-  var PROMO_LINES = [
-    ['Download on', 'Play Store!'],
-    ['Play anytime', 'on Play Store'],
-    ['FlagMaster', 'free on Google Play'],
-    ['Train for the LIVE', 'get it on Play Store'],
-    ['Get the app', 'Play Store ▸']
-  ];
+  // Siempre el mismo texto, corto: los largos (o la URL de la web) no caben al lado del reloj en pantallas estrechas
+  var PROMO_LINES = ['Get the app', 'Play Store'];
   var PROMO_DELAY_MS = 900;                    // aparece después de la bandera, no a la vez
 
   var _socket = null;
@@ -340,9 +335,7 @@ var LiveMode = (function () {
       p.setAttribute('aria-hidden', 'true');
       cont.appendChild(p);
     }
-    // Una de cada tres veces, en vez de la Play Store, la web de clasificaciones
-    var lines = _siteUrl && _promoCount % 3 === 2 ? ['Your rank is on', _siteUrl]
-      : PROMO_LINES[_promoCount % PROMO_LINES.length];
+    var lines = PROMO_LINES;
     var side = _promoCount % 2 ? 'right' : 'left';
     _promoCount++;
     p.classList.remove('live-promo--in');
