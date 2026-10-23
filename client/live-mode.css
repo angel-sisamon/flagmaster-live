@@ -142,6 +142,7 @@ body.live-mode .live-promo--right { left:calc(50% + var(--ring)); }
 body.live-mode .live-promo--in { opacity:.88;transform:translateY(-50%) scale(1);
   animation:live-promo-float 5s ease-in-out .6s infinite; }
 .live-promo-icon { width:calc(var(--u) * 5.2);height:calc(var(--u) * 5.2);flex-shrink:0; }
+.live-promo-emoji { display:flex;align-items:center;justify-content:center;font-size:calc(var(--u) * 4.4);line-height:1; }
 .live-promo-text { display:flex;flex-direction:column;line-height:1.15;min-width:0; }
 .live-promo-text small { font-size:calc(var(--u) * 2.6);font-weight:600;color:var(--text-3);white-space:nowrap; }
 .live-promo-text b { font-size:calc(var(--u) * 3.2);font-weight:800;color:var(--text-2);white-space:nowrap; }

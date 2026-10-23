@@ -57,8 +57,11 @@ var LiveMode = (function () {
   var FINAL_REST_SHOWN = 7;                    // pantalla final: podio + puestos 4..10
   // Banner junto al reloj invitando a descargar la app. Cambia de lado y de texto en cada pregunta
   // para que no sea siempre el mismo elemento fijo en pantalla.
-  // Siempre el mismo texto, corto: los largos (o la URL de la web) no caben al lado del reloj en pantallas estrechas
-  var PROMO_LINES = ['Get the app', 'Play Store'];
+  // Se alternan pregunta a pregunta. Textos cortos: los largos (o la URL de la web) no caben al lado del reloj
+  var PROMO_LINES = [
+    { icon: 'play', small: 'Get the app', big: 'Play Store' },
+    { icon: 'trophy', small: 'Leaderboard', big: 'Link in bio!' }
+  ];
   var PROMO_DELAY_MS = 900;                    // aparece después de la bandera, no a la vez
 
   var _socket = null;
@@ -316,7 +319,7 @@ var LiveMode = (function () {
     }
   }
 
-  /* ── Banner "Download on Play Store" junto al reloj ── */
+  /* ── Banner junto al reloj: Play Store / clasificación en la bio ── */
   var _PLAY_ICON = '<svg class="live-promo-icon" viewBox="0 0 24 24" aria-hidden="true">' +
     '<path d="M4 2.5 14.2 12 4 21.5c-.4-.2-.6-.6-.6-1.1V3.6c0-.5.2-.9.6-1.1Z" fill="#00d4ff"/>' +
     '<path d="M17.6 8.8 14.2 12 4 2.5l.3-.1c.4 0 .7.1 1 .3l12.3 6.1Z" fill="#00f076"/>' +
@@ -335,14 +338,15 @@ var LiveMode = (function () {
       p.setAttribute('aria-hidden', 'true');
       cont.appendChild(p);
     }
-    var lines = PROMO_LINES;
-    var side = _promoCount % 2 ? 'right' : 'left';
+    var promo = PROMO_LINES[_promoCount % PROMO_LINES.length];
+    var side = Math.floor(_promoCount / PROMO_LINES.length) % 2 ? 'right' : 'left';
     _promoCount++;
     p.classList.remove('live-promo--in');
     clearTimeout(_promoTimer);
     _promoTimer = setTimeout(function () {
       p.className = 'live-promo live-promo--' + side;
-      p.innerHTML = _PLAY_ICON + '<span class="live-promo-text"><small>' + _esc(lines[0]) + '</small><b>' + _esc(lines[1]) + '</b></span>';
+      p.innerHTML = (promo.icon === 'play' ? _PLAY_ICON : '<span class="live-promo-icon live-promo-emoji">🏆</span>') +
+        '<span class="live-promo-text"><small>' + _esc(promo.small) + '</small><b>' + _esc(promo.big) + '</b></span>';
       void p.offsetWidth;
       p.classList.add('live-promo--in');
     }, PROMO_DELAY_MS);
