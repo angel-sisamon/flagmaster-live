@@ -1,0 +1,94 @@
+<!-- client/live-screens.html — Pantallas del modo LIVE.
+     server/src/live-page.js las inserta en el index.html del juego antes de </body>; el botón LIVE de la home
+     y #live-results (debajo de #options-grid) los crea live-mode.js al arrancar, así www/index.html no se toca. -->
+<!-- ═══════════════════════════════ PANTALLA: SALA DE ESPERA LIVE ══════════════════ -->
+<!-- Fondo animado del modo LIVE (solo visible con body.live-mode): evita que el directo parezca una imagen fija -->
+<div class="live-bg" aria-hidden="true"><div class="live-bg-mesh"></div></div>
+<div id="screen-live-lobby" class="screen">
+  <div class="home-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <div class="lobby-flags" id="lobby-flags" aria-hidden="true"></div>
+  <div class="lobby-shell">
+    <div class="lobby-badge"><span class="lobby-badge-dot"></span><span data-i18n="lobby_badge">EN DIRECTO</span></div>
+    <div class="lobby-globe" aria-hidden="true">🌍</div>
+    <h1 class="lobby-title">FlagMaster</h1>
+    <p class="lobby-soon"><span data-i18n="lobby_soon">El juego empezará pronto</span><span class="lobby-dots" aria-hidden="true"><i>.</i><i>.</i><i>.</i></span></p>
+    <ol class="lobby-steps">
+      <li><span class="lobby-step-icon">🌍</span><span data-i18n="lobby_step1">Lee la pregunta</span></li>
+      <li><span class="lobby-step-icon">💬</span><span data-i18n="lobby_step2">Escribe A, B, C o D en el chat</span></li>
+      <li><span class="lobby-step-icon">⏱️</span><span data-i18n="lobby_step3">Tienes 20 segundos</span></li>
+      <li><span class="lobby-step-icon">🏆</span><span data-i18n="lobby_step4">¡Cuanto antes aciertes, más puntos! (10, 8, 6…)</span></li>
+    </ol>
+    <div class="lobby-ranking" id="lobby-ranking" hidden></div>
+    <!-- TOP del mes (evento month:update) y dirección de la web de clasificaciones -->
+    <div class="lobby-ranking lobby-month" id="lobby-month" hidden></div>
+    <div class="lobby-audience">👥 <b id="lobby-joined">0</b> <span data-i18n="lobby_joined">se han unido</span></div>
+    <div class="lobby-countdown" id="lobby-countdown" hidden aria-live="assertive"></div>
+    <div class="lobby-host" id="lobby-host">
+      <p class="lobby-status" role="status"><span class="lobby-status-dot" id="lobby-status-dot"></span><span id="lobby-status"></span></p>
+      <!-- Duración de la partida (cada ronda = 20 s de votación + 10 s de resultados); la rellena live-mode.js -->
+      <div class="lobby-setup" id="lobby-setup">
+        <p class="lobby-setup-label">⏱️ <span data-i18n="lobby_duration">Duración del directo</span></p>
+        <div class="lobby-durations" id="lobby-durations" role="radiogroup"></div>
+        <label class="lobby-custom"><span data-i18n="lobby_rounds_input">Rondas</span>
+          <input type="number" id="lobby-rounds" min="1" max="2000" inputmode="numeric" /></label>
+        <p class="lobby-estimate" id="lobby-estimate"></p>
+      </div>
+      <p class="lobby-paused" id="lobby-paused" hidden></p>
+      <div class="lobby-actions">
+        <button class="btn btn-primary" id="btn-lobby-start" disabled>▶ Iniciar LIVE</button>
+        <button class="btn btn-ghost" id="btn-lobby-new" hidden data-i18n="lobby_new">Nueva partida</button>
+        <button class="btn btn-ghost" id="btn-lobby-end" hidden data-i18n="lobby_end">🏁 Terminar</button>
+        <button class="btn btn-ghost" id="btn-lobby-exit" data-i18n="lobby_exit">Salir</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="live-greetings" id="live-greetings" aria-live="polite"></div>
+<div class="live-likes" id="live-likes" aria-hidden="true">
+  <div class="live-likes-badge"><span class="live-likes-heart">❤️</span><span class="live-likes-total" id="live-likes-total">0</span></div>
+  <div class="live-likes-fx" id="live-likes-fx"></div>
+</div>
+
+<!-- ═══════════════════════════════ PANTALLA: RESULTADOS DE RONDA LIVE ═════════════ -->
+<!-- Vista intermedia entre preguntas (fase de resultados de 10 s); la rellena live-mode.js -->
+<div id="screen-live-round" class="screen">
+  <canvas class="live-fx" id="live-fx" aria-hidden="true"></canvas>
+  <div class="lr-shell">
+    <header class="lr-head">
+      <button class="btn-icon-only lr-quit" aria-label="Volver a la sala de espera">✕</button>
+      <div class="lr-head-info">
+        <span class="lr-round" id="lr-round"></span>
+        <span class="lr-next"><span data-i18n="lr_next">Siguiente bandera en</span> <b id="lr-seconds">10</b>s</span>
+      </div>
+    </header>
+    <section class="lr-card lr-answer" id="lr-answer"></section>
+    <section class="lr-card lr-stats" id="lr-stats"></section>
+    <section class="lr-card lr-winners">
+      <h2 class="lr-title">🎯 <span data-i18n="lr_winners">Acertantes de la ronda</span></h2>
+      <div id="lr-winners"></div>
+    </section>
+    <section class="lr-card lr-ranking">
+      <h2 class="lr-title">🏆 <span data-i18n="lr_ranking">Ranking LIVE</span></h2>
+      <div id="lr-ranking"></div>
+    </section>
+    <div class="lr-progress"><span id="lr-progress"></span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PANTALLA: FINAL DE PARTIDA LIVE ═════════════════ -->
+<!-- Podio, resto del TOP y estadísticas de la partida (evento game:over); la rellena live-mode.js -->
+<div id="screen-live-final" class="screen">
+  <canvas class="live-fx" id="live-final-fx" aria-hidden="true"></canvas>
+  <div class="lf-shell">
+    <header class="lf-head">
+      <h1 class="lf-title">🏁 <span data-i18n="final_title">¡Fin de la partida!</span></h1>
+      <p class="lf-sub" id="lf-sub"></p>
+    </header>
+    <div class="lf-podium" id="lf-podium"></div>
+    <section class="lr-card lf-rest" id="lf-rest"></section>
+    <div class="lf-stats" id="lf-stats"></div>
+    <p class="lf-site" id="lf-site" hidden></p>
+    <div class="lf-actions"><button class="btn btn-primary" id="btn-final-lobby" data-i18n="final_back">Volver a la sala</button></div>
+  </div>
+</div>
+

@@ -1,0 +1,25 @@
+{
+  "name": "flagmaster-live",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FlagMaster TikTok LIVE: servidor del directo, estadísticas de cada directo y web de clasificaciones mensuales (GitHub Pages)",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.js",
+    "publish:data": "node scripts/publish.js",
+    "build:site": "node scripts/aggregate.js",
+    "serve:site": "node scripts/serve-site.js",
+    "demo": "node scripts/demo-data.js && node scripts/aggregate.js --sessions .demo/sessions && node scripts/serve-site.js",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "socket.io": "^4.8.4",
+    "tiktok-live-connector": "^2.5.0"
+  }
+}
