@@ -113,5 +113,5 @@ test('la página LIVE inyecta la capa sobre el index del juego', () => {
   assert.ok(html.includes('<div id="screen-live-lobby">$&</div>'), 'sin sustituciones de patrón');
   const noCheck = html.indexOf('UpdateChecker.check = function');
   assert.ok(noCheck > html.indexOf('js/update-checker.js') && noCheck < html.indexOf('js/main.js'),
-    'el aviso de actualización obligatoria se desactiva antes de que arranque el juego');
+    'los avisos de actualización y bienvenida se desactivan antes de que arranque el juego');
 });

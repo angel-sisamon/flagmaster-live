@@ -42,8 +42,9 @@ body.live-mode #screen-live-round,
 body.live-mode #screen-live-final { left:var(--stage-x);right:var(--stage-x);
   box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 80px rgba(0,0,0,.45); }
 
-/* Fondo animado (degradado + malla de luces): siempre en movimiento para no parecer una imagen fija */
-.live-bg { display:none;position:fixed;inset:0;overflow:hidden;pointer-events:none;
+/* Fondo animado (degradado + malla de luces): siempre en movimiento para no parecer una imagen fija.
+   z-index:-1: la capa LIVE se inyecta al final del <body>, después de las pantallas del juego; sin él taparía #screen-game */
+.live-bg { display:none;position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
   background:linear-gradient(-45deg,#1c0b40,#3d0d5f,#0b2c60,#0b4a5c,#4b0f3f);background-size:400% 400%;
   animation:live-gradient 22s ease infinite; }
 body.live-mode .live-bg { display:block; }
