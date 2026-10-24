@@ -18,6 +18,7 @@
 
 const http = require('http');
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const { Server } = require('socket.io');
@@ -34,7 +35,7 @@ const { composeLivePage } = require('./src/live-page');
 const { fromTikTokUser } = require('./src/identity');
 const { createChatBot } = require('./src/chatbot');
 const { createSender } = require('./src/chatbot/senders');
-const { createStudioPaster } = require('./src/chatbot/studio');
+const { createStudioPaster, DEFAULT_SETTINGS: DEFAULT_STUDIO_SETTINGS } = require('./src/chatbot/studio');
 const { createAutopilot } = require('./src/chatbot/autopilot');
 const { load: loadWin32 } = require('./src/chatbot/win32');
 const { spawn } = require('child_process');
@@ -274,7 +275,14 @@ io.on('connection', socket => {
   });
 });
 
-const studio = chatbot && config.CHATBOT_STUDIO ? createStudioPaster({ x: config.CHAT_X, y: config.CHAT_Y, method: config.CHAT_INPUT_METHOD }) : null;
+// Ajustes de escritura del panel ("Ajustes de escritura"): se guardan en local y pisan a CHAT_INPUT_METHOD
+const STUDIO_SETTINGS_FILE = path.join(__dirname, '.chatbot-studio.json');
+function readStudioSettings() {
+  try { return JSON.parse(fs.readFileSync(STUDIO_SETTINGS_FILE, 'utf8')); } catch { return {}; }
+}
+const studio = chatbot && config.CHATBOT_STUDIO ? createStudioPaster({
+  x: config.CHAT_X, y: config.CHAT_Y, settings: { method: config.CHAT_INPUT_METHOD, ...readStudioSettings() },
+}) : null;
 const winApi = loadWin32();
 
 /* Escribe una sugerencia en Studio (botón del panel o automático) y se lo cuenta a todos los paneles */
@@ -316,6 +324,20 @@ botPanel.on('connection', socket => {
     const s = chatbot.find(id);
     if (!studio || !s) return socket.emit('bot:studio-result', { id, ok: false, error: studio ? 'sugerencia no encontrada' : 'CHATBOT_STUDIO=1 no está activado' });
     sendToStudio(s, false).catch(() => {});
+  });
+  // Ajustes de escritura: un panel los cambia y los ven todos
+  if (!studio) return;
+  socket.emit('bot:studio-settings', studio.getSettings());
+  socket.on('bot:studio-settings', patch => {
+    const settings = studio.setSettings(patch);
+    try { fs.writeFileSync(STUDIO_SETTINGS_FILE, JSON.stringify(settings, null, 2)); } catch (err) {
+      console.error(`⚠️  No se pudieron guardar los ajustes de Studio: ${err.message}`);
+    }
+    botPanel.emit('bot:studio-settings', settings);
+  });
+  socket.on('bot:studio-settings-reset', () => {
+    try { fs.unlinkSync(STUDIO_SETTINGS_FILE); } catch { /* no había */ }
+    botPanel.emit('bot:studio-settings', studio.setSettings({ ...DEFAULT_STUDIO_SETTINGS, method: config.CHAT_INPUT_METHOD }));
   });
 });
 

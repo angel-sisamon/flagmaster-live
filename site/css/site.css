@@ -118,6 +118,8 @@ button { font: inherit; color: inherit; }
 .search-results li a { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; color: var(--text); }
 .search-results li a:hover { background: var(--card-h); text-decoration: none; }
 .search-results .empty { padding: 10px; color: var(--text-2); }
+.search--board { margin: 0 0 14px; }
+.search--board input { padding-top: 12px; padding-bottom: 12px; }
 
 /* ── Selector de mes ───────────────────────────────────────── */
 .month-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }

@@ -93,7 +93,10 @@ Sin emojis porque TikTok LIVE Studio los pinta como una X (si alguno se cuela, p
 **Enviar a Studio** (`CHATBOT_STUDIO=1` + `CHAT_X` / `CHAT_Y` en `.env`): el servidor comprueba que en ese punto está
 Studio, hace clic en su caja de chat, escribe el mensaje, pulsa Enter y devuelve el ratón y el portapapeles como
 estaban. `CHAT_INPUT_METHOD=paste` lo pega de golpe; `type` lo teclea letra a letra a ritmo de persona y se para (sin
-pulsar Enter) si cambias de ventana mientras escribe.
+pulsar Enter) si cambias de ventana mientras escribe. Al teclear comete de vez en cuando un error (una tecla vecina),
+escribe alguna letra más, lo borra con Retroceso y sigue. El botón **Ajustes** del panel cambia en caliente el método,
+el ritmo, las pausas y los errores; se guarda en `server/.chatbot-studio.json` (no va al repo) y manda sobre
+`CHAT_INPUT_METHOD`. **Restablecer** vuelve a los valores de fábrica.
 
 1. Una vez: abre Studio donde lo vayas a tener (mejor en el monitor principal), doble clic en `coordenadas_chat.bat`,
    deja el ratón sobre la caja de chat 15 s y copia `CHAT_X` / `CHAT_Y` al `.env`. Si mueves o redimensionas Studio,

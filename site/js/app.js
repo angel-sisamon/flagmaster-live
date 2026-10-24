@@ -102,15 +102,23 @@
       value: p => `💎 ${nf(p.gifts)}<small>❤️ ${nf(p.likes)}</small>`,
     },
   };
-  const state = { board: 'points', shown: C.pageSize };
+  const state = { board: 'points', shown: C.pageSize, q: '' };
 
-  function boardHtml(data) {
+  /* Búsqueda por @usuario o nick: sin mayúsculas ni tildes ('jose' encuentra a 'José') */
+  const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const query = () => norm(state.q.trim().replace(/^@/, ''));
+  const matches = (p, q) => norm(p.u).includes(q) || norm(p.n).includes(q);
+
+  function boardHtml(data, all) {
+    const q = query();
+    if (!data) return q ? searchMissHtml(null, all, q) : '';
     const def = BOARDS[state.board];
-    const rows = def.rows(data.players.slice());
+    // El puesto se calcula antes de filtrar: al buscar, cada jugador conserva el suyo
+    let rows = def.rows(data.players.slice()).map((p, i) => ({ p, pos: def.pos ? def.pos(p) : i + 1 }));
+    if (q) rows = rows.filter(r => matches(r.p, q));
     const me = getMe();
-    if (!rows.length) return `<p class="empty-note">${t('nobody')}</p>`;
-    return `<p class="board-hint">${esc(def.hint())}</p><ol class="board">` + rows.slice(0, state.shown).map((p, i) => {
-      const pos = def.pos ? def.pos(p) : i + 1;
+    if (!rows.length) return q ? searchMissHtml(data, all, q) : `<p class="empty-note">${t('nobody')}</p>`;
+    return `<p class="board-hint">${esc(def.hint())}</p><ol class="board">` + rows.slice(0, state.shown).map(({ p, pos }) => {
       const cls = 'row' + (pos <= 3 ? ' row--' + pos : '') + (p.id === me ? ' row--me' : '');
       return `<li><a class="${cls}" href="${playerLink(p, data.month)}">
         <span class="row-pos">${pos <= 3 ? MEDALS[pos - 1] : pos}</span>
@@ -281,20 +289,24 @@
   }
 
   /* ── Buscador ───────────────────────────────────────── */
-  function bindSearch(players, month) {
-    const input = document.getElementById('search');
-    const out = document.getElementById('search-results');
-    if (!input) return;
-    input.addEventListener('input', () => {
-      const q = input.value.trim().replace(/^@/, '').toLowerCase();
-      if (q.length < 2) { out.hidden = true; return; }
-      const hits = players.filter(p => (p.u || '').toLowerCase().includes(q) || (p.n || '').toLowerCase().includes(q)).slice(0, 8);
-      out.hidden = false;
-      out.innerHTML = hits.length ? hits.map(p => `<li><a href="${playerLink(p, month)}">${avatar(p)}
-        <span><b>${esc(name(p))}</b> ${p.u ? `<span class="row-handle">@${esc(p.u)}</span>` : ''}</span>
-        <span class="row-val" style="margin-left:auto">${p.pos ? '#' + p.pos + ' · ' : ''}${nf(p.pts)} ${t('pts')}</span></a></li>`).join('')
-        : `<li class="empty">${t('search_none')}</li>`;
+  /* Nadie en la tabla elegida: se busca en todo el mes (otras tablas) y en el histórico */
+  function searchMissHtml(data, all, q) {
+    const seen = new Set();
+    const hits = [];
+    [[data ? data.players : [], data && data.month], [all ? all.players : [], '']].forEach(([list, month]) => {
+      list.forEach(p => { if (!seen.has(p.id) && matches(p, q)) { seen.add(p.id); hits.push({ p, month }); } });
     });
+    if (!hits.length) return `<p class="empty-note">${t('search_none')}</p>`;
+    return `<p class="board-hint">${t(data ? 'search_other' : 'search_alltime')}</p><ul class="search-results">` +
+      hits.slice(0, 12).map(({ p, month }) => `<li><a href="${playerLink(p, month)}">${avatar(p)}
+        <span><b>${esc(name(p))}</b> ${p.u ? `<span class="row-handle">@${esc(p.u)}</span>` : ''}</span>
+        <span class="row-val" style="margin-left:auto">${p.pos ? '#' + p.pos + ' · ' : ''}${nf(p.pts)} ${t('pts')}<small>${month ? esc(monthLabel(month)) : t('p_alltime')}</small></span></a></li>`).join('') +
+      '</ul>';
+  }
+
+  function searchBoxHtml() {
+    return `<div class="search search--board"><input id="search" type="search" autocomplete="off" spellcheck="false" value="${esc(state.q)}"
+      placeholder="${esc(t('search_ph'))}" aria-label="${esc(t('search_ph'))}" aria-controls="board"></div>`;
   }
 
   /* ── Pantallas ──────────────────────────────────────── */
@@ -312,26 +324,26 @@
     const older = i > -1 && i < nav.length - 1 ? nav[i + 1] : '';
     const newer = i > 0 ? nav[i - 1] : '';
 
+    const hasPlayers = !!(data && data.players.length);
     let body;
-    if (data && data.players.length) {
-      body = podiumHtml(data) + `<div class="tabs" role="tablist">` + Object.keys(BOARDS).map(k =>
+    if (hasPlayers) {
+      body = podiumHtml(data) + searchBoxHtml() + `<div class="tabs" role="tablist">` + Object.keys(BOARDS).map(k =>
         `<button type="button" class="tab" role="tab" data-board="${k}" aria-selected="${k === state.board}">${t('b_' + k)}</button>`).join('') +
-        `</div><div id="board">${boardHtml(data)}</div>`;
+        `</div><div id="board">${boardHtml(data, all)}</div>`;
     } else {
       const last = index.months.find(m => m.id !== month && m.champion);
       body = `<p class="empty-note">${t('empty_month')}</p>` + (last ? `<p class="empty-note"><a href="${playerLink(last.champion, last.id)}">
-        👑 ${t('last_champion', { month: esc(monthLabel(last.id)) })}: <b>${esc(name(last.champion))}</b> · ${nf(last.champion.pts)} ${t('pts')}</a></p>` : '');
+        👑 ${t('last_champion', { month: esc(monthLabel(last.id)) })}: <b>${esc(name(last.champion))}</b> · ${nf(last.champion.pts)} ${t('pts')}</a></p>` : '') +
+        (all && all.players.length ? searchBoxHtml() + `<div id="board">${boardHtml(null, all)}</div>` : '');
     }
 
     const me = getMe();
     const mine = data && me ? data.players.find(p => p.id === me) : null;
 
     app.innerHTML = heroHtml(index.totals) +
-      `<section class="section"><div class="search"><input id="search" type="search" autocomplete="off" placeholder="${esc(t('search_ph'))}" aria-label="${esc(t('search_ph'))}"></div>
-       <ul class="search-results" id="search-results" hidden></ul>
-       ${mine ? `<p style="margin:12px 0 0"><a class="row row--me" href="${playerLink(mine, month)}"><span class="row-pos">${mine.pos || '–'}</span>
+      (mine ? `<section class="section"><a class="row row--me" href="${playerLink(mine, month)}"><span class="row-pos">${mine.pos || '–'}</span>
          <span class="row-who">${avatar(mine)}<span class="row-names"><span class="row-nick">${esc(name(mine))}</span><span class="row-handle">${t('me_on')}</span></span></span>
-         <span class="row-val">${nf(mine.pts)} ${t('pts')}</span></a></p>` : ''}</section>` +
+         <span class="row-val">${nf(mine.pts)} ${t('pts')}</span></a></section>` : '') +
       `<section class="section"><div class="month-nav"><h2>📅 ${esc(t('month_title', { month: monthLabel(month) }))}</h2>
         <div class="month-arrows">
           <button type="button" class="icon-btn" data-go="${older}" ${older ? '' : 'disabled'} aria-label="${t('month_prev')}">‹</button>
@@ -345,23 +357,26 @@
       state.shown = C.pageSize;
       location.hash = b.dataset.go === now ? '#/' : '#/m/' + b.dataset.go;
     }));
-    if (data) {
-      const boardBox = document.getElementById('board');
-      app.querySelectorAll('[data-board]').forEach(b => b.addEventListener('click', () => {
-        state.board = b.dataset.board;
-        state.shown = C.pageSize;
-        app.querySelectorAll('[data-board]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
-        boardBox.innerHTML = boardHtml(data);
-      }));
-      boardBox.addEventListener('click', e => {
-        if (!e.target.closest('[data-more]')) return;
-        state.shown += C.pageSize;
-        boardBox.innerHTML = boardHtml(data);
-      });
-      bindSearch(data.players, month);
-    } else if (all) {
-      bindSearch(all.players, '');
-    }
+    const boardBox = document.getElementById('board');
+    if (!boardBox) return;
+    const boardData = hasPlayers ? data : null;
+    const redraw = () => { boardBox.innerHTML = boardHtml(boardData, all); };
+    document.getElementById('search').addEventListener('input', e => {
+      state.q = e.target.value;
+      state.shown = C.pageSize;
+      redraw();
+    });
+    app.querySelectorAll('[data-board]').forEach(b => b.addEventListener('click', () => {
+      state.board = b.dataset.board;
+      state.shown = C.pageSize;
+      app.querySelectorAll('[data-board]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+      redraw();
+    }));
+    boardBox.addEventListener('click', e => {
+      if (!e.target.closest('[data-more]')) return;
+      state.shown += C.pageSize;
+      redraw();
+    });
   }
 
   function sparkHtml(points, labels) {

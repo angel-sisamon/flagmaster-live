@@ -213,6 +213,72 @@ test('Studio: sin CHAT_X / CHAT_Y no toca el ratón y explica qué falta', async
   await assert.rejects(studio.sendChatMessage('again'), StudioError);
 });
 
+/* Teclado y caja de chat de mentira: lo tecleado, lo pegado y los Retroceso acaban en `box` */
+function fakeKeyboard() {
+  const kb = { box: [], sent: [], clip: 'lo que había', mouse: { x: 0, y: 0 }, modifier: false };
+  kb.robot = {
+    setMouseDelay() {}, setKeyboardDelay() {},
+    getMousePos: () => ({ ...kb.mouse }),
+    moveMouse(x, y) { kb.mouse = { x, y }; },
+    mouseToggle() {},
+    keyToggle(key, dir) { kb.modifier = dir === 'down'; },
+    typeString(s) { kb.box.push(s); },
+    keyTap(key) {
+      if (key === 'backspace') kb.box.pop();
+      else if (key === 'enter') { kb.sent.push(kb.box.join('')); kb.box = []; }
+      else if (key === 'v' && kb.modifier) kb.box.push(kb.clip);
+    },
+  };
+  kb.clipboard = { read: async () => kb.clip, write: async t => { kb.clip = t; } };
+  return kb;
+}
+
+test('Studio: al teclear con errores, los corrige y lo enviado es el texto exacto', async () => {
+  const { createStudioPaster } = require('../server/src/chatbot/studio');
+  const kb = fakeKeyboard();
+  let seed = 7;
+  const random = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const studio = createStudioPaster({
+    x: 100, y: 200, settings: { method: 'type', typoPct: 30, typoLateMax: 3 }, log: () => {},
+    robot: kb.robot, clipboard: kb.clipboard, windows: () => null, sleep: async () => {}, random,
+  });
+  const text = 'Welcome @Ana_99, vote with the letter: A, B, C or D!';
+  const report = await studio.sendChatMessage(text);
+  assert.deepStrictEqual(kb.sent, [text]);
+  assert.ok(report.typos > 0, 'con un 30 % tiene que haber fallado alguna letra');
+  assert.deepStrictEqual(kb.mouse, { x: 0, y: 0 });   // el ratón vuelve a su sitio
+
+  // Sin errores: ni un Retroceso
+  studio.setSettings({ typoPct: 0 });
+  const r2 = await studio.sendChatMessage('Second message');
+  assert.strictEqual(r2.typos, 0);
+  assert.deepStrictEqual(kb.sent, [text, 'Second message']);
+
+  // Pegando: el texto entero de golpe
+  studio.setSettings({ method: 'paste' });
+  await studio.sendChatMessage('Third one');
+  assert.strictEqual(kb.sent[2], 'Third one');
+});
+
+test('Studio: los ajustes del panel se validan (rangos ordenados, límites, basura ignorada)', () => {
+  const { normalizeSettings, DEFAULT_SETTINGS, createStudioPaster } = require('../server/src/chatbot/studio');
+  const s = normalizeSettings({ method: 'robot', keyMs: [300, 100], typoPct: 99, thinkPct: 'x', backspaceMs: [1, 2, 3], typoLateMax: -4, thinkMs: [0, 99999] });
+  assert.strictEqual(s.method, DEFAULT_SETTINGS.method);
+  assert.deepStrictEqual(s.keyMs, [100, 300]);
+  assert.strictEqual(s.typoPct, 30);
+  assert.strictEqual(s.thinkPct, DEFAULT_SETTINGS.thinkPct);
+  assert.deepStrictEqual(s.backspaceMs, DEFAULT_SETTINGS.backspaceMs);
+  assert.strictEqual(s.typoLateMax, 0);
+  assert.deepStrictEqual(s.thinkMs, [0, 5000]);
+  // CHAT_INPUT_METHOD sigue valiendo, y un cambio parcial no borra lo demás
+  const studio = createStudioPaster({ x: 1, y: 1, method: 'type', log: () => {} });
+  assert.strictEqual(studio.getSettings().method, 'type');
+  const after = studio.setSettings({ typoPct: 2 });
+  assert.strictEqual(after.method, 'type');
+  assert.strictEqual(after.typoPct, 2);
+  assert.deepStrictEqual(after.keyMs, DEFAULT_SETTINGS.keyMs);
+});
+
 test('Studio: reconoce la ventana de TikTok LIVE Studio por el ejecutable o el título', () => {
   const { isStudio, label } = require('../server/src/chatbot/win32');
   assert.ok(isStudio({ exe: 'TikTok LIVE Studio.exe', title: '' }));

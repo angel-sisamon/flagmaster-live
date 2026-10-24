@@ -10,6 +10,8 @@
   en el chat de TikTok, o con "Enviar a Studio" (CHATBOT_STUDIO=1) el servidor lo escribe en TikTok LIVE Studio.
   Manual / Automático: en automático se escriben solas, a ritmo variable (server/src/chatbot/autopilot.js).
   Lo pegado vuelve por el chat y se marca como enviado. Textos de usuario con textContent.
+  "Ajustes" (con Studio): cómo se escribe en Studio (pegar o teclear, ritmo, pausas y errores); se guardan en el
+  servidor (server/.chatbot-studio.json) y valen para todos los paneles abiertos.
 -->
 <style>
   :root {
@@ -62,6 +64,31 @@
   .mode button.on.auto { background:var(--green); color:#062010; }
   .autoline { display:none; width:100%; font-size:13px; color:var(--green); }
   body.auto-on .autoline { display:block; }
+  /* Ajustes de escritura (solo con Studio) */
+  .btn-settings { display:none; }
+  body.studio-on .btn-settings { display:block; }
+  .btn-settings.on { background:var(--violet); color:#140a26; border-color:transparent; }
+  .settings { max-width:720px; margin:12px auto 0; padding:0 16px; }
+  .settings[hidden] { display:none; }
+  .panel { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px;
+    display:flex; flex-direction:column; gap:14px; }
+  .panel h2 { font-size:14px; margin:0; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .panel h2 .wpm { margin-left:auto; font-weight:400; color:var(--text-3); font-size:12px; }
+  .group { display:flex; flex-direction:column; gap:8px; }
+  .group + .group { margin-top:14px; }
+  .group h3 { font-size:12px; margin:0; text-transform:uppercase; letter-spacing:.05em; color:var(--text-3); }
+  .row { display:grid; grid-template-columns:minmax(0, 1fr) auto; align-items:center; gap:8px; font-size:13px; color:var(--text-2); }
+  .row small { display:block; color:var(--text-3); font-size:11px; }
+  .row .inputs { display:flex; align-items:center; gap:4px; color:var(--text-3); font-size:12px; white-space:nowrap; }
+  .row input { width:64px; font:inherit; font-size:13px; padding:5px 6px; border-radius:8px; border:1px solid var(--border);
+    background:var(--card-2); color:var(--text); text-align:right; }
+  .methods { display:flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .methods button { flex:1; border:0; border-radius:0; background:transparent; color:var(--text-3); padding:8px; }
+  .methods button.on { background:var(--card-2); color:var(--text); }
+  .typing.off { opacity:.4; pointer-events:none; }
+  .panel .foot { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-3); }
+  .panel .foot button { margin-left:auto; font-size:13px; padding:6px 12px; }
+  @media (max-width:420px) { .row input { width:54px; } }
 </style>
 </head>
 <body>
@@ -71,10 +98,39 @@
   <div class="mode" title="Automático: las sugerencias se escriben solas en Studio, a ritmo variable">
     <button id="mode-manual" class="on">Manual</button><button id="mode-auto" class="auto">Automático</button>
   </div>
+  <button id="btn-settings" class="btn-settings" title="Cómo se escribe en Studio">Ajustes</button>
   <button id="pause">Pausar</button>
   <div class="autoline" id="autoline"></div>
   <div class="stats" id="stats">Conectando…</div>
 </header>
+<section class="settings" id="settings" hidden>
+  <div class="panel">
+    <h2>Ajustes de escritura en Studio <span class="wpm" id="wpm"></span></h2>
+    <div class="methods">
+      <button data-method="paste">Pegar de golpe</button><button data-method="type">Teclear como una persona</button>
+    </div>
+    <div class="typing" id="typing">
+      <div class="group">
+        <h3>Ritmo</h3>
+        <div class="row"><span>Entre tecla y tecla</span><span class="inputs" data-range="keyMs"></span></div>
+        <div class="row"><span>De más tras un espacio</span><span class="inputs" data-range="spaceExtraMs"></span></div>
+        <div class="row"><span>De más tras un signo<small>. , ! ? ; :</small></span><span class="inputs" data-range="punctExtraMs"></span></div>
+        <div class="row"><span>Pausas para pensar<small>% de letras tras las que se para un momento</small></span><span class="inputs" data-num="thinkPct" data-unit="%" data-max="50"></span></div>
+        <div class="row"><span>Duración de esas pausas</span><span class="inputs" data-range="thinkMs"></span></div>
+      </div>
+      <div class="group">
+        <h3>Errores al teclear</h3>
+        <div class="row"><span>Letras que se escriben mal<small>una tecla vecina; 0 = sin errores</small></span><span class="inputs" data-num="typoPct" data-unit="%" data-max="30"></span></div>
+        <div class="row"><span>Letras de más antes de notarlo<small>como mucho; luego se borran</small></span><span class="inputs" data-num="typoLateMax" data-unit="letras" data-max="5"></span></div>
+        <div class="row"><span>Al darse cuenta, antes de borrar</span><span class="inputs" data-range="typoNoticeMs"></span></div>
+        <div class="row"><span>Entre Retroceso y Retroceso</span><span class="inputs" data-range="backspaceMs"></span></div>
+        <div class="row"><span>Tras corregir, antes de seguir</span><span class="inputs" data-range="typoResumeMs"></span></div>
+      </div>
+    </div>
+    <div class="foot"><span id="settings-state">Los cambios se aplican al siguiente mensaje.</span>
+      <button id="settings-reset" title="Vuelve a los valores de fábrica (y al CHAT_INPUT_METHOD del .env)">Restablecer</button></div>
+  </div>
+</section>
 <main id="list">
   <div class="empty" id="empty">Aún no hay sugerencias.<br>Cuando alguien salude, escriba un país en vez de la letra o el chat
     se quede callado, aparecerán aquí. Pulsa <b>Copiar</b> y pégalo en el chat de TikTok.</div>
@@ -265,6 +321,7 @@
   }
   socket.on('bot:status', s => {
     document.body.classList.toggle('studio-on', !!s.studio);
+    if (!s.studio) $('settings').hidden = true;
     document.body.classList.toggle('auto-on', !!s.auto);
     $('mode-manual').classList.toggle('on', !s.auto);
     $('mode-auto').classList.toggle('on', !!s.auto);
@@ -278,6 +335,84 @@
   });
   $('pause').addEventListener('click', () => socket.emit(paused ? 'bot:resume' : 'bot:pause'));
   $('mode-manual').addEventListener('click', () => socket.emit('bot:auto', false));
+
+  /* ── Ajustes de escritura: el servidor manda los vigentes (bot:studio-settings) y se le envía cada cambio ── */
+  let settings = null;
+  const inputs = {};   // clave -> [input] o [mínimo, máximo]
+  function numberInput(max) {
+    const i = el('input');
+    i.type = 'number';
+    i.min = '0';
+    i.max = String(max);
+    i.step = '1';
+    i.inputMode = 'numeric';
+    return i;
+  }
+  document.querySelectorAll('[data-range]').forEach(box => {
+    const pair = [numberInput(5000), numberInput(5000)];
+    pair[0].title = 'mínimo';
+    pair[1].title = 'máximo';
+    box.append(pair[0], el('span', '', '–'), pair[1], el('span', '', 'ms'));
+    inputs[box.dataset.range] = pair;
+  });
+  document.querySelectorAll('[data-num]').forEach(box => {
+    const i = numberInput(Number(box.dataset.max));
+    box.append(i, el('span', '', box.dataset.unit));
+    inputs[box.dataset.num] = [i];
+  });
+
+  const mid = ([a, b]) => (a + b) / 2;
+  /* Palabras por minuto aproximadas (5 letras por palabra, un espacio cada ~6 letras), sin contar los errores */
+  function wpm(s) {
+    const perChar = mid(s.keyMs) + mid(s.spaceExtraMs) / 6 + mid(s.punctExtraMs) / 40 + (s.thinkPct / 100) * mid(s.thinkMs);
+    return Math.round(60000 / (perChar * 5));
+  }
+
+  function showSettings() {
+    const s = settings;
+    if (!s) return;
+    document.querySelectorAll('.methods button').forEach(b => b.classList.toggle('on', b.dataset.method === s.method));
+    $('typing').classList.toggle('off', s.method !== 'type');
+    for (const [k, list] of Object.entries(inputs)) {
+      const v = Array.isArray(s[k]) ? s[k] : [s[k]];
+      list.forEach((input, n) => { if (document.activeElement !== input) input.value = v[n]; });
+    }
+    $('wpm').textContent = s.method !== 'type' ? 'el mensaje aparece entero de golpe'
+      : `≈ ${wpm(s)} palabras/min${s.typoPct ? ` · ~${s.typoPct} errores cada 100 letras` : ' · sin errores'}`;
+  }
+
+  let saveTimer = null;
+  function push(patch) {
+    $('settings-state').textContent = 'Guardando…';
+    socket.emit('bot:studio-settings', patch);
+  }
+  for (const [k, list] of Object.entries(inputs)) {
+    list.forEach(input => {
+      input.addEventListener('input', () => {
+        if (list.some(i => i.value === '')) return;   // a medio escribir
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => push({ [k]: list.length === 2 ? list.map(i => Number(i.value)) : Number(list[0].value) }), 400);
+      });
+      // Al salir del campo se ve lo que ha aceptado el servidor (ordenado o ajustado al límite)
+      input.addEventListener('blur', () => setTimeout(showSettings, 600));
+    });
+  }
+  document.querySelectorAll('.methods button').forEach(b => b.addEventListener('click', () => push({ method: b.dataset.method })));
+  $('settings-reset').addEventListener('click', () => socket.emit('bot:studio-settings-reset'));
+  socket.on('bot:studio-settings', s => {
+    settings = s;
+    showSettings();
+    $('settings-state').textContent = 'Guardado · se aplica al siguiente mensaje.';
+  });
+
+  $('settings').hidden = store.get('bot-settings-open') !== '1';
+  $('btn-settings').classList.toggle('on', !$('settings').hidden);
+  $('btn-settings').addEventListener('click', () => {
+    const open = $('settings').hidden;
+    $('settings').hidden = !open;
+    $('btn-settings').classList.toggle('on', open);
+    store.set('bot-settings-open', open ? '1' : '0');
+  });
   $('mode-auto').addEventListener('click', () => socket.emit('bot:auto', true));
   // La cuenta atrás del descanso, sin pedir nada al servidor
   setInterval(() => {
