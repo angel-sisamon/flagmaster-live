@@ -6,7 +6,9 @@
  *   3. Graba cada directo en data/sessions/ (src/recorder.js) y, al terminar, lo sube al repo
  *      para que GitHub Actions regenere la web de clasificaciones (src/publisher.js).
  *   4. Lleva la clasificación del mes en directo: TOP en la sala y "!yo" en el chat (src/standings.js).
- *   5. Sirve el juego (www de flag-master) con la capa LIVE de client/ (src/live-page.js) y lo emite
+ *   5. (Opcional, CHATBOT=1) Propone mensajes para el chat en http://localhost:3000/bot: saludos, recordar que se
+ *      vota con la letra y frases sueltas (src/chatbot/). Quien emite los copia y los pega.
+ *   6. Sirve el juego (www de flag-master) con la capa LIVE de client/ (src/live-page.js) y lo emite
  *      todo por Socket.io.
  *
  * Arranque:  npm start -- <usuario_tiktok>      (o TIKTOK_USERNAME en .env; sin usuario = modo prueba)
@@ -30,6 +32,12 @@ const { createTikTok } = require('./src/tiktok');
 const { publishData } = require('./src/publisher');
 const { composeLivePage } = require('./src/live-page');
 const { fromTikTokUser } = require('./src/identity');
+const { createChatBot } = require('./src/chatbot');
+const { createSender } = require('./src/chatbot/senders');
+const { createStudioPaster } = require('./src/chatbot/studio');
+const { createAutopilot } = require('./src/chatbot/autopilot');
+const { load: loadWin32 } = require('./src/chatbot/win32');
+const { spawn } = require('child_process');
 
 const JOIN_BROADCAST_MS = 900;    // un saludo en pantalla cada ~1 s como mucho
 const MAX_JOIN_QUEUE = 6;         // si entra mucha gente de golpe, solo se saluda a los últimos
@@ -56,6 +64,7 @@ app.use(cors({ origin: corsOrigin }));
 app.get(['/', '/index.html'], (req, res, next) => {
   try { res.type('html').send(composeLivePage(config.GAME_DIR, config.CLIENT_DIR)); } catch (err) { next(err); }
 });
+app.get('/bot', (req, res) => res.sendFile(path.join(config.CLIENT_DIR, 'bot-panel.html')));
 app.use('/live', express.static(config.CLIENT_DIR));
 app.use(express.static(config.GAME_DIR, { index: false }));
 
@@ -81,13 +90,39 @@ const game = createGame({
   resultsSeconds: config.RESULTS_SECONDS,
 });
 
-game.events.on('gameStart', e => recorder.onGameStart(e));
+// Panel de sugerencias del bot (/bot): espacio de nombres propio para no contar como pantalla del juego
+const botPanel = io.of('/bot');
+const chatbot = config.CHATBOT ? createChatBot({
+  sender: createSender(config.CHATBOT_SENDER, {
+    emit(event, payload) {
+      botPanel.emit(event, payload);
+      if (event === 'bot:suggestion') botPanel.emit('bot:status', botStatus());
+    },
+  }),
+  lang: config.CHATBOT_LANG,
+  account: config.CHATBOT_ACCOUNT,
+  countries: GAME_DATA.countries,
+  idleSeconds: config.CHATBOT_IDLE_SECONDS,
+  getPhase: () => game.phase(),
+  isHidden: p => moderation.isHidden(p),
+  // Lo pega una persona: sin tiempo de "pensar", pero sin agobiar con sugerencias
+  queueOptions: { minGapMs: 3000, maxGapMs: 6000, thinkMs: [0, 0], maxPerMinute: 6 },
+}) : null;
+
+game.events.on('gameStart', e => {
+  recorder.onGameStart(e);
+  if (chatbot) chatbot.onGameStart(e);
+});
 game.events.on('roundEnd', e => {
   recorder.onRoundEnd(e);
+  if (chatbot) chatbot.onRoundEnd(e);
   standings.refresh();
   emit('month:update', standings.payload());
 });
-game.events.on('gameEnd', e => recorder.onGameEnd(e));
+game.events.on('gameEnd', e => {
+  recorder.onGameEnd(e);
+  if (chatbot) chatbot.onGameEnd(e);
+});
 game.events.on('status', broadcastStatus);
 
 /* ── Publicación: al cerrar un directo se sube data/ al repo ── */
@@ -169,9 +204,11 @@ function handleCommand(user, text) {
 
 function handleChat(user, text) {
   if (!user) return;
+  if (chatbot && chatbot.isOwnMessage(user, text)) return;   // lo que escribe el bot no cuenta como mensaje
   recorder.onChat(user);
   if (game.vote(user, text)) return;
   handleCommand(user, String(text || ''));
+  if (chatbot) chatbot.onChat(user, String(text || ''));
 }
 
 /* ── Conexión con TikTok LIVE ──────────────────────────────── */
@@ -222,7 +259,7 @@ function broadcastStatus() {
 }
 
 io.on('connection', socket => {
-  console.log(`🔌 Cliente conectado (${io.engine.clientsCount})`);
+  console.log(`🔌 Cliente conectado (${io.of('/').sockets.size})`);
   socket.emit('live:status', statusPayload());
   socket.emit('month:update', standings.payload());
   game.syncSocket(socket);
@@ -232,8 +269,53 @@ io.on('connection', socket => {
   socket.on('game:end', () => game.end());
 
   socket.on('disconnect', () => {
-    console.log(`🔌 Cliente desconectado (${io.engine.clientsCount})`);
-    if (io.engine.clientsCount === 0) game.stop();   // nadie mirando: no gastar rondas
+    console.log(`🔌 Cliente desconectado (${io.of('/').sockets.size})`);
+    if (io.of('/').sockets.size === 0) game.stop();   // nadie mirando: no gastar rondas
+  });
+});
+
+const studio = chatbot && config.CHATBOT_STUDIO ? createStudioPaster({ x: config.CHAT_X, y: config.CHAT_Y, method: config.CHAT_INPUT_METHOD }) : null;
+const winApi = loadWin32();
+
+/* Escribe una sugerencia en Studio (botón del panel o automático) y se lo cuenta a todos los paneles */
+async function sendToStudio(s, auto) {
+  botPanel.emit('bot:studio-sending', { id: s.id, auto });
+  try {
+    await studio.sendChatMessage(s.text);
+    s.studioSent = true;
+    botPanel.emit('bot:studio-result', { id: s.id, ok: true, auto });
+  } catch (err) {
+    console.error(`⚠️  Studio (${err.stage || 'error'}): ${err.message}`);
+    botPanel.emit('bot:studio-result', { id: s.id, ok: false, error: err.message, auto });
+    throw err;
+  }
+}
+
+const autopilot = studio ? createAutopilot({
+  send: s => sendToStudio(s, true),
+  pending: () => chatbot.history(),
+  onChange: () => botPanel.emit('bot:status', botStatus()),
+  userIdleMs: () => (winApi ? winApi.msSinceLastInput() : Infinity),
+}) : null;
+
+const botStatus = () => (chatbot ? { ...chatbot.status(), studio: !!studio, ...(autopilot ? autopilot.status() : {}) } : { enabled: false });
+
+botPanel.on('connection', socket => {
+  const sendStatus = () => botPanel.emit('bot:status', botStatus());
+  socket.emit('bot:history', chatbot ? chatbot.history() : []);
+  sendStatus();
+  if (!chatbot) return;
+  socket.on('bot:reroll', id => chatbot.reroll(id));
+  socket.on('bot:pause', () => { chatbot.pause(); sendStatus(); });
+  socket.on('bot:resume', () => { chatbot.resume(); sendStatus(); });
+  // Descartada en el panel: el automático tampoco la envía
+  socket.on('bot:discard', id => { const s = chatbot.find(id); if (s) s.discarded = true; });
+  socket.on('bot:auto', on => { if (autopilot) autopilot.setEnabled(on); });
+  // "Enviar a Studio": quien emite lo pide con un clic
+  socket.on('bot:studio-send', id => {
+    const s = chatbot.find(id);
+    if (!studio || !s) return socket.emit('bot:studio-result', { id, ok: false, error: studio ? 'sugerencia no encontrada' : 'CHATBOT_STUDIO=1 no está activado' });
+    sendToStudio(s, false).catch(() => {});
   });
 });
 
@@ -277,6 +359,16 @@ app.get('/api/reset-ranking', (req, res) => {
   res.json({ ok: true });
 });
 
+/*   /api/chatbot   estado del bot del chat · /api/chatbot/pause · /api/chatbot/resume · /api/chatbot/say?text=... */
+app.get('/api/chatbot', (req, res) => res.json(botStatus()));
+for (const action of ['pause', 'resume', 'say']) {
+  app.get(`/api/chatbot/${action}`, (req, res) => {
+    if (!chatbot) return res.status(404).json({ ok: false, error: 'chatbot desactivado (CHATBOT=1 en .env)' });
+    chatbot[action](req.query.text);
+    res.json({ ok: true, ...chatbot.status() });
+  });
+}
+
 /*   /api/session          estado de la grabación del directo
  *   /api/session/finish   cierra el directo ahora (guarda y publica) sin parar el servidor */
 app.get('/api/session', (req, res) => res.json({ recording: recorder.enabled, session: recorder.info() }));
@@ -298,6 +390,8 @@ async function shutdown(signal) {
   closing = true;
   console.log(`\n👋 Cerrando (${signal})...`);
   game.stop();
+  if (autopilot) autopilot.stop();
+  if (chatbot) chatbot.stop().catch(() => {});
   try {
     await Promise.race([finishSession('servidor detenido'), new Promise(r => setTimeout(r, 20000))]);
   } finally {
@@ -323,4 +417,12 @@ server.listen(config.PORT, () => {
     ? `💾 Grabando el directo en ${path.relative(config.ROOT, config.DATA_DIR)}/sessions · publicación automática: ${config.AUTOPUBLISH ? 'sí' : 'no'}`
     : '🧪 Modo prueba: no se graba el directo (LIVE_RECORD=1 para forzarlo)');
   tiktok.connect();
+  if (chatbot) {
+    chatbot.start();
+    const panel = `http://localhost:${config.PORT}/bot`;
+    console.log(`🤖 Sugerencias para el chat en ${panel}${studio ? ` · "Enviar a Studio" pega en (${config.CHAT_X}, ${config.CHAT_Y})` : ''}`);
+    if (config.CHATBOT_OPEN_PANEL && config.CHATBOT_SENDER === 'suggest' && process.platform === 'win32') {
+      spawn('cmd', ['/c', 'start', '', panel], { detached: true, stdio: 'ignore' }).unref();
+    }
+  }
 });

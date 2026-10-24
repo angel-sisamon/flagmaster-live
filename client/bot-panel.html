@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sugerencias del chat</title>
+<!--
+  client/bot-panel.html — Panel de sugerencias del bot del chat (http://localhost:3000/bot).
+  El servidor propone mensajes según va el chat (server/src/chatbot); aquí se copian con un clic para pegarlos
+  en el chat de TikTok, o con "Enviar a Studio" (CHATBOT_STUDIO=1) el servidor lo escribe en TikTok LIVE Studio.
+  Manual / Automático: en automático se escriben solas, a ritmo variable (server/src/chatbot/autopilot.js).
+  Lo pegado vuelve por el chat y se marca como enviado. Textos de usuario con textContent.
+-->
+<style>
+  :root {
+    --bg:#12101c; --card:#1d1a2b; --card-2:#252238; --border:rgba(255,255,255,.12);
+    --text:#f6f6ff; --text-2:rgba(246,246,255,.7); --text-3:rgba(246,246,255,.42);
+    --gold:#ffd040; --green:#3ddc84; --red:#ff5a6e; --blue:#5ab0ff; --violet:#b48cff;
+    --font:system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:var(--font); font-size:15px; }
+  header { position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    padding:10px 16px; background:rgba(18,16,28,.96); border-bottom:1px solid var(--border); }
+  h1 { font-size:16px; margin:0; flex:1; min-width:140px; }
+  .dot { width:9px; height:9px; border-radius:50%; background:var(--red); display:inline-block; margin-right:6px; }
+  .dot.on { background:var(--green); }
+  .stats { color:var(--text-3); font-size:12px; width:100%; }
+  button { font:inherit; font-weight:700; border-radius:10px; border:1px solid var(--border); background:var(--card-2);
+    color:var(--text); padding:8px 14px; cursor:pointer; }
+  button:hover { filter:brightness(1.15); }
+  button.primary { background:var(--gold); color:#1a1400; border-color:transparent; }
+  button.done { background:var(--green); color:#062010; border-color:transparent; }
+  main { padding:12px 16px 40px; display:flex; flex-direction:column; gap:10px; max-width:720px; margin:0 auto; }
+  .empty { color:var(--text-3); text-align:center; padding:40px 0; line-height:1.5; }
+  .card { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--violet);
+    border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:8px; }
+  .card.k-rules { border-left-color:var(--red); }
+  .card.k-greeting { border-left-color:var(--green); }
+  .card.k-round, .card.k-game { border-left-color:var(--blue); }
+  .card.k-manual { border-left-color:var(--gold); }
+  .card.old { opacity:.55; }
+  .card.used { opacity:.35; }
+  .top { display:flex; gap:8px; align-items:baseline; font-size:12px; color:var(--text-3); }
+  .badge { font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--text-2); }
+  .ctx { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
+  .age { margin-left:auto; white-space:nowrap; }
+  .text { font-size:17px; line-height:1.35; user-select:all; word-break:break-word; }
+  .actions { display:flex; gap:8px; }
+  .actions .primary, .actions .done { flex:1; }
+  .btn-studio { display:none; }
+  body.studio-on .btn-studio { display:block; flex:1; }
+  body.studio-on .btn-copy.primary { flex:0 0 auto; background:var(--card-2); color:var(--text); border-color:var(--border); }
+  .err { color:var(--red); font-size:13px; }
+  .err:empty { display:none; }
+  label.opt { color:var(--text-2); font-size:13px; display:flex; align-items:center; gap:4px; cursor:pointer; }
+  /* Manual / Automático (solo con Studio) */
+  .mode { display:none; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  body.studio-on .mode { display:flex; }
+  .mode button { border:0; border-radius:0; background:transparent; color:var(--text-3); padding:8px 12px; }
+  .mode button.on { background:var(--card-2); color:var(--text); }
+  .mode button.on.auto { background:var(--green); color:#062010; }
+  .autoline { display:none; width:100%; font-size:13px; color:var(--green); }
+  body.auto-on .autoline { display:block; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="dot" id="dot"></span>Sugerencias del chat</h1>
+  <label class="opt"><input type="checkbox" id="sound"> Sonido</label>
+  <div class="mode" title="Automático: las sugerencias se escriben solas en Studio, a ritmo variable">
+    <button id="mode-manual" class="on">Manual</button><button id="mode-auto" class="auto">Automático</button>
+  </div>
+  <button id="pause">Pausar</button>
+  <div class="autoline" id="autoline"></div>
+  <div class="stats" id="stats">Conectando…</div>
+</header>
+<main id="list">
+  <div class="empty" id="empty">Aún no hay sugerencias.<br>Cuando alguien salude, escriba un país en vez de la letra o el chat
+    se quede callado, aparecerán aquí. Pulsa <b>Copiar</b> y pégalo en el chat de TikTok.</div>
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+'use strict';
+(function () {
+  const KIND = { greeting: 'Saludo', rules: 'Normas', game: 'Partida', round: 'Ronda', idle: 'Charla', manual: 'Manual' };
+  const OLD_MS = 90000;      // una sugerencia de hace más de esto ya llega tarde: se atenúa
+  const MAX_CARDS = 30;
+  const $ = id => document.getElementById(id);
+  const list = $('list');
+  const cards = new Map();   // id -> { el, data }
+  let paused = false;
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* sin almacenamiento: no pasa nada */ } },
+  };
+  $('sound').checked = store.get('bot-sound') !== '0';
+  $('sound').addEventListener('change', e => store.set('bot-sound', e.target.checked ? '1' : '0'));
+
+  let audio = null;
+  function beep() {
+    if (!$('sound').checked) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.frequency.value = 880;
+      g.gain.setValueAtTime(0.08, audio.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.25);
+      o.connect(g).connect(audio.destination);
+      o.start();
+      o.stop(audio.currentTime + 0.25);
+    } catch (e) { /* sin audio */ }
+  }
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function ago(at) {
+    const s = Math.max(0, Math.round((Date.now() - at) / 1000));
+    return s < 60 ? `hace ${s} s` : `hace ${Math.floor(s / 60)} min`;
+  }
+
+  async function copy(text) {
+    try { await navigator.clipboard.writeText(text); return true; } catch (e) {
+      const ta = el('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      ta.remove();
+      return ok;
+    }
+  }
+
+  function render(data) {
+    const card = el('div', `card k-${data.kind}`);
+    const top = el('div', 'top');
+    top.appendChild(el('span', 'badge', KIND[data.kind] || data.kind));
+    const m = data.meta || {};
+    if (m.trigger) top.appendChild(el('span', 'ctx', `${m.user}: «${m.trigger}»`));
+    else top.appendChild(el('span', 'ctx', ''));
+    const age = el('span', 'age', ago(data.at));
+    top.appendChild(age);
+    const text = el('div', 'text', data.text);
+    const err = el('div', 'err');
+    const actions = el('div', 'actions');
+    const btnStudio = el('button', 'primary btn-studio', 'Enviar a Studio');
+    btnStudio.title = 'Pega el mensaje en el chat de TikTok LIVE Studio y pulsa Enter';
+    btnStudio.addEventListener('click', () => {
+      btnStudio.disabled = true;
+      btnStudio.textContent = 'Enviando…';
+      err.textContent = '';
+      socket.emit('bot:studio-send', data.id);
+    });
+    actions.appendChild(btnStudio);
+    const btnCopy = el('button', 'primary btn-copy', 'Copiar');
+    btnCopy.addEventListener('click', async () => {
+      const entry = cards.get(data.id);
+      if (await copy(entry.data.text)) {
+        btnCopy.className = 'done btn-copy';
+        btnCopy.textContent = 'Copiado ✓';
+      }
+    });
+    actions.appendChild(btnCopy);
+    if (m.category) {
+      const btnOther = el('button', '', 'Otra');
+      btnOther.title = 'Otra frase del mismo tipo';
+      btnOther.addEventListener('click', () => socket.emit('bot:reroll', data.id));
+      actions.appendChild(btnOther);
+    }
+    const btnHide = el('button', '', '✕');
+    btnHide.title = 'Descartar';
+    btnHide.addEventListener('click', () => { socket.emit('bot:discard', data.id); card.remove(); cards.delete(data.id); refresh(); });
+    actions.appendChild(btnHide);
+    card.append(top, text, err, actions);
+    return { card, age, text, btnCopy, btnStudio, err };
+  }
+
+  function add(data, quiet) {
+    if (cards.has(data.id)) return;
+    const parts = render(data);
+    cards.set(data.id, { el: parts, data });
+    list.insertBefore(parts.card, list.firstChild);
+    if (data.used) markUsed(data.id);
+    while (cards.size > MAX_CARDS) {
+      const oldest = Math.min(...cards.keys());
+      cards.get(oldest).el.card.remove();
+      cards.delete(oldest);
+    }
+    if (!quiet && data.kind !== 'idle') beep();
+    refresh();
+  }
+
+  function markUsed(id) {
+    const c = cards.get(Number(id));
+    if (!c) return;
+    c.data.used = true;
+    c.el.card.classList.add('used');
+    c.el.btnCopy.className = 'done btn-copy';
+    c.el.btnCopy.textContent = 'Enviado ✓';
+    c.el.btnStudio.className = 'done btn-studio';
+    c.el.btnStudio.textContent = 'Enviado ✓';
+    refresh();
+  }
+
+  function refresh() {
+    $('empty').style.display = cards.size ? 'none' : '';
+    let pending = 0;
+    for (const { el: e, data } of cards.values()) {
+      e.age.textContent = ago(data.at);
+      const old = Date.now() - data.at > OLD_MS;
+      e.card.classList.toggle('old', old && !data.used);
+      if (!data.used && !old) pending++;
+    }
+    document.title = (pending ? `(${pending}) ` : '') + 'Sugerencias del chat';
+  }
+  setInterval(refresh, 5000);
+
+  const socket = io('/bot', { transports: ['websocket', 'polling'] });
+  socket.on('connect', () => $('dot').classList.add('on'));
+  socket.on('disconnect', () => { $('dot').classList.remove('on'); $('stats').textContent = 'Sin conexión con el servidor…'; });
+  socket.on('bot:history', items => items.forEach(d => add(d, true)));
+  socket.on('bot:suggestion', d => add(d));
+  socket.on('bot:used', ({ id }) => markUsed(id));
+  socket.on('bot:update', ({ id, text }) => {
+    const c = cards.get(Number(id));
+    if (!c) return;
+    c.data.text = text;
+    c.el.text.textContent = text;
+    c.el.btnCopy.className = 'primary btn-copy';
+    c.el.btnCopy.textContent = 'Copiar';
+  });
+  socket.on('bot:studio-sending', ({ id, auto }) => {
+    const c = cards.get(Number(id));
+    if (!c) return;
+    c.el.btnStudio.disabled = true;
+    c.el.btnStudio.textContent = auto ? 'Escribiendo solo en Studio…' : 'Escribiendo en Studio…';
+    c.el.err.textContent = '';
+  });
+  socket.on('bot:studio-result', ({ id, ok, error, auto }) => {
+    const c = cards.get(Number(id));
+    if (!c) return;
+    c.el.btnStudio.disabled = false;
+    if (ok) {
+      c.data.studioSent = true;
+      c.el.btnStudio.className = 'done btn-studio';
+      c.el.btnStudio.textContent = auto ? 'Enviado solo ✓' : 'Escrito en Studio ✓';
+    } else {
+      c.el.btnStudio.textContent = 'Reintentar';
+      c.el.err.textContent = `No se pudo pegar en Studio: ${error}`;
+    }
+  });
+  const WAITING = { usuario: 'esperando a que dejes el ratón y el teclado', descanso: 'descansando un rato' };
+  let autoStatus = null;
+  function showAuto() {
+    const s = autoStatus;
+    if (!s || !s.auto) return;
+    const next = s.autoNextInMs > 0 && s.autoWaiting === 'descanso' ? ` · siguiente en ~${Math.round(s.autoNextInMs / 1000)} s` : '';
+    $('autoline').textContent = `● Automático: ${s.autoSent} enviados${s.autoWaiting ? ` · ${WAITING[s.autoWaiting]}` : ''}${next}`;
+  }
+  socket.on('bot:status', s => {
+    document.body.classList.toggle('studio-on', !!s.studio);
+    document.body.classList.toggle('auto-on', !!s.auto);
+    $('mode-manual').classList.toggle('on', !s.auto);
+    $('mode-auto').classList.toggle('on', !!s.auto);
+    autoStatus = s;
+    showAuto();
+    if (!s.enabled) { $('stats').textContent = 'Bot desactivado: pon CHATBOT=1 en .env y reinicia el servidor'; return; }
+    paused = !!s.paused;
+    $('pause').textContent = paused ? 'Reanudar' : 'Pausar';
+    $('stats').textContent = paused ? 'En pausa: no se proponen mensajes nuevos'
+      : `Saludos ${s.greetings} · Normas ${s.reminders} · Rondas ${s.rounds} · Charla ${s.idle}`;
+  });
+  $('pause').addEventListener('click', () => socket.emit(paused ? 'bot:resume' : 'bot:pause'));
+  $('mode-manual').addEventListener('click', () => socket.emit('bot:auto', false));
+  $('mode-auto').addEventListener('click', () => socket.emit('bot:auto', true));
+  // La cuenta atrás del descanso, sin pedir nada al servidor
+  setInterval(() => {
+    if (!autoStatus || !autoStatus.auto) return;
+    autoStatus.autoNextInMs = Math.max(0, autoStatus.autoNextInMs - 1000);
+    showAuto();
+  }, 1000);
+})();
+</script>
+</body>
+</html>

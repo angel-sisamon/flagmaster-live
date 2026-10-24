@@ -14,4 +14,9 @@ arquitectura completa.
 - **Sin dependencias en `shared/`, `scripts/aggregate.js` y `site/`**: GitHub Actions los ejecuta sin `npm install`.
 - `site/` y `client/` en Vanilla JS. Todo texto de usuario (nicks, @) se escapa antes de pintarlo.
 - Privacidad: nunca publicar el id real de TikTok (usar `identity.playerId`); respetar `data/moderation.json`.
+- Bot del chat (`server/src/chatbot/`, panel `client/bot-panel.html`; ver README "Bot del chat"): frases sin emojis
+  (Studio los pinta como una X) y siempre por `content-filter.js` (nada de pedir likes, follows, compartir, regalos ni
+  enlaces). Escribe en TikTok LIVE Studio con ratón/teclado del sistema, no con navegador automatizado (TikTok oculta
+  esos comentarios). No se disfraza la automatización ante TikTok: nada de ocultar el navegador automatizado ni de
+  errores/borrados de tecleo simulados.
 - `npm test` antes de dar algo por terminado.

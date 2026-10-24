@@ -2,6 +2,8 @@ node_modules/
 .env
 # Estado local del directo en curso (copia de seguridad; la sesión final va a data/sessions)
 server/.live/
+# Perfil de navegador de una prueba antigua del bot (tenía la sesión de TikTok iniciada: nunca al repo)
+server/.chatbot-profile/
 # Datos de la web: los genera GitHub Actions desde data/sessions
 site/data/
 # Directos simulados (npm run demo)

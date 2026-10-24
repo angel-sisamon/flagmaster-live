@@ -307,7 +307,7 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds }) {
     emit('ranking:update', rankingPayload());
   }
 
-  return { events, start, stop, end, vote, syncSocket, status, resetRanking, isRunning: () => game.running };
+  return { events, start, stop, end, vote, syncSocket, status, resetRanking, isRunning: () => game.running, phase: () => game.phase };
 }
 
 module.exports = { createGame, pointsForPosition };
