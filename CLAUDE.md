@@ -17,6 +17,5 @@ arquitectura completa.
 - Bot del chat (`server/src/chatbot/`, panel `client/bot-panel.html`; ver README "Bot del chat"): frases sin emojis
   (Studio los pinta como una X) y siempre por `content-filter.js` (nada de pedir likes, follows, compartir, regalos ni
   enlaces). Escribe en TikTok LIVE Studio con ratón/teclado del sistema, no con navegador automatizado (TikTok oculta
-  esos comentarios). No se disfraza la automatización ante TikTok: nada de ocultar el navegador automatizado ni de
-  errores/borrados de tecleo simulados.
+  esos comentarios).
 - `npm test` antes de dar algo por terminado.

@@ -109,8 +109,7 @@ ritmo fijo (a veces una, a veces dos o tres seguidas y luego un descanso de 20�
 esperan) y nunca mientras estés tocando el ratón o el teclado. Arranca siempre en manual y vuelve a manual tras 3 fallos.
 
 **Lo que no se hace (decidido):** escribir desde un navegador automatizado (se probó con Playwright: TikTok oculta esos
-comentarios al resto del directo, solo los ve quien los envía) ni disfrazar la automatización ante TikTok (ocultar que
-el navegador está automatizado, errores y borrados de tecleo simulados).
+comentarios al resto del directo, solo los ve quien los envía).
 
 Control: `/api/chatbot` (estado) · `/api/chatbot/pause` · `/api/chatbot/resume` · `/api/chatbot/say?text=...` (propone
 ese texto). En modo prueba (sin usuario de TikTok): `/api/test-chat?user=pepe&text=hola`.
