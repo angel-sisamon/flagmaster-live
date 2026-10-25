@@ -12,3 +12,5 @@ site/data/
 .demo/
 *.log
 *.tmp
+# Pruebas de voz (npm run voices:test)
+client/voices/test/
