@@ -440,7 +440,8 @@ var LiveMode = (function () {
 
   /* ── Clasificación mensual ────────────────────────── */
   function _siteHtml() {
-    return _siteUrl ? t('final_site') + ' <b>' + _esc(_siteUrl) + '</b>' : '';
+    // La URL no se puede copiar desde el directo: se remite al enlace de la bio
+    return _siteUrl ? t('final_site') + ' <b>' + t('final_site_bio') + '</b>' : '';
   }
 
   function _renderLobbyMonth() {

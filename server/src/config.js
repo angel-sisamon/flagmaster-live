@@ -33,7 +33,7 @@ module.exports = {
 
   // Zona horaria que decide a qué mes pertenece un directo
   TIME_ZONE: process.env.LIVE_TZ || 'Europe/Madrid',
-  // Web de clasificaciones que se anuncia en el directo (sin https://, se lee en pantalla)
+  // Web de clasificaciones: si no está vacía, el directo anuncia "link en la bio" (la URL no se pinta)
   SITE_URL: process.env.LIVE_SITE_URL != null ? process.env.LIVE_SITE_URL : 'angel-sisamon.github.io/flagmaster-live',
 
   // Sin usuario de TikTok (modo prueba) no se graba nada salvo que se pida con LIVE_RECORD=1
