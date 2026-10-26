@@ -43,19 +43,39 @@ body.live-mode #screen-live-final { left:var(--stage-x);right:var(--stage-x);
   box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 80px rgba(0,0,0,.45); }
 
 /* Fondo animado (degradado + malla de luces): siempre en movimiento para no parecer una imagen fija.
+   El tono oscila solo (.live-bg-color, ±30°) y salta en cada pregunta (.live-bg-tint con --live-h, que elige
+   live-mode.js de BG_HUES). Se anima el filter directamente para que lo haga la GPU sin repintar cada fotograma.
    z-index:-1: la capa LIVE se inyecta al final del <body>, después de las pantallas del juego; sin él taparía #screen-game */
-.live-bg { display:none;position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
-  background:linear-gradient(-45deg,#1c0b40,#3d0d5f,#0b2c60,#0b4a5c,#4b0f3f);background-size:400% 400%;
-  animation:live-gradient 22s ease infinite; }
+.live-bg { display:none;position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:#140a30; }
 body.live-mode .live-bg { display:block; }
+.live-bg-tint { position:absolute;inset:0;filter:hue-rotate(var(--live-h, 0deg));transition:filter 2.2s ease; }
+.live-bg-color { position:absolute;inset:0;
+  background:linear-gradient(-45deg,#2a0b5c,#5a0d6f,#0b3c80,#0b6a6c,#6b0f4f);background-size:400% 400%;
+  animation:live-gradient 18s ease infinite,live-drift 14s ease-in-out infinite alternate; }
+/* Velo oscuro (como el del juego) para que el texto blanco siga contrastando con cualquier tono */
+.live-bg-color::after { content:'';position:absolute;inset:0;background:rgba(10,6,30,.28); }
 .live-bg-mesh { position:absolute;inset:-25%;
-  background:radial-gradient(circle at 20% 30%,rgba(255,80,180,.3),transparent 40%),
-             radial-gradient(circle at 80% 20%,rgba(80,160,255,.28),transparent 42%),
-             radial-gradient(circle at 50% 80%,rgba(255,208,64,.2),transparent 45%);
-  animation:live-mesh 26s ease-in-out infinite alternate; }
+  background:radial-gradient(circle at 20% 30%,rgba(255,80,180,.34),transparent 40%),
+             radial-gradient(circle at 80% 20%,rgba(80,160,255,.32),transparent 42%),
+             radial-gradient(circle at 50% 80%,rgba(255,208,64,.24),transparent 45%);
+  animation:live-mesh 20s ease-in-out infinite alternate; }
 @keyframes live-gradient { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+@keyframes live-drift { from{filter:hue-rotate(-30deg) saturate(1.15)} to{filter:hue-rotate(30deg) saturate(1.15)} }
 @keyframes live-mesh { from{transform:translate(-4%,-3%) rotate(0) scale(1)} to{transform:translate(4%,3%) rotate(12deg) scale(1.08)} }
 body.live-mode .game-bg { display:none; }
+/* El juego pinta un fondo fijo en <body> que tapa .live-bg (z-index:-1 queda por debajo del fondo del body) */
+body.live-mode { background:transparent; }
+
+/* Banderas subiendo por el fondo de todas las pantallas (--size en unidades de escenario, --drift = deriva lateral) */
+.live-bg-flags { position:absolute;inset:0;font-family:var(--font); }
+.live-bg-flag { position:absolute;bottom:0;font-size:calc(var(--u, 1vw) * var(--size, 8));line-height:1;opacity:0;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.35));animation:live-flag-rise linear infinite;will-change:transform; }
+@keyframes live-flag-rise {
+  0%   { transform:translate(0,110%) rotate(-12deg);opacity:0 }
+  8%   { opacity:.24 }
+  50%  { transform:translate(calc(var(--drift) * .5),-55vh) rotate(8deg) }
+  92%  { opacity:.24 }
+  100% { transform:translate(var(--drift),-115vh) rotate(-6deg);opacity:0 } }
 
 /* ── Pantalla de juego en LIVE ─────────────────────────────────────
  * Sin puntuación individual ni botón "Siguiente" (manda el servidor). Orden vertical:
@@ -124,6 +144,25 @@ body.live-mode .option-flag-inline { font-size:calc(var(--u) * 6); }
   margin:0 .05rem;border-radius:50%;background:var(--gold);color:#1a1a2e;font-size:calc(var(--u) * 3.8); }
 .live-votes span { font-weight:800;color:var(--text); }
 
+/* Más vida en la pregunta: las opciones entran una a una, las letras A B C D botan y el "LIVE" late */
+body.live-mode #options-grid .option-btn { animation:live-opt-in .5s cubic-bezier(.34,1.46,.64,1) both; }
+body.live-mode #options-grid .option-btn:nth-child(2) { animation-delay:.08s; }
+body.live-mode #options-grid .option-btn:nth-child(3) { animation-delay:.16s; }
+body.live-mode #options-grid .option-btn:nth-child(4) { animation-delay:.24s; }
+@keyframes live-opt-in { from{opacity:0;transform:translateY(18px) scale(.9)} to{opacity:1;transform:none} }
+body.live-mode #options-grid .option-btn.correct { animation:live-opt-correct .9s ease both; }
+@keyframes live-opt-correct { 0%{transform:scale(1)} 30%{transform:scale(1.07)} 55%{transform:scale(.98)} 100%{transform:scale(1.02)} }
+.live-cta b { animation:live-letter 2.4s ease-in-out infinite; }
+.live-cta b:nth-of-type(2) { animation-delay:.15s; }
+.live-cta b:nth-of-type(3) { animation-delay:.3s; }
+.live-cta b:nth-of-type(4) { animation-delay:.45s; }
+@keyframes live-letter { 0%,60%,100%{transform:none} 20%{transform:translateY(-22%) scale(1.12)} 40%{transform:translateY(4%)} }
+body.live-mode .hud-progress-text { animation:live-badge-glow 2.4s ease-in-out infinite; }
+@keyframes live-badge-glow { 0%,100%{box-shadow:0 0 0 rgba(239,68,68,0)} 50%{box-shadow:0 0 calc(var(--u) * 4) rgba(239,68,68,.7)} }
+/* La bandera flota (no la tarjeta: su transform es el giro de la carta) */
+body.live-mode .flag-emoji-lg { animation:live-flag-float 4s ease-in-out infinite; }
+@keyframes live-flag-float { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(calc(var(--u) * -1.4)) rotate(2deg)} }
+
 /* Reloj en los últimos 5 s: tiembla y se pone rojo */
 #timer-container.live-urgent .timer-ring { animation:live-shake .5s ease-in-out infinite;
   box-shadow:0 0 calc(var(--u) * 7) rgba(239,68,68,.55); }
@@ -154,10 +193,6 @@ body.live-mode .live-promo--in { opacity:.88;transform:translateY(-50%) scale(1)
 
 /* ── Sala de espera (antes de empezar la partida) ─────────────── */
 #screen-live-lobby { align-items:center;justify-content:center; }
-.lobby-flags { position:absolute;inset:0;overflow:hidden;pointer-events:none; }
-.lobby-flag { position:absolute;bottom:-4rem;opacity:.22;line-height:1;
-  animation:lobby-float linear infinite; }
-@keyframes lobby-float { from{transform:translateY(0) rotate(-8deg)} to{transform:translateY(-120vh) rotate(8deg)} }
 
 .lobby-shell { position:relative;z-index:1;width:100%;margin:auto;
   display:flex;flex-direction:column;align-items:center;gap:calc(var(--u) * 2.6);text-align:center;
@@ -335,6 +370,52 @@ body.live-mode .live-promo--in { opacity:.88;transform:translateY(-50%) scale(1)
 .lr-pts { flex-shrink:0;font-weight:900;color:var(--gold); }
 .lr-pts small { font-size:.7em;color:var(--text-2); }
 
+/* Tabla de todos los acertantes (últimos segundos de los resultados): lista con scroll automático a la izquierda,
+   resumen a la derecha (con avatar, justo encima de él) */
+.lr-table { flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) var(--lt-side-w);
+  grid-template-rows:minmax(0,1fr);gap:calc(var(--u) * 2.4);--lt-side-w:calc(var(--u) * 32); }
+.lr-table[hidden] { display:none; }
+.lr-shell--table { overflow:hidden; }
+.lr-shell--table > .lr-answer, .lr-shell--table > .lr-stats,
+.lr-shell--table > .lr-winners, .lr-shell--table > .lr-ranking { display:none; }
+.lr-shell--table > .lr-head { margin-bottom:0; }
+.lt-main { min-height:0;display:flex;flex-direction:column;animation:lt-in .6s cubic-bezier(.34,1.3,.64,1) both; }
+@keyframes lt-in { from{opacity:0;transform:translateX(-30px) scale(.94)} to{opacity:1;transform:none} }
+.lt-count { margin-left:.3rem;padding:.05rem .6rem;border-radius:999px;background:var(--green);color:#fff;font-size:.9em; }
+.lt-scroll { flex:1;min-height:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 4%,#000 90%,transparent);
+          mask-image:linear-gradient(180deg,transparent,#000 4%,#000 90%,transparent); }
+.lt-list { list-style:none;margin:0;padding:calc(var(--u) * 4) 0 calc(var(--u) * 10);display:flex;flex-direction:column;gap:calc(var(--u) * .9); }
+.lt-row { display:flex;align-items:center;gap:calc(var(--u) * 2);padding:calc(var(--u) * 1.1) calc(var(--u) * 2.2);
+  border-radius:calc(var(--u) * 3);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);
+  font-size:calc(var(--u) * 3.6);line-height:1.2;color:var(--text);animation:lt-row-in .5s cubic-bezier(.34,1.3,.64,1) both; }
+@keyframes lt-row-in { from{opacity:0;transform:translateY(16px) scale(.92)} to{opacity:1;transform:none} }
+.lt-row:nth-child(even) { background:rgba(255,255,255,.04); }
+.lt-row--1 { background:linear-gradient(90deg,rgba(255,208,64,.4),rgba(255,208,64,.08)) !important;border-color:rgba(255,208,64,.7);
+  box-shadow:0 0 22px rgba(255,208,64,.3);font-size:calc(var(--u) * 4); }
+.lt-row--2 { background:linear-gradient(90deg,rgba(210,220,240,.3),rgba(210,220,240,.06)) !important;border-color:rgba(210,220,240,.5); }
+.lt-row--3 { background:linear-gradient(90deg,rgba(205,127,50,.34),rgba(205,127,50,.06)) !important;border-color:rgba(205,127,50,.55); }
+.lt-row .lr-pos { width:calc(var(--u) * 6.5); }
+.lt-row--more { justify-content:center;font-weight:900;color:var(--text-2); }
+.lt-pts { flex-shrink:0;padding:.05rem .5rem;border-radius:999px;background:var(--green);color:#fff;font-size:.8em;font-weight:900; }
+
+.lt-side { align-self:start;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u) * 1.4);text-align:center;
+  padding:calc(var(--u) * 3) calc(var(--u) * 2.4);animation:lt-side-in .6s cubic-bezier(.34,1.3,.64,1) .15s both; }
+@keyframes lt-side-in { from{opacity:0;transform:translateX(30px) scale(.94)} to{opacity:1;transform:none} }
+.lt-side p { margin:0; }
+.lt-flag { font-size:calc(var(--u) * 15);line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,.45));
+  animation:lr-flag-in .7s cubic-bezier(.34,1.46,.64,1) .3s both,live-flag-float 4s ease-in-out 1s infinite; }
+.lt-country { display:flex;align-items:center;justify-content:center;gap:calc(var(--u) * 1.4);flex-wrap:wrap;
+  font-size:calc(var(--u) * 4);font-weight:900;line-height:1.15;color:var(--text); }
+.lt-country .lr-letter { width:calc(var(--u) * 7);height:calc(var(--u) * 7);font-size:calc(var(--u) * 3.8); }
+.lt-big { display:flex;flex-direction:column;align-items:center; }
+.lt-big b { font-size:calc(var(--u) * 13);font-weight:900;line-height:1;color:var(--green);text-shadow:0 0 26px rgba(34,197,94,.55);
+  animation:lt-big-pop .8s cubic-bezier(.34,1.46,.64,1) .45s both; }
+@keyframes lt-big-pop { from{transform:scale(.2);opacity:0} to{transform:none;opacity:1} }
+.lt-pct { font-size:calc(var(--u) * 4.4);font-weight:900;color:var(--text); }
+.lt-first { display:flex;flex-direction:column;gap:.15rem;max-width:100%; }
+.lt-first b { overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:calc(var(--u) * 3.8);font-weight:900;color:var(--gold); }
+
 .lr-progress { flex-shrink:0;margin-top:auto;height:calc(var(--u) * 1.4);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.12); }
 .lr-progress span { display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));
   transition:width 1s linear; }
@@ -390,6 +471,43 @@ body.live-mode .live-promo--in { opacity:.88;transform:translateY(-50%) scale(1)
 .lf-actions { flex-shrink:0;display:flex;justify-content:center;margin-top:auto; }
 .lf-actions .btn { font-size:calc(var(--u) * 4.2); }
 
+/* ── Avatar VTuber abajo a la derecha (body.live-avatar) ────────────
+ * El avatar lo pone TikTok LIVE Studio encima de la captura del navegador, en la caja de --avatar-w × --avatar-h
+ * pegada a la esquina inferior derecha del escenario. Aquí solo se deja ese hueco libre y se le pone una luz de
+ * escenario para que parezca parte de la pantalla. */
+body.live-mode { --avatar-w:calc(var(--u) * 38); --avatar-h:calc(var(--u) * 50);
+  --avatar-gap:calc(var(--avatar-w) - var(--u) * 2); }   /* margen derecho que deja libre el hueco desde el padding de 4u */
+.live-avatar-spot { display:none; }
+body.live-avatar .live-avatar-spot { display:block;position:fixed;z-index:0;pointer-events:none;
+  right:var(--stage-x);bottom:0;width:var(--avatar-w);height:var(--avatar-h); }
+.live-avatar-spot::before { content:'';position:absolute;inset:8% -10% -8% -10%;
+  background:radial-gradient(ellipse 55% 60% at 50% 70%,rgba(255,255,255,.16),rgba(255,208,64,.08) 45%,transparent 70%);
+  animation:live-spot 5s ease-in-out infinite; }
+.live-avatar-spot::after { content:'';position:absolute;left:12%;right:12%;bottom:2%;height:9%;border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(255,208,64,.45),rgba(255,80,180,.18) 50%,transparent 72%);
+  filter:blur(4px);animation:live-spot 5s ease-in-out infinite reverse; }
+@keyframes live-spot { 0%,100%{opacity:.75;transform:scale(1)} 50%{opacity:1;transform:scale(1.06)} }
+
+/* Pregunta: ocupa la mitad de arriba del escenario, no hace falta moverla */
+
+/* Resultados: tarjetas pegadas arriba (sin centrar) para que el ranking acabe por encima del avatar */
+body.live-avatar .lr-progress { margin-right:var(--avatar-gap); }
+body.live-avatar .lr-head { margin-bottom:0; }
+body.live-avatar .lr-table { --lt-side-w:var(--avatar-w);margin-right:calc(var(--u) * -4); }
+body.live-avatar .lt-side { margin-right:calc(var(--u) * 4);max-height:calc(100% - var(--avatar-h) + var(--u) * 6);overflow:hidden; }
+
+/* Sala de espera: el contenido se centra en lo que queda por encima del avatar */
+body.live-avatar .lobby-shell { padding-bottom:calc(var(--sab) + var(--avatar-h) * .8); }
+
+/* Final: podio a todo el ancho; resto del TOP, estadísticas y botón a la izquierda del avatar */
+body.live-avatar .lf-rest, body.live-avatar .lf-stats,
+body.live-avatar .lf-site, body.live-avatar .lf-actions { margin-right:var(--avatar-gap); }
+body.live-avatar .lf-stats { grid-template-columns:repeat(2,1fr); }
+
+/* Saludos y respuestas a "!yo" en partida: abajo a la izquierda, debajo de la llamada a votar */
+body.live-avatar.live-in-game .live-greetings { right:auto;left:calc(var(--stage-x) + .75rem);align-items:flex-start;
+  max-width:calc(var(--stage-w) - var(--avatar-w) - 1rem); }
+
 /* ── Saludos a quien entra al directo ─────────────────────────── */
 .live-greetings { position:fixed;z-index:50;left:calc(var(--stage-x, 0px) + 1rem);bottom:calc(var(--sab) + 1rem);
   display:flex;flex-direction:column;align-items:flex-start;gap:.45rem;pointer-events:none;
@@ -443,5 +561,8 @@ body.live-in-game .live-likes { left:calc(var(--stage-x) + calc(var(--u) * 4) + 
 @keyframes live-like-name { 0%{opacity:0;transform:translateY(-4px)} 12%,75%{opacity:1;transform:none} 100%{opacity:0;transform:translateY(-4px)} }
 
 @media (prefers-reduced-motion:reduce) {
-  .live-bg, .live-bg-mesh, .live-likes-heart, .live-promo--in { animation:none; }
+  .live-bg-color, .live-bg-mesh, .live-likes-heart, .live-promo--in, .live-bg-flags,
+  .live-cta b, body.live-mode .flag-emoji-lg, body.live-mode .hud-progress-text, .live-avatar-spot::before,
+  .live-avatar-spot::after { animation:none; }
+  .live-bg-flags { display:none; }
 }

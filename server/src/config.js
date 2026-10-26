@@ -58,6 +58,11 @@ module.exports = {
   // 'paste' (Ctrl+V) o 'type' (teclea el texto), por si Studio no acepta el pegado
   CHAT_INPUT_METHOD: process.env.CHAT_INPUT_METHOD === 'type' ? 'type' : 'paste',
 
+  // Avatar VTuber (server/src/vtuber): reacciona al juego y al chat en VTube Studio (API WebSocket).
+  // La boca la mueve VTube Studio con su lip-sync de micrófono (cable virtual), no este servidor.
+  VTUBER: flag(process.env.VTUBER, false),
+  VTUBER_URL: process.env.VTUBER_URL || 'ws://127.0.0.1:8001',
+
   ANSWER_SECONDS: 20,
   RESULTS_SECONDS: 10,
   RECONNECT_MS: 15000,

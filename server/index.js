@@ -8,7 +8,8 @@
  *   4. Lleva la clasificación del mes en directo: TOP en la sala y "!yo" en el chat (src/standings.js).
  *   5. (Opcional, CHATBOT=1) Propone mensajes para el chat en http://localhost:3000/bot: saludos, recordar que se
  *      vota con la letra y frases sueltas (src/chatbot/). Quien emite los copia y los pega.
- *   6. Sirve el juego (www de flag-master) con la capa LIVE de client/ (src/live-page.js) y lo emite
+ *   6. (Opcional, VTUBER=1) Mueve un avatar de VTube Studio según el juego, el chat y los regalos (src/vtuber/).
+ *   7. Sirve el juego (www de flag-master) con la capa LIVE de client/ (src/live-page.js) y lo emite
  *      todo por Socket.io.
  *
  * Arranque:  npm start -- <usuario_tiktok>      (o TIKTOK_USERNAME en .env; sin usuario = modo prueba)
@@ -37,6 +38,7 @@ const { createChatBot } = require('./src/chatbot');
 const { createSender } = require('./src/chatbot/senders');
 const { createStudioPaster, DEFAULT_SETTINGS: DEFAULT_STUDIO_SETTINGS } = require('./src/chatbot/studio');
 const { createAutopilot } = require('./src/chatbot/autopilot');
+const { createVTuber } = require('./src/vtuber');
 const { load: loadWin32 } = require('./src/chatbot/win32');
 const { spawn } = require('child_process');
 
@@ -71,9 +73,22 @@ app.use(express.static(config.GAME_DIR, { index: false }));
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: corsOrigin, methods: ['GET', 'POST'] } });
-const emit = (event, payload) => io.emit(event, payload);
+// El avatar (si está activo) ve lo mismo que la pantalla del directo
+let vtuber = null;
+const emit = (event, payload) => {
+  io.emit(event, payload);
+  if (vtuber) vtuber.onEmit(event, payload);
+};
 
 /* ── Piezas ────────────────────────────────────────────────── */
+if (config.VTUBER) {
+  vtuber = createVTuber({
+    url: config.VTUBER_URL,
+    tokenFile: path.join(__dirname, '.vtuber-token'),
+    mapFile: path.join(__dirname, '.vtuber-map.json'),
+  });
+  vtuber.start();
+}
 const recorder = createRecorder({
   enabled: config.RECORD,
   dataDir: config.DATA_DIR,
@@ -210,6 +225,7 @@ function handleChat(user, text) {
   if (game.vote(user, text)) return;
   handleCommand(user, String(text || ''));
   if (chatbot) chatbot.onChat(user, String(text || ''));
+  if (vtuber) vtuber.onChat(user, String(text || ''));
 }
 
 /* ── Conexión con TikTok LIVE ──────────────────────────────── */
@@ -223,8 +239,14 @@ const tiktok = createTikTok({
     chat: handleChat,
     join: handleJoin,
     like: handleLike,
-    gift: (user, diamonds) => recorder.onGift(user, diamonds),
-    follow: user => recorder.onFollow(user),
+    gift: (user, diamonds) => {
+      recorder.onGift(user, diamonds);
+      if (vtuber) vtuber.onGift(user, diamonds);
+    },
+    follow: user => {
+      recorder.onFollow(user);
+      if (vtuber) vtuber.onFollow(user);
+    },
     share: user => recorder.onShare(user),
     viewers: n => recorder.onViewers(n),
     connected: roomId => recorder.setRoom(roomId),
@@ -252,6 +274,7 @@ function statusPayload() {
     likes: likes.total,
     siteUrl: config.SITE_URL,
     recording: recorder.enabled,
+    avatar: !!vtuber,   // la página deja libre la esquina inferior derecha para el avatar
   };
 }
 
@@ -367,11 +390,14 @@ app.get('/api/test-like', (req, res) => {
   res.json({ ok: true, likes: likes.total });
 });
 app.get('/api/test-gift', (req, res) => {
-  recorder.onGift(testUser(req, 'fan'), Number(req.query.diamonds) || 1);
+  const diamonds = Number(req.query.diamonds) || 1;
+  recorder.onGift(testUser(req, 'fan'), diamonds);
+  if (vtuber) vtuber.onGift(null, diamonds);
   res.json({ ok: true, session: recorder.info() });
 });
 app.get('/api/test-follow', (req, res) => {
   recorder.onFollow(testUser(req, 'fan'));
+  if (vtuber) vtuber.onFollow(null);
   res.json({ ok: true, session: recorder.info() });
 });
 
@@ -390,6 +416,31 @@ for (const action of ['pause', 'resume', 'say']) {
     res.json({ ok: true, ...chatbot.status() });
   });
 }
+
+/*   /api/vtuber   estado del avatar (conexión, modelo, qué animaciones y expresiones encontró)
+ *   /api/vtuber/test?event=gift   prueba una reacción (gift, greeting, follow, game:over, round:results&pct=10...)
+ *   /api/vtuber/refresh   vuelve a leer el modelo (tras cambiarlo en VTube Studio) · /api/vtuber/pause · /api/vtuber/resume */
+app.get('/api/vtuber', (req, res) => res.json(vtuber ? vtuber.status() : { enabled: false }));
+app.get('/api/vtuber/:action', async (req, res) => {
+  if (!vtuber) return res.status(404).json({ ok: false, error: 'avatar desactivado (VTUBER=1 en .env)' });
+  const { action } = req.params;
+  try {
+    if (action === 'test') {
+      const event = String(req.query.event || 'greeting');
+      const pct = Number(req.query.pct);
+      const data = { diamonds: Number(req.query.diamonds) || 10, text: req.query.text, count: 50, phase: 'answer', remaining: 5,
+        totalVotes: req.query.votes === '0' ? 0 : 10, correctPct: Number.isFinite(pct) ? pct : 50 };
+      return res.json({ ok: true, result: vtuber.trigger(event, data), ...vtuber.status() });
+    }
+    if (action === 'refresh') await vtuber.refresh();
+    else if (action === 'pause') vtuber.pause();
+    else if (action === 'resume') vtuber.resume();
+    else return res.status(404).json({ ok: false, error: `acción desconocida: ${action}` });
+    res.json({ ok: true, ...vtuber.status() });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
 
 /*   /api/session          estado de la grabación del directo
  *   /api/session/finish   cierra el directo ahora (guarda y publica) sin parar el servidor */
@@ -413,6 +464,7 @@ async function shutdown(signal) {
   console.log(`\n👋 Cerrando (${signal})...`);
   game.stop();
   if (autopilot) autopilot.stop();
+  if (vtuber) vtuber.stop();
   if (chatbot) chatbot.stop().catch(() => {});
   try {
     await Promise.race([finishSession('servidor detenido'), new Promise(r => setTimeout(r, 20000))]);
