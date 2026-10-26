@@ -21,7 +21,7 @@
 const EventEmitter = require('events');
 
 const VOTES_BROADCAST_MS = 500;
-const MAX_WINNERS_SENT = 30;
+const MAX_WINNERS_SENT = 500;   // la tabla de acertantes de la pantalla de resultados los enseña todos
 const POSITION_POINTS = [10, 8, 6, 5, 4, 3, 2];
 const MIN_POINTS = 1;
 const RANKING_SIZE = 10;

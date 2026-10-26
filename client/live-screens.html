@@ -2,11 +2,18 @@
      server/src/live-page.js las inserta en el index.html del juego antes de </body>; el botón LIVE de la home
      y #live-results (debajo de #options-grid) los crea live-mode.js al arrancar, así www/index.html no se toca. -->
 <!-- ═══════════════════════════════ PANTALLA: SALA DE ESPERA LIVE ══════════════════ -->
-<!-- Fondo animado del modo LIVE (solo visible con body.live-mode): evita que el directo parezca una imagen fija -->
-<div class="live-bg" aria-hidden="true"><div class="live-bg-mesh"></div></div>
+<!-- Fondo animado del modo LIVE (solo visible con body.live-mode): evita que el directo parezca una imagen fija.
+     El color va cambiando solo y da un salto en cada pregunta; las banderas suben sin parar en todas las pantallas
+     (fuera de .live-bg-color para que el cambio de tono no las pinte de otro color). -->
+<div class="live-bg" aria-hidden="true">
+  <div class="live-bg-tint"><div class="live-bg-color"><div class="live-bg-mesh"></div></div></div>
+  <div class="live-bg-flags" id="live-bg-flags"></div>
+</div>
+<!-- Sitio del avatar de VTube Studio (body.live-avatar): luz de escenario abajo a la derecha; el avatar lo pone
+     encima TikTok LIVE Studio con su propia fuente -->
+<div class="live-avatar-spot" aria-hidden="true"></div>
 <div id="screen-live-lobby" class="screen">
   <div class="home-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
-  <div class="lobby-flags" id="lobby-flags" aria-hidden="true"></div>
   <div class="lobby-shell">
     <div class="lobby-badge"><span class="lobby-badge-dot"></span><span data-i18n="lobby_badge">EN DIRECTO</span></div>
     <div class="lobby-globe" aria-hidden="true">🌍</div>
@@ -71,6 +78,14 @@
       <h2 class="lr-title">🏆 <span data-i18n="lr_ranking">Ranking LIVE</span></h2>
       <div id="lr-ranking"></div>
     </section>
+    <!-- Segunda mitad de los resultados: todos los acertantes en orden, con scroll automático -->
+    <div class="lr-table" id="lr-table" hidden>
+      <section class="lr-card lt-main">
+        <h2 class="lr-title">🎯 <span data-i18n="lr_winners">Acertantes de la ronda</span> <b class="lt-count" id="lt-count"></b></h2>
+        <div class="lt-scroll" id="lt-scroll"></div>
+      </section>
+      <aside class="lr-card lt-side" id="lt-side"></aside>
+    </div>
     <div class="lr-progress"><span id="lr-progress"></span></div>
   </div>
 </div>

@@ -21,10 +21,15 @@
  *   - #live-results (debajo de #options-grid) muestra la llamada a votar y el recuento,
  *   - al cerrar la votación se revela la opción correcta y, tras un instante, se pasa a la
  *     vista intermedia #screen-live-round (aciertos/fallos, acertantes, ranking LIVE de la
- *     sesión y fuegos artificiales de live-fireworks.js) hasta la siguiente pregunta,
+ *     sesión y fuegos artificiales de live-fireworks.js); a falta de TABLE_AT_SECONDS pasa a la tabla de todos
+ *     los acertantes en orden (#lr-table), que baja sola hasta el último antes de la siguiente pregunta,
  *   - los "Me gusta" del directo se pintan en el widget #live-likes (esquina superior izquierda),
  *   - los sonidos salen de AudioFX (respetan el ajuste de sonido del juego),
  *   - la voz en inglés (respuesta correcta, saludos, gracias por los likes) sale de live-voice.js.
+ *
+ * Fondo (todas las pantallas LIVE): banderas que suben sin parar y color que oscila solo y cambia en cada pregunta.
+ * Avatar VTuber: si el servidor lo tiene (live:status.avatar, VTUBER=1) o la URL lleva ?avatar=1, body.live-avatar
+ * deja libre la esquina inferior derecha del escenario para ponerle encima el avatar en TikTok LIVE Studio.
  *
  * Clasificación mensual (server/src/standings.js):
  *   - month:update → TOP 3 del mes en la sala de espera, con la dirección de la web,
@@ -44,7 +49,12 @@ var LiveMode = (function () {
   var MAX_WINNERS_SHOWN = 12;
   var MAX_GREETINGS = 4;
   var GREETING_MS = 4500;
-  var LOBBY_FLAGS = 18;
+  var BG_FLAGS = 22;           // banderas subiendo por el fondo (todas las pantallas LIVE)
+  // Tonos del fondo (giro sobre el morado base) por los que va saltando en cada pregunta: morado, azul, rosa, turquesa, rojo, índigo
+  var BG_HUES = [0, -45, 40, -90, 75, -20];
+  var TABLE_AT_SECONDS = 5;    // resultados: a falta de estos segundos se pasa a la tabla de todos los acertantes
+  var TABLE_ROWS_ANIMATED = 16;
+  var AVATAR_KEY = 'avatar';   // ?avatar=1 / ?avatar=0 en la URL fuerza el hueco del avatar (para probar sin VTube Studio)
   var REVEAL_MS = 1600;        // tiempo viendo la opción correcta antes de pasar a la vista de resultados
   var RANKING_SHOWN = 10;
   var LOBBY_RANKING_SHOWN = 3;
@@ -76,6 +86,10 @@ var LiveMode = (function () {
   var _promoCount = 0;
   var _promoTimer = null;
   var _lastQuestion = null;
+  var _lastResults = null;
+  var _tableShown = false;
+  var _tableRaf = 0;
+  var _bgStep = 0;
   var _ranking = [];          // TOP acumulado de la sesión, ya ordenado por el servidor
   var _month = null;          // { month, top: [{nickname, points}], players } del evento month:update
   var _siteUrl = '';          // web de clasificaciones (live:status.siteUrl)
@@ -159,25 +173,51 @@ var LiveMode = (function () {
     if (startBtn) startBtn.disabled = !_connected;
   }
 
-  /* ── Sala de espera ───────────────────────────────── */
-  function _buildLobbyFlags() {
-    var box = _el('lobby-flags');
+  /* ── Fondo: banderas que suben y color que cambia ──── */
+  function _placeBgFlag(f) {
+    f.textContent = _randomFlag();
+    f.style.left = (Math.random() * 96) + '%';
+    f.style.setProperty('--size', (5 + Math.random() * 9).toFixed(1));
+    f.style.setProperty('--drift', ((Math.random() - 0.5) * 30).toFixed(1) + 'vw');
+  }
+
+  function _buildBgFlags() {
+    var box = _el('live-bg-flags');
     if (!box || box.childElementCount) return;
-    for (var i = 0; i < LOBBY_FLAGS; i++) {
+    for (var i = 0; i < BG_FLAGS; i++) {
       var f = document.createElement('span');
-      f.className = 'lobby-flag';
-      f.textContent = _randomFlag();
-      f.style.left = (Math.random() * 96) + '%';
-      f.style.fontSize = (1.6 + Math.random() * 2.2) + 'rem';
-      f.style.animationDuration = (10 + Math.random() * 10) + 's';
-      f.style.animationDelay = (-Math.random() * 20) + 's';
+      f.className = 'live-bg-flag';
+      _placeBgFlag(f);
+      f.style.animationDuration = (12 + Math.random() * 12) + 's';
+      f.style.animationDelay = (-Math.random() * 24) + 's';
+      // En cada vuelta sale otra bandera por otro sitio
+      f.addEventListener('animationiteration', function (e) { _placeBgFlag(e.currentTarget); });
       box.appendChild(f);
     }
+  }
+
+  /* Salto de color del fondo en cada pregunta (encima del giro lento continuo de live-mode.css) */
+  function _shiftBgColor() {
+    _bgStep++;
+    var bg = document.querySelector('.live-bg');
+    if (bg) bg.style.setProperty('--live-h', BG_HUES[_bgStep % BG_HUES.length] + 'deg');
+  }
+
+  /* ── Hueco del avatar (abajo a la derecha) ────────── */
+  function _avatarParam() {
+    var m = new RegExp('[?&]' + AVATAR_KEY + '=([01])').exec(location.search);
+    return m ? m[1] === '1' : null;
+  }
+
+  function _setAvatar(on) {
+    var forced = _avatarParam();
+    document.body.classList.toggle('live-avatar', _active && (forced === null ? !!on : forced));
   }
 
   function _leaveRoundScreen() {
     clearTimeout(_revealTimer);
     _onRoundScreen = false;
+    _hideTable();
     if (typeof LiveFireworks !== 'undefined') LiveFireworks.stop();
   }
 
@@ -194,7 +234,7 @@ var LiveMode = (function () {
     if (host) host.hidden = false;
     var cont = _el('timer-container');
     if (cont) cont.style.display = 'none';
-    _buildLobbyFlags();
+    _buildBgFlags();
     _renderLobbyRanking();
     _renderLobbyMonth();
     _renderLobbyControls();
@@ -382,6 +422,7 @@ var LiveMode = (function () {
     if (isLast && q.remaining >= q.duration) _voice('announceLastRound');
     _voice('setPhase', 'answer');
     _setTimer(q.remaining, q.duration, 'answer');
+    if (q.round !== _promoRound) _shiftBgColor();   // antes de _placePromo, que apunta la ronda
     _placePromo(q.round);
     _renderVoting(0);
   }
@@ -404,7 +445,11 @@ var LiveMode = (function () {
   function _onTick(tk) {
     if (!_active || _state !== 'game') return;
     _setTimer(tk.remaining, tk.phase === 'answer' ? _duration : 10, tk.phase);
-    if (tk.phase !== 'answer') { _setRoundCountdown(tk.remaining, 10); return; }
+    if (tk.phase !== 'answer') {
+      _setRoundCountdown(tk.remaining, 10);
+      if (_onRoundScreen && tk.remaining <= TABLE_AT_SECONDS) _showTable(tk.remaining);
+      return;
+    }
     if (tk.remaining <= 5) _sfx('timerWarning');      // pitido doble: se acaba el tiempo
     else if (tk.remaining <= 10) _sfx('tick');
   }
@@ -539,6 +584,59 @@ var LiveMode = (function () {
     if (typeof LiveFireworks !== 'undefined') {
       LiveFireworks.start(_el('live-fx'), r.correctCount ? 0.3 + 0.7 * r.correctPct / 100 : 0.05);
     }
+    if (r.remaining <= TABLE_AT_SECONDS) _showTable(r.remaining);   // conectado a mitad de los resultados
+  }
+
+  /* ── Segunda mitad de los resultados: todos los acertantes en orden, con scroll automático ── */
+  function _showTable(remaining) {
+    var r = _lastResults;
+    if (_tableShown || !r || !r.winners.length) return;   // si nadie acierta se queda la vista de resultados
+    _tableShown = true;
+    var q = _lastQuestion && _lastQuestion.round === r.round ? _lastQuestion : null;
+    var extra = r.correctCount - r.winners.length;
+    _el('lt-count').textContent = r.correctCount;
+    _el('lt-scroll').innerHTML = '<ol class="lt-list">' + r.winners.map(function (w, i) {
+      return '<li class="lt-row' + (i < 3 ? ' lt-row--' + (i + 1) : '') + '"' +
+        (i < TABLE_ROWS_ANIMATED ? ' style="animation-delay:' + (0.25 + i * 0.07).toFixed(2) + 's"' : '') + '>' +
+        '<span class="lr-pos">' + (i < 3 ? MEDALS[i] : i + 1) + '</span>' +
+        '<span class="lr-name">' + _esc(w.nickname) + '</span>' +
+        (w.points ? '<span class="lt-pts">+' + w.points + '</span>' : '') + '</li>';
+    }).join('') + (extra > 0 ? '<li class="lt-row lt-row--more">+' + extra + '</li>' : '') + '</ol>';
+
+    _el('lt-side').innerHTML =
+      (q ? '<span class="lt-flag">' + q.correct.flag + '</span>' : '') +
+      '<p class="lt-country"><b class="lr-letter">' + r.correctLetter + '</b>' + (q ? _esc(cn(q.correct)) : '') + '</p>' +
+      '<p class="lt-big"><b>' + r.correctCount + '</b><span class="lr-label">' + t('lt_count') + '</span></p>' +
+      '<p class="lt-pct">✅ ' + r.correctPct + '%</p>' +
+      '<p class="lt-first"><span class="lr-label">⚡ ' + t('lt_first') + '</span><b>' + _esc(r.winners[0].nickname) + '</b></p>';
+
+    var box = _el('lr-table');
+    box.hidden = false;
+    box.parentNode.classList.add('lr-shell--table');
+    _sfx('screenTransition');
+    _autoScroll(_el('lt-scroll'), Math.max(1, remaining) * 1000);
+  }
+
+  /* Baja poco a poco hasta el último acertante: empieza cuando han entrado las primeras filas y acaba antes del cambio */
+  function _autoScroll(box, ms) {
+    cancelAnimationFrame(_tableRaf);
+    box.scrollTop = 0;
+    var begin = performance.now() + 1000;
+    var dur = Math.max(800, ms - 2000);
+    function step(now) {
+      var k = Math.min(1, Math.max(0, (now - begin) / dur));
+      var max = box.scrollHeight - box.clientHeight;
+      if (max > 0) box.scrollTop = max * (k < 0.5 ? 2 * k * k : 1 - Math.pow(2 - 2 * k, 2) / 2);
+      if (k < 1) _tableRaf = requestAnimationFrame(step);
+    }
+    _tableRaf = requestAnimationFrame(step);
+  }
+
+  function _hideTable() {
+    _tableShown = false;
+    cancelAnimationFrame(_tableRaf);
+    var box = _el('lr-table');
+    if (box) { box.hidden = true; box.parentNode.classList.remove('lr-shell--table'); }
   }
 
   /* ── Resultados: revelación breve en la pantalla de juego y luego la vista intermedia ── */
@@ -565,6 +663,8 @@ var LiveMode = (function () {
     }
 
     if (r.ranking) { _ranking = r.ranking; _players = r.players || 0; }
+    _hideTable();
+    _lastResults = r;
 
     // Locución en inglés de la respuesta (y a veces de quién va primero); no a quien se conecta a mitad
     _voice('setPhase', 'results');
@@ -698,6 +798,7 @@ var LiveMode = (function () {
     var count = _el('lobby-joined');
     if (count && s.audience != null) count.textContent = s.audience;
     if (s.likes != null) _setLikesTotal(Math.max(_likesTotal, s.likes));
+    _setAvatar(s.avatar);
     var msg = s.tiktok === 'disabled' ? t('live_test_mode') : s.message;
     _setStatus(s.tiktok === 'connected' ? 'live' : 'warn', msg);
     // Si la partida se detiene desde otro sitio, volver a la sala de espera
@@ -710,6 +811,7 @@ var LiveMode = (function () {
     _active = true;
     _connected = false;
     document.body.classList.add('live-mode');
+    _setAvatar(false);   // el servidor dice en live:status si hay avatar; ?avatar=1 lo fuerza
     _voice('enable');
     _el('hud-progress-text').textContent = '🔴 LIVE';
     _showLobby();
@@ -755,7 +857,7 @@ var LiveMode = (function () {
     _voice('disable');
     _ranking = []; _players = 0; _month = null;
     if (_socket) { _socket.emit('game:stop'); _socket.disconnect(); _socket = null; }
-    document.body.classList.remove('live-mode', 'live-in-game', 'live-limited');
+    document.body.classList.remove('live-mode', 'live-in-game', 'live-limited', 'live-avatar');
     var box = _el('live-results');
     if (box) { box.hidden = true; box.innerHTML = ''; }
     var greets = _el('live-greetings');
