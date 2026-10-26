@@ -1,0 +1,136 @@
+{
+  "_doc": "Textos del locutor. npm run voices genera en client/voices/<lang>/ lo que falte o haya cambiado. Etiquetas entre <>: <laugh>, <chuckle>, <sigh>, <breath>, <gasp>, <short pause>, <long pause>, <whispering>. Grupos 'perCountry': plantillas con {N} (nombre del país), se generan 'perCountry' audios por país.",
+  "lang": "en",
+  "model": "gemini-3.8-flash-lite-tts",
+  "voice": "Kore",
+  "style": "warm, upbeat game-show host on a live stream, casual and spontaneous, natural breaths",
+
+  "spokenNames": {
+    "_doc": "Cómo se dice el país en voz alta cuando no vale el nombre del juego (código ISO del juego → texto)",
+    "GB": "the United Kingdom", "US": "the United States", "NL": "the Netherlands", "PH": "the Philippines",
+    "CZ": "the Czech Republic", "DO": "the Dominican Republic", "CF": "the Central African Republic",
+    "CG": "the Republic of the Congo", "CD": "the Democratic Republic of the Congo", "AE": "the United Arab Emirates",
+    "MH": "the Marshall Islands", "SB": "the Solomon Islands", "KM": "the Comoros", "SC": "the Seychelles",
+    "GM": "the Gambia"
+  },
+
+  "groups": {
+    "answer": {
+      "_doc": "Respuesta correcta (sin letra: ya se ve en pantalla)",
+      "perCountry": 2,
+      "templates": [
+        "The correct answer was {N}!",
+        "Ah, it was {N} this time!",
+        "Let's see... yes! {N} was correct!",
+        "And the answer is... <short pause> {N}!",
+        "It was {N}! Well done if you got it.",
+        "{N}! Did you get it right?",
+        "There it is: {N}.",
+        "Nice! The right answer was {N}.",
+        "Okay, that was {N}!",
+        "{N}! <chuckle> Who called it?",
+        "Yep, it's {N}!",
+        "That flag belongs to {N}!",
+        "Drumroll... <short pause> it's {N}!",
+        "The answer: {N}. Points for everyone who got it!",
+        "Alright, {N} was the one.",
+        "If you said {N}, you nailed it!",
+        "Boom, {N}!",
+        "And it's... {N}! <laugh>"
+      ]
+    },
+    "nobody": {
+      "_doc": "Respuesta correcta cuando nadie acertó",
+      "perCountry": 1,
+      "templates": [
+        "Ooh, tough one! It was {N}.",
+        "Nobody got that one! The answer was {N}.",
+        "Tricky! It was {N}.",
+        "Wow, that one got everybody! <laugh> It was {N}.",
+        "<sigh> Nobody? Really? It was {N}!",
+        "Okay, that one was hard. The answer was {N}.",
+        "Oof! It was {N}. Next one's yours!",
+        "Not a single correct answer! <chuckle> It was {N}."
+      ]
+    },
+
+    "tail_easy": [
+      "Most of you got that one!", "Too easy for you, huh? <laugh>", "Great job, chat!", "Lots of points this round!"
+    ],
+    "tail_hard": [
+      "Only a few of you got it.", "That one was sneaky.", "Respect if you got that right!", "Not many got that one!"
+    ],
+    "last_round": [
+      "Last flag of the game! Make it count.",
+      "Here comes the final question!",
+      "This is the last one, good luck everyone!",
+      "Final flag! Let's see who wins this.",
+      "Okay everyone... <breath> last question. Don't miss it!",
+      "One more and we are done! Last flag!"
+    ],
+    "greet": [
+      "Welcome to the stream!",
+      "Hey, glad to have you here. Ready for the next flag?",
+      "Oh, someone new just joined! Welcome!",
+      "Hi! Type A, B, C or D in the chat to play.",
+      "Welcome in! How good are you with flags?",
+      "Good to see you here!",
+      "Oh hi! You're just in time.",
+      "Welcome! Let's see what you've got."
+    ],
+    "greet_group": [
+      "Welcome to everyone who's joining right now!",
+      "Hey everyone, welcome! Lots of new people coming in.",
+      "Hi to all the new faces! Type A, B, C or D to play.",
+      "Welcome, welcome, everybody! Grab a seat.",
+      "If you just joined, hi! <breath> It's a flag quiz, answer in the chat.",
+      "So many people joining! Welcome all of you."
+    ],
+    "ambient": [
+      "Welcome to everyone who's just arriving!",
+      "If you just joined: type A, B, C or D in the chat to answer.",
+      "Hi everyone! Hope you're having fun.",
+      "The faster you answer, the more points you get. Can you make the top ten?",
+      "First correct answer gets ten points! Be quick.",
+      "What do you think, chat? Write your answer!",
+      "Hmm, <short pause> I like this flag.",
+      "Don't be shy, just type your guess!",
+      "Thanks for hanging out with us today.",
+      "This one shouldn't be too hard... <chuckle> I think.",
+      "Come on, let's see those answers in the chat!",
+      "Hello to everyone watching! Let's keep it going.",
+      "If you're enjoying the game, a follow helps a lot!",
+      "Tap the screen if you like the game!",
+      "Who's going to take first place today?",
+      "I'm loving the energy in the chat today."
+    ],
+    "new_leader": [
+      "New leader! <gasp> Change at the top!",
+      "Whoa, someone just jumped to number one!",
+      "Change at the top! We have a new leader."
+    ],
+    "like": [
+      "Thanks for the likes!",
+      "Ooh, love the likes! Thank you.",
+      "Thanks for the support, everyone!",
+      "I see those likes! <laugh> Thank you!",
+      "Wow, thanks for all the likes!",
+      "Appreciate it, chat!"
+    ],
+    "winner": [
+      "And that's the game! We have a champion! Congratulations!",
+      "Game over! Huge congrats to our winner!",
+      "What a game! <laugh> Congratulations to the champion!",
+      "We have a winner! Amazing!",
+      "That's it! Well played, champion!",
+      "Congratulations to first place! <laugh> What a match."
+    ],
+    "game_over": [
+      "And that's the game! Thanks so much for playing!",
+      "Game over! Thank you all for playing, see you next time!",
+      "That's a wrap! Thanks for hanging out, everyone.",
+      "And we are done! Thank you so much for playing with us.",
+      "Game finished! Thanks everybody, that was fun."
+    ]
+  }
+}

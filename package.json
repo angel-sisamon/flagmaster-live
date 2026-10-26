@@ -12,6 +12,8 @@
     "start": "node --env-file-if-exists=.env server/index.js",
     "sync:game": "node scripts/sync-game.js",
     "studio:coords": "node scripts/studio-coords.js",
+    "voices": "node --env-file-if-exists=.env scripts/voices.js",
+    "voices:check": "node --env-file-if-exists=.env scripts/voices-check.js",
     "voices:test": "node --env-file-if-exists=.env scripts/voices-test.js",
     "studio:test": "node --env-file-if-exists=.env scripts/studio-test.js",
     "publish:data": "node scripts/publish.js",
@@ -30,5 +32,8 @@
     "@jitsi/robotjs": "^0.6.24",
     "clipboardy": "^5.3.2",
     "koffi": "^3.3.3"
+  },
+  "devDependencies": {
+    "ffmpeg-static": "^5.3.0"
   }
 }
