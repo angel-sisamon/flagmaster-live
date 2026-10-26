@@ -601,7 +601,7 @@
    "template": "{N}! <chuckle> Who called it?",
    "file": "answer/bz-2.ogg",
    "text": "Belize! <chuckle> Who called it?",
-   "ms": 5690,
+   "ms": 2950,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -741,7 +741,7 @@
    "template": "Ah, it was {N} this time!",
    "file": "answer/cl-2.ogg",
    "text": "Ah, it was Chile this time!",
-   "ms": 2330,
+   "ms": 6180,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -781,7 +781,7 @@
    "template": "And it's... {N}! <laugh>",
    "file": "answer/cn-2.ogg",
    "text": "And it's... China! <laugh>",
-   "ms": 6880,
+   "ms": 4590,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -1091,7 +1091,7 @@
    "template": "Drumroll... <short pause> it's {N}!",
    "file": "answer/er-1.ogg",
    "text": "Drumroll... <short pause> it's Eritrea!",
-   "ms": 5790,
+   "ms": 4290,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -1321,7 +1321,7 @@
    "template": "Ah, it was {N} this time!",
    "file": "answer/gh-2.ogg",
    "text": "Ah, it was Ghana this time!",
-   "ms": 3280,
+   "ms": 2430,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -1441,7 +1441,7 @@
    "template": "{N}! <chuckle> Who called it?",
    "file": "answer/gw-2.ogg",
    "text": "Guinea-Bissau! <chuckle> Who called it?",
-   "ms": 3580,
+   "ms": 4980,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -2501,7 +2501,7 @@
    "template": "And the answer is... <short pause> {N}!",
    "file": "answer/my-2.ogg",
    "text": "And the answer is... <short pause> Malaysia!",
-   "ms": 5990,
+   "ms": 4480,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -2561,7 +2561,7 @@
    "template": "Ah, it was {N} this time!",
    "file": "answer/ne-2.ogg",
    "text": "Ah, it was Niger this time!",
-   "ms": 3280,
+   "ms": 2870,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -2901,7 +2901,7 @@
    "template": "Ah, it was {N} this time!",
    "file": "answer/pw-2.ogg",
    "text": "Ah, it was Palau this time!",
-   "ms": 3090,
+   "ms": 2150,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -3291,7 +3291,7 @@
    "template": "Boom, {N}!",
    "file": "answer/ss-1.ogg",
    "text": "Boom, South Sudan!",
-   "ms": 4590,
+   "ms": 4090,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -3481,7 +3481,7 @@
    "template": "{N}! <chuckle> Who called it?",
    "file": "answer/tl-2.ogg",
    "text": "Timor-Leste! <chuckle> Who called it?",
-   "ms": 3790,
+   "ms": 2650,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -3502,6 +3502,26 @@
    "file": "answer/tm-2.ogg",
    "text": "That flag belongs to Turkmenistan!",
    "ms": 2950,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tn-1": {
+   "group": "answer",
+   "country": "TN",
+   "template": "Okay, that was {N}!",
+   "file": "answer/tn-1.ogg",
+   "text": "Okay, that was Tunisia!",
+   "ms": 1630,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tn-2": {
+   "group": "answer",
+   "country": "TN",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/tn-2.ogg",
+   "text": "Tunisia! <chuckle> Who called it?",
+   "ms": 4480,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -3602,6 +3622,26 @@
    "file": "answer/tw-2.ogg",
    "text": "The answer: Taiwan. Points for everyone who got it!",
    "ms": 3180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tz-1": {
+   "group": "answer",
+   "country": "TZ",
+   "template": "Yep, it's {N}!",
+   "file": "answer/tz-1.ogg",
+   "text": "Yep, it's Tanzania!",
+   "ms": 4280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tz-2": {
+   "group": "answer",
+   "country": "TZ",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/tz-2.ogg",
+   "text": "That flag belongs to Tanzania!",
+   "ms": 2410,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -4287,6 +4327,16 @@
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
+  "nobody/be-1": {
+   "group": "nobody",
+   "country": "BE",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/be-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Belgium!",
+   "ms": 5480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
   "nobody/bf-1": {
    "group": "nobody",
    "country": "BF",
@@ -4294,6 +4344,16 @@
    "file": "nobody/bf-1.ogg",
    "text": "Ooh, tough one! It was Burkina Faso.",
    "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bg-1": {
+   "group": "nobody",
+   "country": "BG",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/bg-1.ogg",
+   "text": "Okay, that one was hard. The answer was Bulgaria.",
+   "ms": 3090,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -4377,6 +4437,16 @@
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
+  "nobody/by-1": {
+   "group": "nobody",
+   "country": "BY",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/by-1.ogg",
+   "text": "Oof! It was Belarus. Next one's yours!",
+   "ms": 3680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
   "nobody/cd-1": {
    "group": "nobody",
    "country": "CD",
@@ -4404,6 +4474,16 @@
    "file": "nobody/cg-1.ogg",
    "text": "Oof! It was the Republic of the Congo. Next one's yours!",
    "ms": 4880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ch-1": {
+   "group": "nobody",
+   "country": "CH",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/ch-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Switzerland.",
+   "ms": 3990,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -4477,6 +4557,36 @@
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
+  "nobody/cy-1": {
+   "group": "nobody",
+   "country": "CY",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/cy-1.ogg",
+   "text": "Ooh, tough one! It was Cyprus.",
+   "ms": 4090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cz-1": {
+   "group": "nobody",
+   "country": "CZ",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/cz-1.ogg",
+   "text": "Nobody got that one! The answer was the Czech Republic.",
+   "ms": 4790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/de-1": {
+   "group": "nobody",
+   "country": "DE",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/de-1.ogg",
+   "text": "Tricky! It was Germany.",
+   "ms": 1730,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
   "nobody/dj-1": {
    "group": "nobody",
    "country": "DJ",
@@ -4484,6 +4594,16 @@
    "file": "nobody/dj-1.ogg",
    "text": "Tricky! It was Djibouti.",
    "ms": 2110,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/dk-1": {
+   "group": "nobody",
+   "country": "DK",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/dk-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Denmark.",
+   "ms": 3590,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
@@ -4973,7 +5093,7 @@
    "template": "Not a single correct answer! <chuckle> It was {N}.",
    "file": "nobody/li-1.ogg",
    "text": "Not a single correct answer! <chuckle> It was Liechtenstein.",
-   "ms": 5590,
+   "ms": 210,
    "voice": "Kore",
    "model": "gemini-3.8-flash-lite-tts"
   },
