@@ -1,11 +1,13 @@
 /**
  * js/live-voice.js — Locutor por voz (Text-To-Speech) del modo TikTok LIVE, siempre en inglés.
  *
- * Usa window.speechSynthesis; la salida de audio del navegador se puede enviar a VB-Audio
- * Virtual Cable para que TikTok LIVE Studio la reciba como micrófono.
+ * Habla con locuciones pregeneradas (client/voices/en/, servidas en live/voices/en/; índice en index.json,
+ * se generan con npm run voices). Si falta el audio de una frase, la dice con window.speechSynthesis.
+ * La salida de audio del navegador se puede enviar a VB-Audio Virtual Cable para que TikTok LIVE Studio
+ * la reciba como micrófono.
  *
  *   LiveVoice.enable() / disable()        live-mode.js lo activa al entrar en LIVE y lo apaga al salir
- *   LiveVoice.announceAnswer(letter, name) fase de resultados: lee la opción correcta
+ *   LiveVoice.announceAnswer(letter, name, nobody, pct, code) resultados: dice la respuesta (code = ISO del país)
  *   LiveVoice.announceLastRound()          aviso de última pregunta de la partida
  *   LiveVoice.announceWinner(nick, points) pantalla final: anuncia al campeón (o da las gracias si nadie puntuó)
  *   LiveVoice.announceLeaders(ranking)     resultados: a veces dice quién va primero (siempre si cambia el líder)
@@ -23,10 +25,13 @@
  *   - cada mensaje caduca: un saludo que no ha podido decirse a tiempo se tira en lugar de llegar tarde,
  *   - un vigilante desbloquea la cola si el motor de voz no emite 'end' (bug conocido de Chrome).
  *
- * Si el navegador no tiene speechSynthesis, todo es no-op y el juego sigue igual.
+ * Las locuciones grabadas no llevan nombres de jugadores: saludos, likes y ganador van sin nick y el ranking
+ * solo se comenta cuando cambia el líder. Sin audio ni speechSynthesis, todo es no-op y el juego sigue igual.
  */
 var LiveVoice = (function () {
-  var SUPPORTED = typeof window !== 'undefined' && 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+  var TTS = typeof window !== 'undefined' && 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+  var SUPPORTED = TTS || typeof Audio !== 'undefined';
+  var CLIPS_BASE = 'live/voices/en/';
 
   var GAP_MIN_MS = 700;               // pausa natural entre locuciones
   var GAP_MAX_MS = 1400;
@@ -50,6 +55,7 @@ var LiveVoice = (function () {
   var LEADER_CHANCE = 0.3;            // 30 % de las rondas se dice quién va primero...
   var LEADER_MIN_INTERVAL_MS = 70000; // ...y como mucho una vez cada 70 s
   var LEADER_TTL_MS = 6500;           // tiene que caber en los 10 s de resultados
+  var CLIP_GAP_MS = 250;              // entre la respuesta y su coletilla
 
   // Voces preferidas: las "Natural"/"Online" de Edge y las de Google suenan mucho menos robóticas
   var PREFERRED_VOICES = [/natural/i, /online/i, /google us english/i, /google uk english/i,
@@ -199,7 +205,9 @@ var LiveVoice = (function () {
 
   var _enabled = false;
   var _voice = null;
-  var _queue = [];            // { text, priority: 'high'|'low', notBefore, expiresAt }
+  var _queue = [];            // { speech: { clips, text }, priority: 'high'|'low', notBefore, expiresAt }
+  var _clipPools = null;      // 'grupo' o 'grupo/ISO' -> [ruta del audio], de index.json
+  var _audio = null;          // locución grabada sonando
   var _speaking = false;
   var _nextAllowedAt = 0;     // fin de la pausa tras la última locución
   var _pumpTimer = null;
@@ -247,9 +255,30 @@ var LiveVoice = (function () {
     return s;
   }
 
+  /* ── Locuciones grabadas ──────────────────────────── */
+  function _loadClips() {
+    if (_clipPools || typeof fetch !== 'function') return;
+    fetch(CLIPS_BASE + 'index.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (index) {
+      if (!index || !index.clips) return;
+      var pools = {};
+      Object.keys(index.clips).forEach(function (id) {
+        var c = index.clips[id];
+        var key = c.country ? c.group + '/' + c.country : c.group;
+        (pools[key] || (pools[key] = [])).push(CLIPS_BASE + c.file);
+      });
+      _clipPools = pools;
+    }).catch(function () { /* sin índice: se habla con speechSynthesis */ });
+  }
+
+  /* Audio al azar de un grupo ('ambient', 'answer/JP'...), o null si no hay */
+  function _clip(key) {
+    var pool = _clipPools && _clipPools[key];
+    return pool && pool.length ? _pick(pool, 'clip:' + key) : null;
+  }
+
   /* ── Elección de voz inglesa ──────────────────────── */
   function _chooseVoice() {
-    if (!SUPPORTED) return;
+    if (!TTS) return;
     var voices = window.speechSynthesis.getVoices().filter(function (v) { return /^en([-_]|$)/i.test(v.lang); });
     if (!voices.length) return;
     var best = null, bestScore = -1;
@@ -265,17 +294,19 @@ var LiveVoice = (function () {
   }
 
   /* ── Cola ─────────────────────────────────────────── */
-  function _enqueue(text, priority, delayMs, ttlMs) {
-    if (!_enabled || !text) return false;
+  /* speech: texto para speechSynthesis, o { clips: [rutas], text } (si los audios fallan se dice el texto) */
+  function _enqueue(speech, priority, delayMs, ttlMs) {
+    if (typeof speech === 'string') speech = { clips: [], text: speech };
+    if (!_enabled || !speech || !(speech.clips.length || speech.text)) return false;
     var now = Date.now();
     if (priority === 'high') {
       // La respuesta manda: fuera los saludos pendientes para que se oiga dentro de los 10 s
       _queue = _queue.filter(function (m) { return m.priority === 'high'; });
-      _queue.push({ text: text, priority: priority, notBefore: now + (delayMs || 0), expiresAt: now + ttlMs });
+      _queue.push({ speech: speech, priority: priority, notBefore: now + (delayMs || 0), expiresAt: now + ttlMs });
     } else {
       var low = _queue.filter(function (m) { return m.priority === 'low'; }).length;
       if (low >= MAX_LOW_QUEUED) return false;
-      _queue.push({ text: text, priority: priority, notBefore: now + (delayMs || 0), expiresAt: now + ttlMs });
+      _queue.push({ speech: speech, priority: priority, notBefore: now + (delayMs || 0), expiresAt: now + ttlMs });
     }
     _pump();
     return true;
@@ -302,7 +333,7 @@ var LiveVoice = (function () {
     var msg = _queue[idx];
     if (now < msg.notBefore) return _schedule(msg.notBefore - now);
     _queue.splice(idx, 1);
-    _speak(msg.text);
+    _speak(msg.speech);
   }
 
   function _finish() {
@@ -314,7 +345,36 @@ var LiveVoice = (function () {
     _schedule(_nextAllowedAt - Date.now());
   }
 
-  function _speak(text) {
+  function _speak(speech) {
+    _speaking = true;
+    if (speech.clips.length) return _playClips(speech.clips.slice(), speech.text);
+    _speakText(speech.text);
+  }
+
+  /* Reproduce los audios uno tras otro; si uno no se puede reproducir, se dice el texto con la voz del navegador */
+  function _playClips(list, fallbackText) {
+    var a = new Audio(list.shift());
+    _audio = a;
+    var done = false;
+    function next(failed) {
+      if (done || _audio !== a) return;
+      done = true;
+      clearTimeout(_watchdog);
+      _audio = null;
+      if (failed && fallbackText && TTS) return _speakText(fallbackText);
+      if (!failed && list.length) return setTimeout(function () { if (_speaking) _playClips(list); }, CLIP_GAP_MS);
+      _finish();
+    }
+    a.onended = function () { next(false); };
+    a.onerror = function () { next(true); };
+    clearTimeout(_watchdog);
+    _watchdog = setTimeout(function () { a.pause(); next(false); }, 20000);
+    var p = a.play();
+    if (p && p.catch) p.catch(function () { next(true); });
+  }
+
+  function _speakText(text) {
+    if (!TTS || !text) return _finish();
     if (!_voice) _chooseVoice();
     var u = new SpeechSynthesisUtterance(text);
     u.lang = (_voice && _voice.lang) || 'en-US';
@@ -325,7 +385,6 @@ var LiveVoice = (function () {
     u.volume = 1;
     u.onend = _finish;
     u.onerror = _finish;
-    _speaking = true;
     // Vigilante: ~80 ms por carácter + margen; si 'end' no llega, la cola sigue igualmente
     clearTimeout(_watchdog);
     _watchdog = setTimeout(function () { window.speechSynthesis.cancel(); _finish(); }, 2500 + text.length * 80);
@@ -336,9 +395,12 @@ var LiveVoice = (function () {
   function enable() {
     if (!SUPPORTED || _enabled) return;
     _enabled = true;
-    _chooseVoice();
-    // Chrome carga las voces de forma asíncrona
-    window.speechSynthesis.addEventListener('voiceschanged', _chooseVoice);
+    _loadClips();
+    if (TTS) {
+      _chooseVoice();
+      // Chrome carga las voces de forma asíncrona
+      window.speechSynthesis.addEventListener('voiceschanged', _chooseVoice);
+    }
     _scheduleAmbient(_rand(AMBIENT_MIN_MS, AMBIENT_MAX_MS));
   }
 
@@ -353,8 +415,11 @@ var LiveVoice = (function () {
     _phase = 'idle';
     _lastLeader = null;
     _joinTimes = [];
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.removeEventListener('voiceschanged', _chooseVoice);
+    if (_audio) { _audio.pause(); _audio = null; }
+    if (TTS) {
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.removeEventListener('voiceschanged', _chooseVoice);
+    }
   }
 
   /* live-mode.js indica en qué fase está la ronda: los comentarios sueltos solo van durante la votación */
@@ -377,21 +442,28 @@ var LiveVoice = (function () {
       return _scheduleAmbient(_rand(4000, 9000));
     }
     var recentJoins = _joinTimes.filter(function (t) { return now - t < GROUP_WINDOW_MS; }).length;
-    var pool = recentJoins >= GROUP_JOINS && Math.random() < 0.5 ? GREET_GROUP_PHRASES : AMBIENT_PHRASES;
-    _enqueue(_pick(pool, pool === AMBIENT_PHRASES ? 'ambient' : 'group'), 'low', _rand(1500, 4000), AMBIENT_TTL_MS);
+    var group = recentJoins >= GROUP_JOINS && Math.random() < 0.5;
+    var clip = _clip(group ? 'greet_group' : 'ambient');
+    _enqueue(clip ? { clips: [clip] } : _pick(group ? GREET_GROUP_PHRASES : AMBIENT_PHRASES, group ? 'group' : 'ambient'),
+      'low', _rand(1500, 4000), AMBIENT_TTL_MS);
     _scheduleAmbient(_rand(AMBIENT_MIN_MS, AMBIENT_MAX_MS));
   }
 
-  function announceAnswer(letter, countryName, nobodyGotIt, correctPct) {
+  function announceAnswer(letter, countryName, nobodyGotIt, correctPct, countryCode) {
+    // De vez en cuando, una coletilla según lo fácil o difícil que fue
+    var tail = !nobodyGotIt && typeof correctPct === 'number' && Math.random() < ANSWER_TAIL_CHANCE
+      ? (correctPct >= 70 ? 'easy' : correctPct <= 25 ? 'hard' : null) : null;
+    var clip = countryCode && _clip((nobodyGotIt ? 'nobody/' : 'answer/') + String(countryCode).toUpperCase());
+    if (clip) {
+      var tailClip = tail && _clip('tail_' + tail);
+      _enqueue({ clips: tailClip ? [clip, tailClip] : [clip] }, 'high', ANSWER_DELAY_MS, ANSWER_TTL_MS);
+      return;
+    }
     var pool = nobodyGotIt ? ANSWER_PHRASES_NOBODY : ANSWER_PHRASES;
     var text = _pick(pool, nobodyGotIt ? 'nobody' : 'answer').replace(/\{L\}/g, letter);
     text = countryName ? text.replace(/\{N\}/g, countryName)
                        : text.replace(/,?\s*\{N\}([.!]?)/g, '$1').replace(/\s+([.!])/g, '$1');
-    // De vez en cuando, una coletilla según lo fácil o difícil que fue
-    if (!nobodyGotIt && typeof correctPct === 'number' && Math.random() < ANSWER_TAIL_CHANCE) {
-      if (correctPct >= 70) text += ' ' + _pick(ANSWER_TAIL_EASY, 'easy');
-      else if (correctPct <= 25) text += ' ' + _pick(ANSWER_TAIL_HARD, 'hard');
-    }
+    if (tail) text += ' ' + _pick(tail === 'easy' ? ANSWER_TAIL_EASY : ANSWER_TAIL_HARD, tail);
     _enqueue(text, 'high', ANSWER_DELAY_MS, ANSWER_TTL_MS);
   }
 
@@ -405,6 +477,12 @@ var LiveVoice = (function () {
     var now = Date.now();
     if (now - _lastLeaderAt < LEADER_MIN_INTERVAL_MS) return;
     if (!changed && Math.random() >= LEADER_CHANCE) return;
+    // Con locuciones grabadas no se dicen nombres: solo se celebra el cambio de líder
+    if (_clipPools) {
+      var lc = changed && _clip('new_leader');
+      if (lc && _enqueue({ clips: [lc] }, 'low', ANSWER_DELAY_MS, LEADER_TTL_MS)) _lastLeaderAt = now;
+      return;
+    }
 
     var names = list.slice(0, 3).map(function (p) { return _speakableName(p.nickname); });
     if (!names[0]) return;
@@ -418,11 +496,14 @@ var LiveVoice = (function () {
   }
 
   function announceLastRound() {
-    _enqueue(_pick(LAST_ROUND_PHRASES, 'last'), 'high', 600, ANSWER_TTL_MS);
+    var clip = _clip('last_round');
+    _enqueue(clip ? { clips: [clip] } : _pick(LAST_ROUND_PHRASES, 'last'), 'high', 600, ANSWER_TTL_MS);
   }
 
   function announceWinner(nickname, points) {
     var name = _speakableName(nickname);
+    var clip = _clip(name ? 'winner' : 'game_over');
+    if (clip) return _enqueue({ clips: [clip] }, 'high', ANSWER_DELAY_MS, WINNER_TTL_MS);
     var text = name
       ? _fill(_pick(WINNER_PHRASES, 'winner'), { U: name, P: _pointsText(points) })
       : _pick(GAME_OVER_PHRASES, 'over');
@@ -436,10 +517,13 @@ var LiveVoice = (function () {
     if (now - _lastGreetAt < GREET_MIN_INTERVAL_MS) return;
     // Mucha gente entrando a la vez: a veces un saludo general en lugar de un nombre
     if (_joinTimes.length >= GROUP_JOINS && Math.random() < GROUP_CHANCE) {
-      if (_enqueue(_pick(GREET_GROUP_PHRASES, 'group'), 'low', 0, GREET_TTL_MS)) { _lastGreetAt = now; _joinTimes = []; }
+      var gc = _clip('greet_group');
+      if (_enqueue(gc ? { clips: [gc] } : _pick(GREET_GROUP_PHRASES, 'group'), 'low', 0, GREET_TTL_MS)) { _lastGreetAt = now; _joinTimes = []; }
       return;
     }
     if (Math.random() >= 1 / GREET_EVERY) return;
+    var clip = _clip('greet');
+    if (clip) { if (_enqueue({ clips: [clip] }, 'low', 0, GREET_TTL_MS)) _lastGreetAt = now; return; }
     var name = _speakableName(nickname);
     if (!name) return;
     if (_enqueue(_pick(GREET_PHRASES, 'greet').replace(/\{U\}/g, name), 'low', 0, GREET_TTL_MS)) _lastGreetAt = now;
@@ -448,6 +532,8 @@ var LiveVoice = (function () {
   function thankLike(nickname) {
     var now = Date.now();
     if (now - _lastLikeAt < LIKE_MIN_INTERVAL_MS || Math.random() >= LIKE_CHANCE) return;
+    var clip = _clip('like');
+    if (clip) { if (_enqueue({ clips: [clip] }, 'low', 0, GREET_TTL_MS)) _lastLikeAt = now; return; }
     var name = _speakableName(nickname);
     if (!name) return;
     if (_enqueue(_pick(LIKE_PHRASES, 'like').replace(/\{U\}/g, name), 'low', 0, GREET_TTL_MS)) _lastLikeAt = now;
@@ -464,7 +550,8 @@ var LiveVoice = (function () {
     greet: greet,
     thankLike: thankLike,
     isSupported: function () { return SUPPORTED; },
-    // Para pruebas desde la consola: LiveVoice._say('Hello there')
-    _say: function (text) { _enqueue(text, 'high', 0, ANSWER_TTL_MS); }
+    // Para pruebas desde la consola: LiveVoice._say('Hello there') o LiveVoice._sayClip('answer/JP')
+    _say: function (text) { _enqueue(text, 'high', 0, ANSWER_TTL_MS); },
+    _sayClip: function (key) { var c = _clip(key); return !!c && _enqueue({ clips: [c] }, 'high', 0, ANSWER_TTL_MS); }
   };
 })();

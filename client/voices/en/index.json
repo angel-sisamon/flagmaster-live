@@ -1,0 +1,6367 @@
+{
+ "lang": "en",
+ "clips": {
+  "ambient/come-on-lets-see-those-answers": {
+   "group": "ambient",
+   "file": "ambient/come-on-lets-see-those-answers.ogg",
+   "text": "Come on, let's see those answers in the chat!",
+   "ms": 2230,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/dont-be-shy-just-type-your": {
+   "group": "ambient",
+   "file": "ambient/dont-be-shy-just-type-your.ogg",
+   "text": "Don't be shy, just type your guess!",
+   "ms": 2930,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/first-correct-answer-gets-ten-points": {
+   "group": "ambient",
+   "file": "ambient/first-correct-answer-gets-ten-points.ogg",
+   "text": "First correct answer gets ten points! Be quick.",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/hello-to-everyone-watching-lets-keep": {
+   "group": "ambient",
+   "file": "ambient/hello-to-everyone-watching-lets-keep.ogg",
+   "text": "Hello to everyone watching! Let's keep it going.",
+   "ms": 2950,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/hi-everyone-hope-youre-having-fun": {
+   "group": "ambient",
+   "file": "ambient/hi-everyone-hope-youre-having-fun.ogg",
+   "text": "Hi everyone! Hope you're having fun.",
+   "ms": 2610,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/hmm-i-like-this-flag": {
+   "group": "ambient",
+   "file": "ambient/hmm-i-like-this-flag.ogg",
+   "text": "Hmm, <short pause> I like this flag.",
+   "ms": 2430,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/if-you-just-joined-type-a": {
+   "group": "ambient",
+   "file": "ambient/if-you-just-joined-type-a.ogg",
+   "text": "If you just joined: type A, B, C or D in the chat to answer.",
+   "ms": 4990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/if-youre-enjoying-the-game-a": {
+   "group": "ambient",
+   "file": "ambient/if-youre-enjoying-the-game-a.ogg",
+   "text": "If you're enjoying the game, a follow helps a lot!",
+   "ms": 3790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/im-loving-the-energy-in-the": {
+   "group": "ambient",
+   "file": "ambient/im-loving-the-energy-in-the.ogg",
+   "text": "I'm loving the energy in the chat today.",
+   "ms": 2710,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/tap-the-screen-if-you-like": {
+   "group": "ambient",
+   "file": "ambient/tap-the-screen-if-you-like.ogg",
+   "text": "Tap the screen if you like the game!",
+   "ms": 1770,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/thanks-for-hanging-out-with-us": {
+   "group": "ambient",
+   "file": "ambient/thanks-for-hanging-out-with-us.ogg",
+   "text": "Thanks for hanging out with us today.",
+   "ms": 3180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/the-faster-you-answer-the-more": {
+   "group": "ambient",
+   "file": "ambient/the-faster-you-answer-the-more.ogg",
+   "text": "The faster you answer, the more points you get. Can you make the top ten?",
+   "ms": 4580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/this-one-shouldnt-be-too-hard": {
+   "group": "ambient",
+   "file": "ambient/this-one-shouldnt-be-too-hard.ogg",
+   "text": "This one shouldn't be too hard... <chuckle> I think.",
+   "ms": 5380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/welcome-to-everyone-whos-just-arriving": {
+   "group": "ambient",
+   "file": "ambient/welcome-to-everyone-whos-just-arriving.ogg",
+   "text": "Welcome to everyone who's just arriving!",
+   "ms": 3390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/what-do-you-think-chat-write": {
+   "group": "ambient",
+   "file": "ambient/what-do-you-think-chat-write.ogg",
+   "text": "What do you think, chat? Write your answer!",
+   "ms": 3990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "ambient/whos-going-to-take-first-place": {
+   "group": "ambient",
+   "file": "ambient/whos-going-to-take-first-place.ogg",
+   "text": "Who's going to take first place today?",
+   "ms": 2010,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ad-1": {
+   "group": "answer",
+   "country": "AD",
+   "template": "The correct answer was {N}!",
+   "file": "answer/ad-1.ogg",
+   "text": "The correct answer was Andorra!",
+   "ms": 2750,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ad-2": {
+   "group": "answer",
+   "country": "AD",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/ad-2.ogg",
+   "text": "Ah, it was Andorra this time!",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ae-1": {
+   "group": "answer",
+   "country": "AE",
+   "template": "The correct answer was {N}!",
+   "file": "answer/ae-1.ogg",
+   "text": "The correct answer was the United Arab Emirates!",
+   "ms": 3990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ae-2": {
+   "group": "answer",
+   "country": "AE",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/ae-2.ogg",
+   "text": "Ah, it was the United Arab Emirates this time!",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/af-1": {
+   "group": "answer",
+   "country": "AF",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/af-1.ogg",
+   "text": "Let's see... yes! Afghanistan was correct!",
+   "ms": 4780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/af-2": {
+   "group": "answer",
+   "country": "AF",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/af-2.ogg",
+   "text": "And the answer is... <short pause> Afghanistan!",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ag-1": {
+   "group": "answer",
+   "country": "AG",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/ag-1.ogg",
+   "text": "It was Antigua and Barbuda! Well done if you got it.",
+   "ms": 3790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ag-2": {
+   "group": "answer",
+   "country": "AG",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/ag-2.ogg",
+   "text": "Antigua and Barbuda! Did you get it right?",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/al-1": {
+   "group": "answer",
+   "country": "AL",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/al-1.ogg",
+   "text": "Let's see... yes! Albania was correct!",
+   "ms": 3880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/al-2": {
+   "group": "answer",
+   "country": "AL",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/al-2.ogg",
+   "text": "And the answer is... <short pause> Albania!",
+   "ms": 4680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/am-1": {
+   "group": "answer",
+   "country": "AM",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/am-1.ogg",
+   "text": "It was Armenia! Well done if you got it.",
+   "ms": 4490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/am-2": {
+   "group": "answer",
+   "country": "AM",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/am-2.ogg",
+   "text": "Armenia! Did you get it right?",
+   "ms": 2910,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ao-1": {
+   "group": "answer",
+   "country": "AO",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/ao-1.ogg",
+   "text": "Let's see... yes! Angola was correct!",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ao-2": {
+   "group": "answer",
+   "country": "AO",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/ao-2.ogg",
+   "text": "And the answer is... <short pause> Angola!",
+   "ms": 3580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ar-1": {
+   "group": "answer",
+   "country": "AR",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/ar-1.ogg",
+   "text": "Drumroll... <short pause> it's Argentina!",
+   "ms": 3390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ar-2": {
+   "group": "answer",
+   "country": "AR",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/ar-2.ogg",
+   "text": "The answer: Argentina. Points for everyone who got it!",
+   "ms": 5280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/at-1": {
+   "group": "answer",
+   "country": "AT",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/at-1.ogg",
+   "text": "It was Austria! Well done if you got it.",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/at-2": {
+   "group": "answer",
+   "country": "AT",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/at-2.ogg",
+   "text": "Austria! Did you get it right?",
+   "ms": 2690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/au-1": {
+   "group": "answer",
+   "country": "AU",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/au-1.ogg",
+   "text": "Let's see... yes! Australia was correct!",
+   "ms": 3280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/au-2": {
+   "group": "answer",
+   "country": "AU",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/au-2.ogg",
+   "text": "And the answer is... <short pause> Australia!",
+   "ms": 5990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/az-1": {
+   "group": "answer",
+   "country": "AZ",
+   "template": "There it is: {N}.",
+   "file": "answer/az-1.ogg",
+   "text": "There it is: Azerbaijan.",
+   "ms": 2370,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/az-2": {
+   "group": "answer",
+   "country": "AZ",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/az-2.ogg",
+   "text": "Nice! The right answer was Azerbaijan.",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ba-1": {
+   "group": "answer",
+   "country": "BA",
+   "template": "There it is: {N}.",
+   "file": "answer/ba-1.ogg",
+   "text": "There it is: Bosnia and Herzegovina.",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ba-2": {
+   "group": "answer",
+   "country": "BA",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/ba-2.ogg",
+   "text": "Nice! The right answer was Bosnia and Herzegovina.",
+   "ms": 3880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bb-1": {
+   "group": "answer",
+   "country": "BB",
+   "template": "There it is: {N}.",
+   "file": "answer/bb-1.ogg",
+   "text": "There it is: Barbados.",
+   "ms": 2390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bb-2": {
+   "group": "answer",
+   "country": "BB",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/bb-2.ogg",
+   "text": "Nice! The right answer was Barbados.",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bd-1": {
+   "group": "answer",
+   "country": "BD",
+   "template": "Okay, that was {N}!",
+   "file": "answer/bd-1.ogg",
+   "text": "Okay, that was Bangladesh!",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bd-2": {
+   "group": "answer",
+   "country": "BD",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/bd-2.ogg",
+   "text": "Bangladesh! <chuckle> Who called it?",
+   "ms": 2250,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/be-1": {
+   "group": "answer",
+   "country": "BE",
+   "template": "Okay, that was {N}!",
+   "file": "answer/be-1.ogg",
+   "text": "Okay, that was Belgium!",
+   "ms": 2450,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/be-2": {
+   "group": "answer",
+   "country": "BE",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/be-2.ogg",
+   "text": "Belgium! <chuckle> Who called it?",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bf-1": {
+   "group": "answer",
+   "country": "BF",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/bf-1.ogg",
+   "text": "It was Burkina Faso! Well done if you got it.",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bf-2": {
+   "group": "answer",
+   "country": "BF",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/bf-2.ogg",
+   "text": "Burkina Faso! Did you get it right?",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bg-1": {
+   "group": "answer",
+   "country": "BG",
+   "template": "Yep, it's {N}!",
+   "file": "answer/bg-1.ogg",
+   "text": "Yep, it's Bulgaria!",
+   "ms": 1730,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bg-2": {
+   "group": "answer",
+   "country": "BG",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/bg-2.ogg",
+   "text": "That flag belongs to Bulgaria!",
+   "ms": 2650,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bh-1": {
+   "group": "answer",
+   "country": "BH",
+   "template": "Yep, it's {N}!",
+   "file": "answer/bh-1.ogg",
+   "text": "Yep, it's Bahrain!",
+   "ms": 1850,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bh-2": {
+   "group": "answer",
+   "country": "BH",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/bh-2.ogg",
+   "text": "That flag belongs to Bahrain!",
+   "ms": 2050,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bi-1": {
+   "group": "answer",
+   "country": "BI",
+   "template": "There it is: {N}.",
+   "file": "answer/bi-1.ogg",
+   "text": "There it is: Burundi.",
+   "ms": 2090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bi-2": {
+   "group": "answer",
+   "country": "BI",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/bi-2.ogg",
+   "text": "Nice! The right answer was Burundi.",
+   "ms": 2910,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bj-1": {
+   "group": "answer",
+   "country": "BJ",
+   "template": "Okay, that was {N}!",
+   "file": "answer/bj-1.ogg",
+   "text": "Okay, that was Benin!",
+   "ms": 2690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bj-2": {
+   "group": "answer",
+   "country": "BJ",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/bj-2.ogg",
+   "text": "Benin! <chuckle> Who called it?",
+   "ms": 2110,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bn-1": {
+   "group": "answer",
+   "country": "BN",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/bn-1.ogg",
+   "text": "Drumroll... <short pause> it's Brunei!",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bn-2": {
+   "group": "answer",
+   "country": "BN",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/bn-2.ogg",
+   "text": "The answer: Brunei. Points for everyone who got it!",
+   "ms": 3390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bo-1": {
+   "group": "answer",
+   "country": "BO",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/bo-1.ogg",
+   "text": "Alright, Bolivia was the one.",
+   "ms": 5080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bo-2": {
+   "group": "answer",
+   "country": "BO",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/bo-2.ogg",
+   "text": "If you said Bolivia, you nailed it!",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/br-1": {
+   "group": "answer",
+   "country": "BR",
+   "template": "Boom, {N}!",
+   "file": "answer/br-1.ogg",
+   "text": "Boom, Brazil!",
+   "ms": 1950,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/br-2": {
+   "group": "answer",
+   "country": "BR",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/br-2.ogg",
+   "text": "And it's... Brazil! <laugh>",
+   "ms": 2510,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bt-1": {
+   "group": "answer",
+   "country": "BT",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/bt-1.ogg",
+   "text": "Alright, Bhutan was the one.",
+   "ms": 2570,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bt-2": {
+   "group": "answer",
+   "country": "BT",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/bt-2.ogg",
+   "text": "If you said Bhutan, you nailed it!",
+   "ms": 2690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bw-1": {
+   "group": "answer",
+   "country": "BW",
+   "template": "Yep, it's {N}!",
+   "file": "answer/bw-1.ogg",
+   "text": "Yep, it's Botswana!",
+   "ms": 1910,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bw-2": {
+   "group": "answer",
+   "country": "BW",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/bw-2.ogg",
+   "text": "That flag belongs to Botswana!",
+   "ms": 2210,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/by-1": {
+   "group": "answer",
+   "country": "BY",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/by-1.ogg",
+   "text": "Drumroll... <short pause> it's Belarus!",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/by-2": {
+   "group": "answer",
+   "country": "BY",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/by-2.ogg",
+   "text": "The answer: Belarus. Points for everyone who got it!",
+   "ms": 3780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bz-1": {
+   "group": "answer",
+   "country": "BZ",
+   "template": "Okay, that was {N}!",
+   "file": "answer/bz-1.ogg",
+   "text": "Okay, that was Belize!",
+   "ms": 2590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/bz-2": {
+   "group": "answer",
+   "country": "BZ",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/bz-2.ogg",
+   "text": "Belize! <chuckle> Who called it?",
+   "ms": 2950,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ca-1": {
+   "group": "answer",
+   "country": "CA",
+   "template": "Yep, it's {N}!",
+   "file": "answer/ca-1.ogg",
+   "text": "Yep, it's Canada!",
+   "ms": 2250,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ca-2": {
+   "group": "answer",
+   "country": "CA",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/ca-2.ogg",
+   "text": "That flag belongs to Canada!",
+   "ms": 3380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cd-1": {
+   "group": "answer",
+   "country": "CD",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/cd-1.ogg",
+   "text": "Drumroll... <short pause> it's the Democratic Republic of the Congo!",
+   "ms": 5680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cd-2": {
+   "group": "answer",
+   "country": "CD",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/cd-2.ogg",
+   "text": "The answer: the Democratic Republic of the Congo. Points for everyone who got it!",
+   "ms": 5780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cf-1": {
+   "group": "answer",
+   "country": "CF",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/cf-1.ogg",
+   "text": "Alright, the Central African Republic was the one.",
+   "ms": 4090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cf-2": {
+   "group": "answer",
+   "country": "CF",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/cf-2.ogg",
+   "text": "If you said the Central African Republic, you nailed it!",
+   "ms": 5580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cg-1": {
+   "group": "answer",
+   "country": "CG",
+   "template": "Boom, {N}!",
+   "file": "answer/cg-1.ogg",
+   "text": "Boom, the Republic of the Congo!",
+   "ms": 2970,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cg-2": {
+   "group": "answer",
+   "country": "CG",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/cg-2.ogg",
+   "text": "And it's... the Republic of the Congo! <laugh>",
+   "ms": 2730,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ch-1": {
+   "group": "answer",
+   "country": "CH",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/ch-1.ogg",
+   "text": "Alright, Switzerland was the one.",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ch-2": {
+   "group": "answer",
+   "country": "CH",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/ch-2.ogg",
+   "text": "If you said Switzerland, you nailed it!",
+   "ms": 2650,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ci-1": {
+   "group": "answer",
+   "country": "CI",
+   "template": "The correct answer was {N}!",
+   "file": "answer/ci-1.ogg",
+   "text": "The correct answer was Ivory Coast!",
+   "ms": 4180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ci-2": {
+   "group": "answer",
+   "country": "CI",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/ci-2.ogg",
+   "text": "Ah, it was Ivory Coast this time!",
+   "ms": 2230,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cl-1": {
+   "group": "answer",
+   "country": "CL",
+   "template": "The correct answer was {N}!",
+   "file": "answer/cl-1.ogg",
+   "text": "The correct answer was Chile!",
+   "ms": 3790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cl-2": {
+   "group": "answer",
+   "country": "CL",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/cl-2.ogg",
+   "text": "Ah, it was Chile this time!",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cm-1": {
+   "group": "answer",
+   "country": "CM",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/cm-1.ogg",
+   "text": "Let's see... yes! Cameroon was correct!",
+   "ms": 3780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cm-2": {
+   "group": "answer",
+   "country": "CM",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/cm-2.ogg",
+   "text": "And the answer is... <short pause> Cameroon!",
+   "ms": 2590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cn-1": {
+   "group": "answer",
+   "country": "CN",
+   "template": "Boom, {N}!",
+   "file": "answer/cn-1.ogg",
+   "text": "Boom, China!",
+   "ms": 2930,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cn-2": {
+   "group": "answer",
+   "country": "CN",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/cn-2.ogg",
+   "text": "And it's... China! <laugh>",
+   "ms": 4590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/co-1": {
+   "group": "answer",
+   "country": "CO",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/co-1.ogg",
+   "text": "Let's see... yes! Colombia was correct!",
+   "ms": 4090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/co-2": {
+   "group": "answer",
+   "country": "CO",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/co-2.ogg",
+   "text": "And the answer is... <short pause> Colombia!",
+   "ms": 3990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cr-1": {
+   "group": "answer",
+   "country": "CR",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/cr-1.ogg",
+   "text": "Drumroll... <short pause> it's Costa Rica!",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cr-2": {
+   "group": "answer",
+   "country": "CR",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/cr-2.ogg",
+   "text": "The answer: Costa Rica. Points for everyone who got it!",
+   "ms": 4580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cu-1": {
+   "group": "answer",
+   "country": "CU",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/cu-1.ogg",
+   "text": "Alright, Cuba was the one.",
+   "ms": 2650,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cu-2": {
+   "group": "answer",
+   "country": "CU",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/cu-2.ogg",
+   "text": "If you said Cuba, you nailed it!",
+   "ms": 4180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cv-1": {
+   "group": "answer",
+   "country": "CV",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/cv-1.ogg",
+   "text": "It was Cape Verde! Well done if you got it.",
+   "ms": 4180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cv-2": {
+   "group": "answer",
+   "country": "CV",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/cv-2.ogg",
+   "text": "Cape Verde! Did you get it right?",
+   "ms": 2690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cy-1": {
+   "group": "answer",
+   "country": "CY",
+   "template": "Boom, {N}!",
+   "file": "answer/cy-1.ogg",
+   "text": "Boom, Cyprus!",
+   "ms": 1550,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cy-2": {
+   "group": "answer",
+   "country": "CY",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/cy-2.ogg",
+   "text": "And it's... Cyprus! <laugh>",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cz-1": {
+   "group": "answer",
+   "country": "CZ",
+   "template": "The correct answer was {N}!",
+   "file": "answer/cz-1.ogg",
+   "text": "The correct answer was the Czech Republic!",
+   "ms": 3380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/cz-2": {
+   "group": "answer",
+   "country": "CZ",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/cz-2.ogg",
+   "text": "Ah, it was the Czech Republic this time!",
+   "ms": 2950,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/de-1": {
+   "group": "answer",
+   "country": "DE",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/de-1.ogg",
+   "text": "Let's see... yes! Germany was correct!",
+   "ms": 4590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/de-2": {
+   "group": "answer",
+   "country": "DE",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/de-2.ogg",
+   "text": "And the answer is... <short pause> Germany!",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/dj-1": {
+   "group": "answer",
+   "country": "DJ",
+   "template": "There it is: {N}.",
+   "file": "answer/dj-1.ogg",
+   "text": "There it is: Djibouti.",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/dj-2": {
+   "group": "answer",
+   "country": "DJ",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/dj-2.ogg",
+   "text": "Nice! The right answer was Djibouti.",
+   "ms": 2630,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/dk-1": {
+   "group": "answer",
+   "country": "DK",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/dk-1.ogg",
+   "text": "It was Denmark! Well done if you got it.",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/dk-2": {
+   "group": "answer",
+   "country": "DK",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/dk-2.ogg",
+   "text": "Denmark! Did you get it right?",
+   "ms": 2070,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/dm-1": {
+   "group": "answer",
+   "country": "DM",
+   "template": "Boom, {N}!",
+   "file": "answer/dm-1.ogg",
+   "text": "Boom, Dominica!",
+   "ms": 1650,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/dm-2": {
+   "group": "answer",
+   "country": "DM",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/dm-2.ogg",
+   "text": "And it's... Dominica! <laugh>",
+   "ms": 5990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/do-1": {
+   "group": "answer",
+   "country": "DO",
+   "template": "The correct answer was {N}!",
+   "file": "answer/do-1.ogg",
+   "text": "The correct answer was the Dominican Republic!",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/do-2": {
+   "group": "answer",
+   "country": "DO",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/do-2.ogg",
+   "text": "Ah, it was the Dominican Republic this time!",
+   "ms": 2670,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/dz-1": {
+   "group": "answer",
+   "country": "DZ",
+   "template": "Okay, that was {N}!",
+   "file": "answer/dz-1.ogg",
+   "text": "Okay, that was Algeria!",
+   "ms": 2410,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/dz-2": {
+   "group": "answer",
+   "country": "DZ",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/dz-2.ogg",
+   "text": "Algeria! <chuckle> Who called it?",
+   "ms": 2690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ec-1": {
+   "group": "answer",
+   "country": "EC",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/ec-1.ogg",
+   "text": "It was Ecuador! Well done if you got it.",
+   "ms": 2470,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ec-2": {
+   "group": "answer",
+   "country": "EC",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/ec-2.ogg",
+   "text": "Ecuador! Did you get it right?",
+   "ms": 4580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ee-1": {
+   "group": "answer",
+   "country": "EE",
+   "template": "There it is: {N}.",
+   "file": "answer/ee-1.ogg",
+   "text": "There it is: Estonia.",
+   "ms": 1990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ee-2": {
+   "group": "answer",
+   "country": "EE",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/ee-2.ogg",
+   "text": "Nice! The right answer was Estonia.",
+   "ms": 3290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/eg-1": {
+   "group": "answer",
+   "country": "EG",
+   "template": "Yep, it's {N}!",
+   "file": "answer/eg-1.ogg",
+   "text": "Yep, it's Egypt!",
+   "ms": 2370,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/eg-2": {
+   "group": "answer",
+   "country": "EG",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/eg-2.ogg",
+   "text": "That flag belongs to Egypt!",
+   "ms": 2030,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/er-1": {
+   "group": "answer",
+   "country": "ER",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/er-1.ogg",
+   "text": "Drumroll... <short pause> it's Eritrea!",
+   "ms": 4290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/er-2": {
+   "group": "answer",
+   "country": "ER",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/er-2.ogg",
+   "text": "The answer: Eritrea. Points for everyone who got it!",
+   "ms": 3390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/es-1": {
+   "group": "answer",
+   "country": "ES",
+   "template": "Okay, that was {N}!",
+   "file": "answer/es-1.ogg",
+   "text": "Okay, that was Spain!",
+   "ms": 1950,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/es-2": {
+   "group": "answer",
+   "country": "ES",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/es-2.ogg",
+   "text": "Spain! <chuckle> Who called it?",
+   "ms": 3280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/et-1": {
+   "group": "answer",
+   "country": "ET",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/et-1.ogg",
+   "text": "Alright, Ethiopia was the one.",
+   "ms": 2670,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/et-2": {
+   "group": "answer",
+   "country": "ET",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/et-2.ogg",
+   "text": "If you said Ethiopia, you nailed it!",
+   "ms": 2510,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/fi-1": {
+   "group": "answer",
+   "country": "FI",
+   "template": "Yep, it's {N}!",
+   "file": "answer/fi-1.ogg",
+   "text": "Yep, it's Finland!",
+   "ms": 1770,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/fi-2": {
+   "group": "answer",
+   "country": "FI",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/fi-2.ogg",
+   "text": "That flag belongs to Finland!",
+   "ms": 2470,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/fj-1": {
+   "group": "answer",
+   "country": "FJ",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/fj-1.ogg",
+   "text": "It was Fiji! Well done if you got it.",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/fj-2": {
+   "group": "answer",
+   "country": "FJ",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/fj-2.ogg",
+   "text": "Fiji! Did you get it right?",
+   "ms": 3790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/fm-1": {
+   "group": "answer",
+   "country": "FM",
+   "template": "There it is: {N}.",
+   "file": "answer/fm-1.ogg",
+   "text": "There it is: Micronesia.",
+   "ms": 2110,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/fm-2": {
+   "group": "answer",
+   "country": "FM",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/fm-2.ogg",
+   "text": "Nice! The right answer was Micronesia.",
+   "ms": 3290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/fr-1": {
+   "group": "answer",
+   "country": "FR",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/fr-1.ogg",
+   "text": "Drumroll... <short pause> it's France!",
+   "ms": 4690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/fr-2": {
+   "group": "answer",
+   "country": "FR",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/fr-2.ogg",
+   "text": "The answer: France. Points for everyone who got it!",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ga-1": {
+   "group": "answer",
+   "country": "GA",
+   "template": "Boom, {N}!",
+   "file": "answer/ga-1.ogg",
+   "text": "Boom, Gabon!",
+   "ms": 1970,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ga-2": {
+   "group": "answer",
+   "country": "GA",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/ga-2.ogg",
+   "text": "And it's... Gabon! <laugh>",
+   "ms": 3990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gb-1": {
+   "group": "answer",
+   "country": "GB",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/gb-1.ogg",
+   "text": "Alright, the United Kingdom was the one.",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gb-2": {
+   "group": "answer",
+   "country": "GB",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/gb-2.ogg",
+   "text": "If you said the United Kingdom, you nailed it!",
+   "ms": 3580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gd-1": {
+   "group": "answer",
+   "country": "GD",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/gd-1.ogg",
+   "text": "Let's see... yes! Grenada was correct!",
+   "ms": 4290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gd-2": {
+   "group": "answer",
+   "country": "GD",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/gd-2.ogg",
+   "text": "And the answer is... <short pause> Grenada!",
+   "ms": 3180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ge-1": {
+   "group": "answer",
+   "country": "GE",
+   "template": "The correct answer was {N}!",
+   "file": "answer/ge-1.ogg",
+   "text": "The correct answer was Georgia!",
+   "ms": 2670,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ge-2": {
+   "group": "answer",
+   "country": "GE",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/ge-2.ogg",
+   "text": "Ah, it was Georgia this time!",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gh-1": {
+   "group": "answer",
+   "country": "GH",
+   "template": "The correct answer was {N}!",
+   "file": "answer/gh-1.ogg",
+   "text": "The correct answer was Ghana!",
+   "ms": 2550,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gh-2": {
+   "group": "answer",
+   "country": "GH",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/gh-2.ogg",
+   "text": "Ah, it was Ghana this time!",
+   "ms": 2430,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gm-1": {
+   "group": "answer",
+   "country": "GM",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/gm-1.ogg",
+   "text": "Let's see... yes! the Gambia was correct!",
+   "ms": 3990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gm-2": {
+   "group": "answer",
+   "country": "GM",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/gm-2.ogg",
+   "text": "And the answer is... <short pause> the Gambia!",
+   "ms": 4490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gn-1": {
+   "group": "answer",
+   "country": "GN",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/gn-1.ogg",
+   "text": "It was Guinea! Well done if you got it.",
+   "ms": 2670,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gn-2": {
+   "group": "answer",
+   "country": "GN",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/gn-2.ogg",
+   "text": "Guinea! Did you get it right?",
+   "ms": 2970,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gq-1": {
+   "group": "answer",
+   "country": "GQ",
+   "template": "There it is: {N}.",
+   "file": "answer/gq-1.ogg",
+   "text": "There it is: Equatorial Guinea.",
+   "ms": 1930,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gq-2": {
+   "group": "answer",
+   "country": "GQ",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/gq-2.ogg",
+   "text": "Nice! The right answer was Equatorial Guinea.",
+   "ms": 3180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gr-1": {
+   "group": "answer",
+   "country": "GR",
+   "template": "Boom, {N}!",
+   "file": "answer/gr-1.ogg",
+   "text": "Boom, Greece!",
+   "ms": 1590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gr-2": {
+   "group": "answer",
+   "country": "GR",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/gr-2.ogg",
+   "text": "And it's... Greece! <laugh>",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gt-1": {
+   "group": "answer",
+   "country": "GT",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/gt-1.ogg",
+   "text": "It was Guatemala! Well done if you got it.",
+   "ms": 4780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gt-2": {
+   "group": "answer",
+   "country": "GT",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/gt-2.ogg",
+   "text": "Guatemala! Did you get it right?",
+   "ms": 2030,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gw-1": {
+   "group": "answer",
+   "country": "GW",
+   "template": "Okay, that was {N}!",
+   "file": "answer/gw-1.ogg",
+   "text": "Okay, that was Guinea-Bissau!",
+   "ms": 2490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gw-2": {
+   "group": "answer",
+   "country": "GW",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/gw-2.ogg",
+   "text": "Guinea-Bissau! <chuckle> Who called it?",
+   "ms": 4980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gy-1": {
+   "group": "answer",
+   "country": "GY",
+   "template": "There it is: {N}.",
+   "file": "answer/gy-1.ogg",
+   "text": "There it is: Guyana.",
+   "ms": 2410,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/gy-2": {
+   "group": "answer",
+   "country": "GY",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/gy-2.ogg",
+   "text": "Nice! The right answer was Guyana.",
+   "ms": 2470,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/hn-1": {
+   "group": "answer",
+   "country": "HN",
+   "template": "There it is: {N}.",
+   "file": "answer/hn-1.ogg",
+   "text": "There it is: Honduras.",
+   "ms": 1970,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/hn-2": {
+   "group": "answer",
+   "country": "HN",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/hn-2.ogg",
+   "text": "Nice! The right answer was Honduras.",
+   "ms": 5090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/hr-1": {
+   "group": "answer",
+   "country": "HR",
+   "template": "The correct answer was {N}!",
+   "file": "answer/hr-1.ogg",
+   "text": "The correct answer was Croatia!",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/hr-2": {
+   "group": "answer",
+   "country": "HR",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/hr-2.ogg",
+   "text": "Ah, it was Croatia this time!",
+   "ms": 2330,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ht-1": {
+   "group": "answer",
+   "country": "HT",
+   "template": "Okay, that was {N}!",
+   "file": "answer/ht-1.ogg",
+   "text": "Okay, that was Haiti!",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ht-2": {
+   "group": "answer",
+   "country": "HT",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/ht-2.ogg",
+   "text": "Haiti! <chuckle> Who called it?",
+   "ms": 2770,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/hu-1": {
+   "group": "answer",
+   "country": "HU",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/hu-1.ogg",
+   "text": "Let's see... yes! Hungary was correct!",
+   "ms": 4380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/hu-2": {
+   "group": "answer",
+   "country": "HU",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/hu-2.ogg",
+   "text": "And the answer is... <short pause> Hungary!",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/id-1": {
+   "group": "answer",
+   "country": "ID",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/id-1.ogg",
+   "text": "Let's see... yes! Indonesia was correct!",
+   "ms": 3880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/id-2": {
+   "group": "answer",
+   "country": "ID",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/id-2.ogg",
+   "text": "And the answer is... <short pause> Indonesia!",
+   "ms": 3680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ie-1": {
+   "group": "answer",
+   "country": "IE",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/ie-1.ogg",
+   "text": "It was Ireland! Well done if you got it.",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ie-2": {
+   "group": "answer",
+   "country": "IE",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/ie-2.ogg",
+   "text": "Ireland! Did you get it right?",
+   "ms": 2310,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/il-1": {
+   "group": "answer",
+   "country": "IL",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/il-1.ogg",
+   "text": "It was Israel! Well done if you got it.",
+   "ms": 3390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/il-2": {
+   "group": "answer",
+   "country": "IL",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/il-2.ogg",
+   "text": "Israel! Did you get it right?",
+   "ms": 2510,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/in-1": {
+   "group": "answer",
+   "country": "IN",
+   "template": "There it is: {N}.",
+   "file": "answer/in-1.ogg",
+   "text": "There it is: India.",
+   "ms": 1790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/in-2": {
+   "group": "answer",
+   "country": "IN",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/in-2.ogg",
+   "text": "Nice! The right answer was India.",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/iq-1": {
+   "group": "answer",
+   "country": "IQ",
+   "template": "Okay, that was {N}!",
+   "file": "answer/iq-1.ogg",
+   "text": "Okay, that was Iraq!",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/iq-2": {
+   "group": "answer",
+   "country": "IQ",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/iq-2.ogg",
+   "text": "Iraq! <chuckle> Who called it?",
+   "ms": 2370,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ir-1": {
+   "group": "answer",
+   "country": "IR",
+   "template": "Yep, it's {N}!",
+   "file": "answer/ir-1.ogg",
+   "text": "Yep, it's Iran!",
+   "ms": 1530,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ir-2": {
+   "group": "answer",
+   "country": "IR",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/ir-2.ogg",
+   "text": "That flag belongs to Iran!",
+   "ms": 2510,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/is-1": {
+   "group": "answer",
+   "country": "IS",
+   "template": "There it is: {N}.",
+   "file": "answer/is-1.ogg",
+   "text": "There it is: Iceland.",
+   "ms": 1870,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/is-2": {
+   "group": "answer",
+   "country": "IS",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/is-2.ogg",
+   "text": "Nice! The right answer was Iceland.",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/it-1": {
+   "group": "answer",
+   "country": "IT",
+   "template": "Okay, that was {N}!",
+   "file": "answer/it-1.ogg",
+   "text": "Okay, that was Italy!",
+   "ms": 1970,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/it-2": {
+   "group": "answer",
+   "country": "IT",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/it-2.ogg",
+   "text": "Italy! <chuckle> Who called it?",
+   "ms": 2350,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/jm-1": {
+   "group": "answer",
+   "country": "JM",
+   "template": "Yep, it's {N}!",
+   "file": "answer/jm-1.ogg",
+   "text": "Yep, it's Jamaica!",
+   "ms": 1690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/jm-2": {
+   "group": "answer",
+   "country": "JM",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/jm-2.ogg",
+   "text": "That flag belongs to Jamaica!",
+   "ms": 2370,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/jo-1": {
+   "group": "answer",
+   "country": "JO",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/jo-1.ogg",
+   "text": "Alright, Jordan was the one.",
+   "ms": 2810,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/jo-2": {
+   "group": "answer",
+   "country": "JO",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/jo-2.ogg",
+   "text": "If you said Jordan, you nailed it!",
+   "ms": 4290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/jp-1": {
+   "group": "answer",
+   "country": "JP",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/jp-1.ogg",
+   "text": "Drumroll... <short pause> it's Japan!",
+   "ms": 2790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/jp-2": {
+   "group": "answer",
+   "country": "JP",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/jp-2.ogg",
+   "text": "The answer: Japan. Points for everyone who got it!",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ke-1": {
+   "group": "answer",
+   "country": "KE",
+   "template": "Yep, it's {N}!",
+   "file": "answer/ke-1.ogg",
+   "text": "Yep, it's Kenya!",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ke-2": {
+   "group": "answer",
+   "country": "KE",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/ke-2.ogg",
+   "text": "That flag belongs to Kenya!",
+   "ms": 2210,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kg-1": {
+   "group": "answer",
+   "country": "KG",
+   "template": "Boom, {N}!",
+   "file": "answer/kg-1.ogg",
+   "text": "Boom, Kyrgyzstan!",
+   "ms": 1710,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kg-2": {
+   "group": "answer",
+   "country": "KG",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/kg-2.ogg",
+   "text": "And it's... Kyrgyzstan! <laugh>",
+   "ms": 4680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kh-1": {
+   "group": "answer",
+   "country": "KH",
+   "template": "The correct answer was {N}!",
+   "file": "answer/kh-1.ogg",
+   "text": "The correct answer was Cambodia!",
+   "ms": 2810,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kh-2": {
+   "group": "answer",
+   "country": "KH",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/kh-2.ogg",
+   "text": "Ah, it was Cambodia this time!",
+   "ms": 2250,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ki-1": {
+   "group": "answer",
+   "country": "KI",
+   "template": "Okay, that was {N}!",
+   "file": "answer/ki-1.ogg",
+   "text": "Okay, that was Kiribati!",
+   "ms": 2730,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ki-2": {
+   "group": "answer",
+   "country": "KI",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/ki-2.ogg",
+   "text": "Kiribati! <chuckle> Who called it?",
+   "ms": 4680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/km-1": {
+   "group": "answer",
+   "country": "KM",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/km-1.ogg",
+   "text": "Drumroll... <short pause> it's the Comoros!",
+   "ms": 3280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/km-2": {
+   "group": "answer",
+   "country": "KM",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/km-2.ogg",
+   "text": "The answer: the Comoros. Points for everyone who got it!",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kn-1": {
+   "group": "answer",
+   "country": "KN",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/kn-1.ogg",
+   "text": "Drumroll... <short pause> it's Saint Kitts and Nevis!",
+   "ms": 4990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kn-2": {
+   "group": "answer",
+   "country": "KN",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/kn-2.ogg",
+   "text": "The answer: Saint Kitts and Nevis. Points for everyone who got it!",
+   "ms": 3680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kp-1": {
+   "group": "answer",
+   "country": "KP",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/kp-1.ogg",
+   "text": "Let's see... yes! North Korea was correct!",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kp-2": {
+   "group": "answer",
+   "country": "KP",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/kp-2.ogg",
+   "text": "And the answer is... <short pause> North Korea!",
+   "ms": 4890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kr-1": {
+   "group": "answer",
+   "country": "KR",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/kr-1.ogg",
+   "text": "It was South Korea! Well done if you got it.",
+   "ms": 5490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kr-2": {
+   "group": "answer",
+   "country": "KR",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/kr-2.ogg",
+   "text": "South Korea! Did you get it right?",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kw-1": {
+   "group": "answer",
+   "country": "KW",
+   "template": "There it is: {N}.",
+   "file": "answer/kw-1.ogg",
+   "text": "There it is: Kuwait.",
+   "ms": 2290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kw-2": {
+   "group": "answer",
+   "country": "KW",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/kw-2.ogg",
+   "text": "Nice! The right answer was Kuwait.",
+   "ms": 2570,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kz-1": {
+   "group": "answer",
+   "country": "KZ",
+   "template": "Okay, that was {N}!",
+   "file": "answer/kz-1.ogg",
+   "text": "Okay, that was Kazakhstan!",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/kz-2": {
+   "group": "answer",
+   "country": "KZ",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/kz-2.ogg",
+   "text": "Kazakhstan! <chuckle> Who called it?",
+   "ms": 2550,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/la-1": {
+   "group": "answer",
+   "country": "LA",
+   "template": "Yep, it's {N}!",
+   "file": "answer/la-1.ogg",
+   "text": "Yep, it's Laos!",
+   "ms": 1990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/la-2": {
+   "group": "answer",
+   "country": "LA",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/la-2.ogg",
+   "text": "That flag belongs to Laos!",
+   "ms": 2270,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lb-1": {
+   "group": "answer",
+   "country": "LB",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/lb-1.ogg",
+   "text": "Drumroll... <short pause> it's Lebanon!",
+   "ms": 3880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lb-2": {
+   "group": "answer",
+   "country": "LB",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/lb-2.ogg",
+   "text": "The answer: Lebanon. Points for everyone who got it!",
+   "ms": 4490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lc-1": {
+   "group": "answer",
+   "country": "LC",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/lc-1.ogg",
+   "text": "Alright, Saint Lucia was the one.",
+   "ms": 2270,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lc-2": {
+   "group": "answer",
+   "country": "LC",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/lc-2.ogg",
+   "text": "If you said Saint Lucia, you nailed it!",
+   "ms": 5080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/li-1": {
+   "group": "answer",
+   "country": "LI",
+   "template": "Yep, it's {N}!",
+   "file": "answer/li-1.ogg",
+   "text": "Yep, it's Liechtenstein!",
+   "ms": 1930,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/li-2": {
+   "group": "answer",
+   "country": "LI",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/li-2.ogg",
+   "text": "That flag belongs to Liechtenstein!",
+   "ms": 2930,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lk-1": {
+   "group": "answer",
+   "country": "LK",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/lk-1.ogg",
+   "text": "Alright, Sri Lanka was the one.",
+   "ms": 2090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lk-2": {
+   "group": "answer",
+   "country": "LK",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/lk-2.ogg",
+   "text": "If you said Sri Lanka, you nailed it!",
+   "ms": 2950,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lr-1": {
+   "group": "answer",
+   "country": "LR",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/lr-1.ogg",
+   "text": "Alright, Liberia was the one.",
+   "ms": 2150,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lr-2": {
+   "group": "answer",
+   "country": "LR",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/lr-2.ogg",
+   "text": "If you said Liberia, you nailed it!",
+   "ms": 2350,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ls-1": {
+   "group": "answer",
+   "country": "LS",
+   "template": "Boom, {N}!",
+   "file": "answer/ls-1.ogg",
+   "text": "Boom, Lesotho!",
+   "ms": 1910,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ls-2": {
+   "group": "answer",
+   "country": "LS",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/ls-2.ogg",
+   "text": "And it's... Lesotho! <laugh>",
+   "ms": 4280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lt-1": {
+   "group": "answer",
+   "country": "LT",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/lt-1.ogg",
+   "text": "Drumroll... <short pause> it's Lithuania!",
+   "ms": 3380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lt-2": {
+   "group": "answer",
+   "country": "LT",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/lt-2.ogg",
+   "text": "The answer: Lithuania. Points for everyone who got it!",
+   "ms": 4390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lu-1": {
+   "group": "answer",
+   "country": "LU",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/lu-1.ogg",
+   "text": "Alright, Luxembourg was the one.",
+   "ms": 2210,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lu-2": {
+   "group": "answer",
+   "country": "LU",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/lu-2.ogg",
+   "text": "If you said Luxembourg, you nailed it!",
+   "ms": 2830,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lv-1": {
+   "group": "answer",
+   "country": "LV",
+   "template": "Boom, {N}!",
+   "file": "answer/lv-1.ogg",
+   "text": "Boom, Latvia!",
+   "ms": 1730,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/lv-2": {
+   "group": "answer",
+   "country": "LV",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/lv-2.ogg",
+   "text": "And it's... Latvia! <laugh>",
+   "ms": 4490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ly-1": {
+   "group": "answer",
+   "country": "LY",
+   "template": "The correct answer was {N}!",
+   "file": "answer/ly-1.ogg",
+   "text": "The correct answer was Libya!",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ly-2": {
+   "group": "answer",
+   "country": "LY",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/ly-2.ogg",
+   "text": "Ah, it was Libya this time!",
+   "ms": 2870,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ma-1": {
+   "group": "answer",
+   "country": "MA",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/ma-1.ogg",
+   "text": "Let's see... yes! Morocco was correct!",
+   "ms": 4980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ma-2": {
+   "group": "answer",
+   "country": "MA",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/ma-2.ogg",
+   "text": "And the answer is... <short pause> Morocco!",
+   "ms": 4280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mc-1": {
+   "group": "answer",
+   "country": "MC",
+   "template": "The correct answer was {N}!",
+   "file": "answer/mc-1.ogg",
+   "text": "The correct answer was Monaco!",
+   "ms": 2770,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mc-2": {
+   "group": "answer",
+   "country": "MC",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/mc-2.ogg",
+   "text": "Ah, it was Monaco this time!",
+   "ms": 2510,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/md-1": {
+   "group": "answer",
+   "country": "MD",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/md-1.ogg",
+   "text": "Let's see... yes! Moldova was correct!",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/md-2": {
+   "group": "answer",
+   "country": "MD",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/md-2.ogg",
+   "text": "And the answer is... <short pause> Moldova!",
+   "ms": 3580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/me-1": {
+   "group": "answer",
+   "country": "ME",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/me-1.ogg",
+   "text": "It was Montenegro! Well done if you got it.",
+   "ms": 3390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/me-2": {
+   "group": "answer",
+   "country": "ME",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/me-2.ogg",
+   "text": "Montenegro! Did you get it right?",
+   "ms": 2370,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mg-1": {
+   "group": "answer",
+   "country": "MG",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/mg-1.ogg",
+   "text": "It was Madagascar! Well done if you got it.",
+   "ms": 2770,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mg-2": {
+   "group": "answer",
+   "country": "MG",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/mg-2.ogg",
+   "text": "Madagascar! Did you get it right?",
+   "ms": 1910,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mh-1": {
+   "group": "answer",
+   "country": "MH",
+   "template": "Yep, it's {N}!",
+   "file": "answer/mh-1.ogg",
+   "text": "Yep, it's the Marshall Islands!",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mh-2": {
+   "group": "answer",
+   "country": "MH",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/mh-2.ogg",
+   "text": "That flag belongs to the Marshall Islands!",
+   "ms": 3290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mk-1": {
+   "group": "answer",
+   "country": "MK",
+   "template": "There it is: {N}.",
+   "file": "answer/mk-1.ogg",
+   "text": "There it is: North Macedonia.",
+   "ms": 2490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mk-2": {
+   "group": "answer",
+   "country": "MK",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/mk-2.ogg",
+   "text": "Nice! The right answer was North Macedonia.",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ml-1": {
+   "group": "answer",
+   "country": "ML",
+   "template": "There it is: {N}.",
+   "file": "answer/ml-1.ogg",
+   "text": "There it is: Mali.",
+   "ms": 2270,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ml-2": {
+   "group": "answer",
+   "country": "ML",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/ml-2.ogg",
+   "text": "Nice! The right answer was Mali.",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mm-1": {
+   "group": "answer",
+   "country": "MM",
+   "template": "Boom, {N}!",
+   "file": "answer/mm-1.ogg",
+   "text": "Boom, Myanmar!",
+   "ms": 1530,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mm-2": {
+   "group": "answer",
+   "country": "MM",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/mm-2.ogg",
+   "text": "And it's... Myanmar! <laugh>",
+   "ms": 4790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mn-1": {
+   "group": "answer",
+   "country": "MN",
+   "template": "The correct answer was {N}!",
+   "file": "answer/mn-1.ogg",
+   "text": "The correct answer was Mongolia!",
+   "ms": 2810,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mn-2": {
+   "group": "answer",
+   "country": "MN",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/mn-2.ogg",
+   "text": "Ah, it was Mongolia this time!",
+   "ms": 3280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mr-1": {
+   "group": "answer",
+   "country": "MR",
+   "template": "Okay, that was {N}!",
+   "file": "answer/mr-1.ogg",
+   "text": "Okay, that was Mauritania!",
+   "ms": 2290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mr-2": {
+   "group": "answer",
+   "country": "MR",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/mr-2.ogg",
+   "text": "Mauritania! <chuckle> Who called it?",
+   "ms": 7090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mt-1": {
+   "group": "answer",
+   "country": "MT",
+   "template": "Okay, that was {N}!",
+   "file": "answer/mt-1.ogg",
+   "text": "Okay, that was Malta!",
+   "ms": 1790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mt-2": {
+   "group": "answer",
+   "country": "MT",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/mt-2.ogg",
+   "text": "Malta! <chuckle> Who called it?",
+   "ms": 2550,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mu-1": {
+   "group": "answer",
+   "country": "MU",
+   "template": "Yep, it's {N}!",
+   "file": "answer/mu-1.ogg",
+   "text": "Yep, it's Mauritius!",
+   "ms": 2030,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mu-2": {
+   "group": "answer",
+   "country": "MU",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/mu-2.ogg",
+   "text": "That flag belongs to Mauritius!",
+   "ms": 2170,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mw-1": {
+   "group": "answer",
+   "country": "MW",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/mw-1.ogg",
+   "text": "Drumroll... <short pause> it's Malawi!",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mw-2": {
+   "group": "answer",
+   "country": "MW",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/mw-2.ogg",
+   "text": "The answer: Malawi. Points for everyone who got it!",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mx-1": {
+   "group": "answer",
+   "country": "MX",
+   "template": "Boom, {N}!",
+   "file": "answer/mx-1.ogg",
+   "text": "Boom, Mexico!",
+   "ms": 2330,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mx-2": {
+   "group": "answer",
+   "country": "MX",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/mx-2.ogg",
+   "text": "And it's... Mexico! <laugh>",
+   "ms": 6790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/my-1": {
+   "group": "answer",
+   "country": "MY",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/my-1.ogg",
+   "text": "Let's see... yes! Malaysia was correct!",
+   "ms": 5690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/my-2": {
+   "group": "answer",
+   "country": "MY",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/my-2.ogg",
+   "text": "And the answer is... <short pause> Malaysia!",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mz-1": {
+   "group": "answer",
+   "country": "MZ",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/mz-1.ogg",
+   "text": "Alright, Mozambique was the one.",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/mz-2": {
+   "group": "answer",
+   "country": "MZ",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/mz-2.ogg",
+   "text": "If you said Mozambique, you nailed it!",
+   "ms": 2870,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/na-1": {
+   "group": "answer",
+   "country": "NA",
+   "template": "Boom, {N}!",
+   "file": "answer/na-1.ogg",
+   "text": "Boom, Namibia!",
+   "ms": 2850,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/na-2": {
+   "group": "answer",
+   "country": "NA",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/na-2.ogg",
+   "text": "And it's... Namibia! <laugh>",
+   "ms": 3990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ne-1": {
+   "group": "answer",
+   "country": "NE",
+   "template": "The correct answer was {N}!",
+   "file": "answer/ne-1.ogg",
+   "text": "The correct answer was Niger!",
+   "ms": 4180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ne-2": {
+   "group": "answer",
+   "country": "NE",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/ne-2.ogg",
+   "text": "Ah, it was Niger this time!",
+   "ms": 2870,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ng-1": {
+   "group": "answer",
+   "country": "NG",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/ng-1.ogg",
+   "text": "Let's see... yes! Nigeria was correct!",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ng-2": {
+   "group": "answer",
+   "country": "NG",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/ng-2.ogg",
+   "text": "And the answer is... <short pause> Nigeria!",
+   "ms": 4580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ni-1": {
+   "group": "answer",
+   "country": "NI",
+   "template": "The correct answer was {N}!",
+   "file": "answer/ni-1.ogg",
+   "text": "The correct answer was Nicaragua!",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ni-2": {
+   "group": "answer",
+   "country": "NI",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/ni-2.ogg",
+   "text": "Ah, it was Nicaragua this time!",
+   "ms": 2390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/nl-1": {
+   "group": "answer",
+   "country": "NL",
+   "template": "Yep, it's {N}!",
+   "file": "answer/nl-1.ogg",
+   "text": "Yep, it's the Netherlands!",
+   "ms": 1890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/nl-2": {
+   "group": "answer",
+   "country": "NL",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/nl-2.ogg",
+   "text": "That flag belongs to the Netherlands!",
+   "ms": 2850,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/no-1": {
+   "group": "answer",
+   "country": "NO",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/no-1.ogg",
+   "text": "Drumroll... <short pause> it's Norway!",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/no-2": {
+   "group": "answer",
+   "country": "NO",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/no-2.ogg",
+   "text": "The answer: Norway. Points for everyone who got it!",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/np-1": {
+   "group": "answer",
+   "country": "NP",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/np-1.ogg",
+   "text": "It was Nepal! Well done if you got it.",
+   "ms": 4880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/np-2": {
+   "group": "answer",
+   "country": "NP",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/np-2.ogg",
+   "text": "Nepal! Did you get it right?",
+   "ms": 1630,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/nr-1": {
+   "group": "answer",
+   "country": "NR",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/nr-1.ogg",
+   "text": "Drumroll... <short pause> it's Nauru!",
+   "ms": 3380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/nr-2": {
+   "group": "answer",
+   "country": "NR",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/nr-2.ogg",
+   "text": "The answer: Nauru. Points for everyone who got it!",
+   "ms": 4690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/nz-1": {
+   "group": "answer",
+   "country": "NZ",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/nz-1.ogg",
+   "text": "Alright, New Zealand was the one.",
+   "ms": 1930,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/nz-2": {
+   "group": "answer",
+   "country": "NZ",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/nz-2.ogg",
+   "text": "If you said New Zealand, you nailed it!",
+   "ms": 2450,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/om-1": {
+   "group": "answer",
+   "country": "OM",
+   "template": "There it is: {N}.",
+   "file": "answer/om-1.ogg",
+   "text": "There it is: Oman.",
+   "ms": 4090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/om-2": {
+   "group": "answer",
+   "country": "OM",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/om-2.ogg",
+   "text": "Nice! The right answer was Oman.",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pa-1": {
+   "group": "answer",
+   "country": "PA",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/pa-1.ogg",
+   "text": "Let's see... yes! Panama was correct!",
+   "ms": 5080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pa-2": {
+   "group": "answer",
+   "country": "PA",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/pa-2.ogg",
+   "text": "And the answer is... <short pause> Panama!",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pe-1": {
+   "group": "answer",
+   "country": "PE",
+   "template": "Okay, that was {N}!",
+   "file": "answer/pe-1.ogg",
+   "text": "Okay, that was Peru!",
+   "ms": 2490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pe-2": {
+   "group": "answer",
+   "country": "PE",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/pe-2.ogg",
+   "text": "Peru! <chuckle> Who called it?",
+   "ms": 3780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pg-1": {
+   "group": "answer",
+   "country": "PG",
+   "template": "Boom, {N}!",
+   "file": "answer/pg-1.ogg",
+   "text": "Boom, Papua New Guinea!",
+   "ms": 1810,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pg-2": {
+   "group": "answer",
+   "country": "PG",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/pg-2.ogg",
+   "text": "And it's... Papua New Guinea! <laugh>",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ph-1": {
+   "group": "answer",
+   "country": "PH",
+   "template": "Okay, that was {N}!",
+   "file": "answer/ph-1.ogg",
+   "text": "Okay, that was the Philippines!",
+   "ms": 2070,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ph-2": {
+   "group": "answer",
+   "country": "PH",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/ph-2.ogg",
+   "text": "The Philippines! <chuckle> Who called it?",
+   "ms": 4880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pk-1": {
+   "group": "answer",
+   "country": "PK",
+   "template": "Yep, it's {N}!",
+   "file": "answer/pk-1.ogg",
+   "text": "Yep, it's Pakistan!",
+   "ms": 2850,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pk-2": {
+   "group": "answer",
+   "country": "PK",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/pk-2.ogg",
+   "text": "That flag belongs to Pakistan!",
+   "ms": 2290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pl-1": {
+   "group": "answer",
+   "country": "PL",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/pl-1.ogg",
+   "text": "Alright, Poland was the one.",
+   "ms": 2510,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pl-2": {
+   "group": "answer",
+   "country": "PL",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/pl-2.ogg",
+   "text": "If you said Poland, you nailed it!",
+   "ms": 2730,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ps-1": {
+   "group": "answer",
+   "country": "PS",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/ps-1.ogg",
+   "text": "Drumroll... <short pause> it's Palestine!",
+   "ms": 4180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ps-2": {
+   "group": "answer",
+   "country": "PS",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/ps-2.ogg",
+   "text": "The answer: Palestine. Points for everyone who got it!",
+   "ms": 3780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pt-1": {
+   "group": "answer",
+   "country": "PT",
+   "template": "Boom, {N}!",
+   "file": "answer/pt-1.ogg",
+   "text": "Boom, Portugal!",
+   "ms": 1790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pt-2": {
+   "group": "answer",
+   "country": "PT",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/pt-2.ogg",
+   "text": "And it's... Portugal! <laugh>",
+   "ms": 3280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pw-1": {
+   "group": "answer",
+   "country": "PW",
+   "template": "The correct answer was {N}!",
+   "file": "answer/pw-1.ogg",
+   "text": "The correct answer was Palau!",
+   "ms": 2650,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/pw-2": {
+   "group": "answer",
+   "country": "PW",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/pw-2.ogg",
+   "text": "Ah, it was Palau this time!",
+   "ms": 2150,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/py-1": {
+   "group": "answer",
+   "country": "PY",
+   "template": "Yep, it's {N}!",
+   "file": "answer/py-1.ogg",
+   "text": "Yep, it's Paraguay!",
+   "ms": 1410,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/py-2": {
+   "group": "answer",
+   "country": "PY",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/py-2.ogg",
+   "text": "That flag belongs to Paraguay!",
+   "ms": 4090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/qa-1": {
+   "group": "answer",
+   "country": "QA",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/qa-1.ogg",
+   "text": "Alright, Qatar was the one.",
+   "ms": 2690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/qa-2": {
+   "group": "answer",
+   "country": "QA",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/qa-2.ogg",
+   "text": "If you said Qatar, you nailed it!",
+   "ms": 2190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ro-1": {
+   "group": "answer",
+   "country": "RO",
+   "template": "The correct answer was {N}!",
+   "file": "answer/ro-1.ogg",
+   "text": "The correct answer was Romania!",
+   "ms": 2830,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ro-2": {
+   "group": "answer",
+   "country": "RO",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/ro-2.ogg",
+   "text": "Ah, it was Romania this time!",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/rs-1": {
+   "group": "answer",
+   "country": "RS",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/rs-1.ogg",
+   "text": "Let's see... yes! Serbia was correct!",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/rs-2": {
+   "group": "answer",
+   "country": "RS",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/rs-2.ogg",
+   "text": "And the answer is... <short pause> Serbia!",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ru-1": {
+   "group": "answer",
+   "country": "RU",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/ru-1.ogg",
+   "text": "It was Russia! Well done if you got it.",
+   "ms": 3390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ru-2": {
+   "group": "answer",
+   "country": "RU",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/ru-2.ogg",
+   "text": "Russia! Did you get it right?",
+   "ms": 2190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/rw-1": {
+   "group": "answer",
+   "country": "RW",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/rw-1.ogg",
+   "text": "It was Rwanda! Well done if you got it.",
+   "ms": 3880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/rw-2": {
+   "group": "answer",
+   "country": "RW",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/rw-2.ogg",
+   "text": "Rwanda! Did you get it right?",
+   "ms": 2310,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sa-1": {
+   "group": "answer",
+   "country": "SA",
+   "template": "Boom, {N}!",
+   "file": "answer/sa-1.ogg",
+   "text": "Boom, Saudi Arabia!",
+   "ms": 1790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sa-2": {
+   "group": "answer",
+   "country": "SA",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/sa-2.ogg",
+   "text": "And it's... Saudi Arabia! <laugh>",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sb-1": {
+   "group": "answer",
+   "country": "SB",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/sb-1.ogg",
+   "text": "Let's see... yes! the Solomon Islands was correct!",
+   "ms": 5090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sb-2": {
+   "group": "answer",
+   "country": "SB",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/sb-2.ogg",
+   "text": "And the answer is... <short pause> the Solomon Islands!",
+   "ms": 4890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sc-1": {
+   "group": "answer",
+   "country": "SC",
+   "template": "There it is: {N}.",
+   "file": "answer/sc-1.ogg",
+   "text": "There it is: the Seychelles.",
+   "ms": 2350,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sc-2": {
+   "group": "answer",
+   "country": "SC",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/sc-2.ogg",
+   "text": "Nice! The right answer was the Seychelles.",
+   "ms": 5790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sd-1": {
+   "group": "answer",
+   "country": "SD",
+   "template": "Okay, that was {N}!",
+   "file": "answer/sd-1.ogg",
+   "text": "Okay, that was Sudan!",
+   "ms": 2690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sd-2": {
+   "group": "answer",
+   "country": "SD",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/sd-2.ogg",
+   "text": "Sudan! <chuckle> Who called it?",
+   "ms": 3180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/se-1": {
+   "group": "answer",
+   "country": "SE",
+   "template": "There it is: {N}.",
+   "file": "answer/se-1.ogg",
+   "text": "There it is: Sweden.",
+   "ms": 1750,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/se-2": {
+   "group": "answer",
+   "country": "SE",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/se-2.ogg",
+   "text": "Nice! The right answer was Sweden.",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sg-1": {
+   "group": "answer",
+   "country": "SG",
+   "template": "The correct answer was {N}!",
+   "file": "answer/sg-1.ogg",
+   "text": "The correct answer was Singapore!",
+   "ms": 4890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sg-2": {
+   "group": "answer",
+   "country": "SG",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/sg-2.ogg",
+   "text": "Ah, it was Singapore this time!",
+   "ms": 2330,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/si-1": {
+   "group": "answer",
+   "country": "SI",
+   "template": "Okay, that was {N}!",
+   "file": "answer/si-1.ogg",
+   "text": "Okay, that was Slovenia!",
+   "ms": 2370,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/si-2": {
+   "group": "answer",
+   "country": "SI",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/si-2.ogg",
+   "text": "Slovenia! <chuckle> Who called it?",
+   "ms": 2730,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sk-1": {
+   "group": "answer",
+   "country": "SK",
+   "template": "Yep, it's {N}!",
+   "file": "answer/sk-1.ogg",
+   "text": "Yep, it's Slovakia!",
+   "ms": 1950,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sk-2": {
+   "group": "answer",
+   "country": "SK",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/sk-2.ogg",
+   "text": "That flag belongs to Slovakia!",
+   "ms": 2810,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sl-1": {
+   "group": "answer",
+   "country": "SL",
+   "template": "Yep, it's {N}!",
+   "file": "answer/sl-1.ogg",
+   "text": "Yep, it's Sierra Leone!",
+   "ms": 1990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sl-2": {
+   "group": "answer",
+   "country": "SL",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/sl-2.ogg",
+   "text": "That flag belongs to Sierra Leone!",
+   "ms": 2110,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sm-1": {
+   "group": "answer",
+   "country": "SM",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/sm-1.ogg",
+   "text": "Drumroll... <short pause> it's San Marino!",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sm-2": {
+   "group": "answer",
+   "country": "SM",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/sm-2.ogg",
+   "text": "The answer: San Marino. Points for everyone who got it!",
+   "ms": 4390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sn-1": {
+   "group": "answer",
+   "country": "SN",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/sn-1.ogg",
+   "text": "Drumroll... <short pause> it's Senegal!",
+   "ms": 3180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sn-2": {
+   "group": "answer",
+   "country": "SN",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/sn-2.ogg",
+   "text": "The answer: Senegal. Points for everyone who got it!",
+   "ms": 3790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/so-1": {
+   "group": "answer",
+   "country": "SO",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/so-1.ogg",
+   "text": "Alright, Somalia was the one.",
+   "ms": 2190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/so-2": {
+   "group": "answer",
+   "country": "SO",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/so-2.ogg",
+   "text": "If you said Somalia, you nailed it!",
+   "ms": 5180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sr-1": {
+   "group": "answer",
+   "country": "SR",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/sr-1.ogg",
+   "text": "Drumroll... <short pause> it's Suriname!",
+   "ms": 4590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sr-2": {
+   "group": "answer",
+   "country": "SR",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/sr-2.ogg",
+   "text": "The answer: Suriname. Points for everyone who got it!",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ss-1": {
+   "group": "answer",
+   "country": "SS",
+   "template": "Boom, {N}!",
+   "file": "answer/ss-1.ogg",
+   "text": "Boom, South Sudan!",
+   "ms": 4090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ss-2": {
+   "group": "answer",
+   "country": "SS",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/ss-2.ogg",
+   "text": "And it's... South Sudan! <laugh>",
+   "ms": 4790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/st-1": {
+   "group": "answer",
+   "country": "ST",
+   "template": "The correct answer was {N}!",
+   "file": "answer/st-1.ogg",
+   "text": "The correct answer was São Tomé and Príncipe!",
+   "ms": 6190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/st-2": {
+   "group": "answer",
+   "country": "ST",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/st-2.ogg",
+   "text": "Ah, it was São Tomé and Príncipe this time!",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sv-1": {
+   "group": "answer",
+   "country": "SV",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/sv-1.ogg",
+   "text": "It was El Salvador! Well done if you got it.",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sv-2": {
+   "group": "answer",
+   "country": "SV",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/sv-2.ogg",
+   "text": "El Salvador! Did you get it right?",
+   "ms": 2470,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sy-1": {
+   "group": "answer",
+   "country": "SY",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/sy-1.ogg",
+   "text": "Let's see... yes! Syria was correct!",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sy-2": {
+   "group": "answer",
+   "country": "SY",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/sy-2.ogg",
+   "text": "And the answer is... <short pause> Syria!",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sz-1": {
+   "group": "answer",
+   "country": "SZ",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/sz-1.ogg",
+   "text": "Let's see... yes! Eswatini was correct!",
+   "ms": 3990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/sz-2": {
+   "group": "answer",
+   "country": "SZ",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/sz-2.ogg",
+   "text": "And the answer is... <short pause> Eswatini!",
+   "ms": 5580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/td-1": {
+   "group": "answer",
+   "country": "TD",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/td-1.ogg",
+   "text": "It was Chad! Well done if you got it.",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/td-2": {
+   "group": "answer",
+   "country": "TD",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/td-2.ogg",
+   "text": "Chad! Did you get it right?",
+   "ms": 2150,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tg-1": {
+   "group": "answer",
+   "country": "TG",
+   "template": "There it is: {N}.",
+   "file": "answer/tg-1.ogg",
+   "text": "There it is: Togo.",
+   "ms": 1850,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tg-2": {
+   "group": "answer",
+   "country": "TG",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/tg-2.ogg",
+   "text": "Nice! The right answer was Togo.",
+   "ms": 3580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/th-1": {
+   "group": "answer",
+   "country": "TH",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/th-1.ogg",
+   "text": "It was Thailand! Well done if you got it.",
+   "ms": 2930,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/th-2": {
+   "group": "answer",
+   "country": "TH",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/th-2.ogg",
+   "text": "Thailand! Did you get it right?",
+   "ms": 2110,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tj-1": {
+   "group": "answer",
+   "country": "TJ",
+   "template": "There it is: {N}.",
+   "file": "answer/tj-1.ogg",
+   "text": "There it is: Tajikistan.",
+   "ms": 2150,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tj-2": {
+   "group": "answer",
+   "country": "TJ",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/tj-2.ogg",
+   "text": "Nice! The right answer was Tajikistan.",
+   "ms": 3990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tl-1": {
+   "group": "answer",
+   "country": "TL",
+   "template": "Okay, that was {N}!",
+   "file": "answer/tl-1.ogg",
+   "text": "Okay, that was East Timor!",
+   "ms": 3380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tl-2": {
+   "group": "answer",
+   "country": "TL",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/tl-2.ogg",
+   "text": "East Timor! <chuckle> Who called it?",
+   "ms": 2850,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tm-1": {
+   "group": "answer",
+   "country": "TM",
+   "template": "Yep, it's {N}!",
+   "file": "answer/tm-1.ogg",
+   "text": "Yep, it's Turkmenistan!",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tm-2": {
+   "group": "answer",
+   "country": "TM",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/tm-2.ogg",
+   "text": "That flag belongs to Turkmenistan!",
+   "ms": 2950,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tn-1": {
+   "group": "answer",
+   "country": "TN",
+   "template": "Okay, that was {N}!",
+   "file": "answer/tn-1.ogg",
+   "text": "Okay, that was Tunisia!",
+   "ms": 1630,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tn-2": {
+   "group": "answer",
+   "country": "TN",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/tn-2.ogg",
+   "text": "Tunisia! <chuckle> Who called it?",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/to-1": {
+   "group": "answer",
+   "country": "TO",
+   "template": "It was {N}! Well done if you got it.",
+   "file": "answer/to-1.ogg",
+   "text": "It was Tonga! Well done if you got it.",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/to-2": {
+   "group": "answer",
+   "country": "TO",
+   "template": "{N}! Did you get it right?",
+   "file": "answer/to-2.ogg",
+   "text": "Tonga! Did you get it right?",
+   "ms": 1890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tr-1": {
+   "group": "answer",
+   "country": "TR",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/tr-1.ogg",
+   "text": "Alright, Turkey was the one.",
+   "ms": 3180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tr-2": {
+   "group": "answer",
+   "country": "TR",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/tr-2.ogg",
+   "text": "If you said Turkey, you nailed it!",
+   "ms": 2310,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tt-1": {
+   "group": "answer",
+   "country": "TT",
+   "template": "There it is: {N}.",
+   "file": "answer/tt-1.ogg",
+   "text": "There it is: Trinidad and Tobago.",
+   "ms": 3880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tt-2": {
+   "group": "answer",
+   "country": "TT",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/tt-2.ogg",
+   "text": "Nice! The right answer was Trinidad and Tobago.",
+   "ms": 3400,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tv-1": {
+   "group": "answer",
+   "country": "TV",
+   "template": "There it is: {N}.",
+   "file": "answer/tv-1.ogg",
+   "text": "There it is: Tuvalu.",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tv-2": {
+   "group": "answer",
+   "country": "TV",
+   "template": "Nice! The right answer was {N}.",
+   "file": "answer/tv-2.ogg",
+   "text": "Nice! The right answer was Tuvalu.",
+   "ms": 2890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tw-1": {
+   "group": "answer",
+   "country": "TW",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/tw-1.ogg",
+   "text": "Drumroll... <short pause> it's Taiwan!",
+   "ms": 2970,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tw-2": {
+   "group": "answer",
+   "country": "TW",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/tw-2.ogg",
+   "text": "The answer: Taiwan. Points for everyone who got it!",
+   "ms": 3180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tz-1": {
+   "group": "answer",
+   "country": "TZ",
+   "template": "Yep, it's {N}!",
+   "file": "answer/tz-1.ogg",
+   "text": "Yep, it's Tanzania!",
+   "ms": 4280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/tz-2": {
+   "group": "answer",
+   "country": "TZ",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/tz-2.ogg",
+   "text": "That flag belongs to Tanzania!",
+   "ms": 2410,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ua-1": {
+   "group": "answer",
+   "country": "UA",
+   "template": "Boom, {N}!",
+   "file": "answer/ua-1.ogg",
+   "text": "Boom, Ukraine!",
+   "ms": 1790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ua-2": {
+   "group": "answer",
+   "country": "UA",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/ua-2.ogg",
+   "text": "And it's... Ukraine! <laugh>",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ug-1": {
+   "group": "answer",
+   "country": "UG",
+   "template": "Drumroll... <short pause> it's {N}!",
+   "file": "answer/ug-1.ogg",
+   "text": "Drumroll... <short pause> it's Uganda!",
+   "ms": 4780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ug-2": {
+   "group": "answer",
+   "country": "UG",
+   "template": "The answer: {N}. Points for everyone who got it!",
+   "file": "answer/ug-2.ogg",
+   "text": "The answer: Uganda. Points for everyone who got it!",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/us-1": {
+   "group": "answer",
+   "country": "US",
+   "template": "Okay, that was {N}!",
+   "file": "answer/us-1.ogg",
+   "text": "Okay, that was the United States!",
+   "ms": 3380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/us-2": {
+   "group": "answer",
+   "country": "US",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/us-2.ogg",
+   "text": "The United States! <chuckle> Who called it?",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/uy-1": {
+   "group": "answer",
+   "country": "UY",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/uy-1.ogg",
+   "text": "Alright, Uruguay was the one.",
+   "ms": 2790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/uy-2": {
+   "group": "answer",
+   "country": "UY",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/uy-2.ogg",
+   "text": "If you said Uruguay, you nailed it!",
+   "ms": 3680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/uz-1": {
+   "group": "answer",
+   "country": "UZ",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/uz-1.ogg",
+   "text": "Alright, Uzbekistan was the one.",
+   "ms": 2230,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/uz-2": {
+   "group": "answer",
+   "country": "UZ",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/uz-2.ogg",
+   "text": "If you said Uzbekistan, you nailed it!",
+   "ms": 2750,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/va-1": {
+   "group": "answer",
+   "country": "VA",
+   "template": "The correct answer was {N}!",
+   "file": "answer/va-1.ogg",
+   "text": "The correct answer was Vatican City!",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/va-2": {
+   "group": "answer",
+   "country": "VA",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/va-2.ogg",
+   "text": "Ah, it was Vatican City this time!",
+   "ms": 2490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/vc-1": {
+   "group": "answer",
+   "country": "VC",
+   "template": "Yep, it's {N}!",
+   "file": "answer/vc-1.ogg",
+   "text": "Yep, it's Saint Vincent and the Grenadines!",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/vc-2": {
+   "group": "answer",
+   "country": "VC",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/vc-2.ogg",
+   "text": "That flag belongs to Saint Vincent and the Grenadines!",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ve-1": {
+   "group": "answer",
+   "country": "VE",
+   "template": "Boom, {N}!",
+   "file": "answer/ve-1.ogg",
+   "text": "Boom, Venezuela!",
+   "ms": 1790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ve-2": {
+   "group": "answer",
+   "country": "VE",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/ve-2.ogg",
+   "text": "And it's... Venezuela! <laugh>",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/vn-1": {
+   "group": "answer",
+   "country": "VN",
+   "template": "Boom, {N}!",
+   "file": "answer/vn-1.ogg",
+   "text": "Boom, Vietnam!",
+   "ms": 1770,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/vn-2": {
+   "group": "answer",
+   "country": "VN",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/vn-2.ogg",
+   "text": "And it's... Vietnam! <laugh>",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/vu-1": {
+   "group": "answer",
+   "country": "VU",
+   "template": "Okay, that was {N}!",
+   "file": "answer/vu-1.ogg",
+   "text": "Okay, that was Vanuatu!",
+   "ms": 2830,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/vu-2": {
+   "group": "answer",
+   "country": "VU",
+   "template": "{N}! <chuckle> Who called it?",
+   "file": "answer/vu-2.ogg",
+   "text": "Vanuatu! <chuckle> Who called it?",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ws-1": {
+   "group": "answer",
+   "country": "WS",
+   "template": "Yep, it's {N}!",
+   "file": "answer/ws-1.ogg",
+   "text": "Yep, it's Samoa!",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ws-2": {
+   "group": "answer",
+   "country": "WS",
+   "template": "That flag belongs to {N}!",
+   "file": "answer/ws-2.ogg",
+   "text": "That flag belongs to Samoa!",
+   "ms": 1970,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/xk-1": {
+   "group": "answer",
+   "country": "XK",
+   "template": "Let's see... yes! {N} was correct!",
+   "file": "answer/xk-1.ogg",
+   "text": "Let's see... yes! Kosovo was correct!",
+   "ms": 4390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/xk-2": {
+   "group": "answer",
+   "country": "XK",
+   "template": "And the answer is... <short pause> {N}!",
+   "file": "answer/xk-2.ogg",
+   "text": "And the answer is... <short pause> Kosovo!",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ye-1": {
+   "group": "answer",
+   "country": "YE",
+   "template": "The correct answer was {N}!",
+   "file": "answer/ye-1.ogg",
+   "text": "The correct answer was Yemen!",
+   "ms": 2310,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/ye-2": {
+   "group": "answer",
+   "country": "YE",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/ye-2.ogg",
+   "text": "Ah, it was Yemen this time!",
+   "ms": 2250,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/za-1": {
+   "group": "answer",
+   "country": "ZA",
+   "template": "Alright, {N} was the one.",
+   "file": "answer/za-1.ogg",
+   "text": "Alright, South Africa was the one.",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/za-2": {
+   "group": "answer",
+   "country": "ZA",
+   "template": "If you said {N}, you nailed it!",
+   "file": "answer/za-2.ogg",
+   "text": "If you said South Africa, you nailed it!",
+   "ms": 2910,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/zm-1": {
+   "group": "answer",
+   "country": "ZM",
+   "template": "Boom, {N}!",
+   "file": "answer/zm-1.ogg",
+   "text": "Boom, Zambia!",
+   "ms": 1530,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/zm-2": {
+   "group": "answer",
+   "country": "ZM",
+   "template": "And it's... {N}! <laugh>",
+   "file": "answer/zm-2.ogg",
+   "text": "And it's... Zambia! <laugh>",
+   "ms": 4590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/zw-1": {
+   "group": "answer",
+   "country": "ZW",
+   "template": "The correct answer was {N}!",
+   "file": "answer/zw-1.ogg",
+   "text": "The correct answer was Zimbabwe!",
+   "ms": 3290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "answer/zw-2": {
+   "group": "answer",
+   "country": "ZW",
+   "template": "Ah, it was {N} this time!",
+   "file": "answer/zw-2.ogg",
+   "text": "Ah, it was Zimbabwe this time!",
+   "ms": 2890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "game_over/and-thats-the-game-thanks-so": {
+   "group": "game_over",
+   "file": "game_over/and-thats-the-game-thanks-so.ogg",
+   "text": "And that's the game! Thanks so much for playing!",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "game_over/and-we-are-done-thank-you": {
+   "group": "game_over",
+   "file": "game_over/and-we-are-done-thank-you.ogg",
+   "text": "And we are done! Thank you so much for playing with us.",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "game_over/game-finished-thanks-everybody-that-was": {
+   "group": "game_over",
+   "file": "game_over/game-finished-thanks-everybody-that-was.ogg",
+   "text": "Game finished! Thanks everybody, that was fun.",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "game_over/game-over-thank-you-all-for": {
+   "group": "game_over",
+   "file": "game_over/game-over-thank-you-all-for.ogg",
+   "text": "Game over! Thank you all for playing, see you next time!",
+   "ms": 5280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "game_over/thats-a-wrap-thanks-for-hanging": {
+   "group": "game_over",
+   "file": "game_over/thats-a-wrap-thanks-for-hanging.ogg",
+   "text": "That's a wrap! Thanks for hanging out, everyone.",
+   "ms": 3280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet/good-to-see-you-here": {
+   "group": "greet",
+   "file": "greet/good-to-see-you-here.ogg",
+   "text": "Good to see you here!",
+   "ms": 1310,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet/hey-glad-to-have-you-here": {
+   "group": "greet",
+   "file": "greet/hey-glad-to-have-you-here.ogg",
+   "text": "Hey, glad to have you here. Ready for the next flag?",
+   "ms": 2870,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet/hi-type-a-b-c-or": {
+   "group": "greet",
+   "file": "greet/hi-type-a-b-c-or.ogg",
+   "text": "Hi! Type A, B, C or D in the chat to play.",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet/oh-hi-youre-just-in-time": {
+   "group": "greet",
+   "file": "greet/oh-hi-youre-just-in-time.ogg",
+   "text": "Oh hi! You're just in time.",
+   "ms": 2230,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet/oh-someone-new-just-joined-welcome": {
+   "group": "greet",
+   "file": "greet/oh-someone-new-just-joined-welcome.ogg",
+   "text": "Oh, someone new just joined! Welcome!",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet/welcome-in-how-good-are-you": {
+   "group": "greet",
+   "file": "greet/welcome-in-how-good-are-you.ogg",
+   "text": "Welcome in! How good are you with flags?",
+   "ms": 2670,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet/welcome-lets-see-what-youve-got": {
+   "group": "greet",
+   "file": "greet/welcome-lets-see-what-youve-got.ogg",
+   "text": "Welcome! Let's see what you've got.",
+   "ms": 1610,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet/welcome-to-the-stream": {
+   "group": "greet",
+   "file": "greet/welcome-to-the-stream.ogg",
+   "text": "Welcome to the stream!",
+   "ms": 1270,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet_group/hey-everyone-welcome-lots-of-new": {
+   "group": "greet_group",
+   "file": "greet_group/hey-everyone-welcome-lots-of-new.ogg",
+   "text": "Hey everyone, welcome! Lots of new people coming in.",
+   "ms": 3580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet_group/hi-to-all-the-new-faces": {
+   "group": "greet_group",
+   "file": "greet_group/hi-to-all-the-new-faces.ogg",
+   "text": "Hi to all the new faces! Type A, B, C or D to play.",
+   "ms": 5080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet_group/if-you-just-joined-hi-its": {
+   "group": "greet_group",
+   "file": "greet_group/if-you-just-joined-hi-its.ogg",
+   "text": "If you just joined, hi! <breath> It's a flag quiz, answer in the chat.",
+   "ms": 4990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet_group/so-many-people-joining-welcome-all": {
+   "group": "greet_group",
+   "file": "greet_group/so-many-people-joining-welcome-all.ogg",
+   "text": "So many people joining! Welcome all of you.",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet_group/welcome-to-everyone-whos-joining-right": {
+   "group": "greet_group",
+   "file": "greet_group/welcome-to-everyone-whos-joining-right.ogg",
+   "text": "Welcome to everyone who's joining right now!",
+   "ms": 2910,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "greet_group/welcome-welcome-everybody-grab-a-seat": {
+   "group": "greet_group",
+   "file": "greet_group/welcome-welcome-everybody-grab-a-seat.ogg",
+   "text": "Welcome, welcome, everybody! Grab a seat.",
+   "ms": 2590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "last_round/final-flag-lets-see-who-wins": {
+   "group": "last_round",
+   "file": "last_round/final-flag-lets-see-who-wins.ogg",
+   "text": "Final flag! Let's see who wins this.",
+   "ms": 2750,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "last_round/here-comes-the-final-question": {
+   "group": "last_round",
+   "file": "last_round/here-comes-the-final-question.ogg",
+   "text": "Here comes the final question!",
+   "ms": 2510,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "last_round/last-flag-of-the-game-make": {
+   "group": "last_round",
+   "file": "last_round/last-flag-of-the-game-make.ogg",
+   "text": "Last flag of the game! Make it count.",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "last_round/okay-everyone-last-question-dont-miss": {
+   "group": "last_round",
+   "file": "last_round/okay-everyone-last-question-dont-miss.ogg",
+   "text": "Okay everyone... <breath> last question. Don't miss it!",
+   "ms": 3390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "last_round/one-more-and-we-are-done": {
+   "group": "last_round",
+   "file": "last_round/one-more-and-we-are-done.ogg",
+   "text": "One more and we are done! Last flag!",
+   "ms": 3790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "last_round/this-is-the-last-one-good": {
+   "group": "last_round",
+   "file": "last_round/this-is-the-last-one-good.ogg",
+   "text": "This is the last one, good luck everyone!",
+   "ms": 2670,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "like/appreciate-it-chat": {
+   "group": "like",
+   "file": "like/appreciate-it-chat.ogg",
+   "text": "Appreciate it, chat!",
+   "ms": 1150,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "like/i-see-those-likes-thank-you": {
+   "group": "like",
+   "file": "like/i-see-those-likes-thank-you.ogg",
+   "text": "I see those likes! <laugh> Thank you!",
+   "ms": 2510,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "like/ooh-love-the-likes-thank-you": {
+   "group": "like",
+   "file": "like/ooh-love-the-likes-thank-you.ogg",
+   "text": "Ooh, love the likes! Thank you.",
+   "ms": 2410,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "like/thanks-for-the-likes": {
+   "group": "like",
+   "file": "like/thanks-for-the-likes.ogg",
+   "text": "Thanks for the likes!",
+   "ms": 1310,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "like/thanks-for-the-support-everyone": {
+   "group": "like",
+   "file": "like/thanks-for-the-support-everyone.ogg",
+   "text": "Thanks for the support, everyone!",
+   "ms": 1930,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "like/wow-thanks-for-all-the-likes": {
+   "group": "like",
+   "file": "like/wow-thanks-for-all-the-likes.ogg",
+   "text": "Wow, thanks for all the likes!",
+   "ms": 2190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "new_leader/change-at-the-top-we-have": {
+   "group": "new_leader",
+   "file": "new_leader/change-at-the-top-we-have.ogg",
+   "text": "Change at the top! We have a new leader.",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "new_leader/new-leader-change-at-the-top": {
+   "group": "new_leader",
+   "file": "new_leader/new-leader-change-at-the-top.ogg",
+   "text": "New leader! <gasp> Change at the top!",
+   "ms": 4980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "new_leader/whoa-someone-just-jumped-to-number": {
+   "group": "new_leader",
+   "file": "new_leader/whoa-someone-just-jumped-to-number.ogg",
+   "text": "Whoa, someone just jumped to number one!",
+   "ms": 1970,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ad-1": {
+   "group": "nobody",
+   "country": "AD",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/ad-1.ogg",
+   "text": "Ooh, tough one! It was Andorra.",
+   "ms": 2690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ae-1": {
+   "group": "nobody",
+   "country": "AE",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/ae-1.ogg",
+   "text": "Nobody got that one! The answer was the United Arab Emirates.",
+   "ms": 4890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/af-1": {
+   "group": "nobody",
+   "country": "AF",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/af-1.ogg",
+   "text": "Tricky! It was Afghanistan.",
+   "ms": 3780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ag-1": {
+   "group": "nobody",
+   "country": "AG",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/ag-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Antigua and Barbuda.",
+   "ms": 5690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/al-1": {
+   "group": "nobody",
+   "country": "AL",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/al-1.ogg",
+   "text": "Nobody got that one! The answer was Albania.",
+   "ms": 3390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/am-1": {
+   "group": "nobody",
+   "country": "AM",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/am-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Armenia.",
+   "ms": 5490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ao-1": {
+   "group": "nobody",
+   "country": "AO",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/ao-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Angola.",
+   "ms": 4390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ar-1": {
+   "group": "nobody",
+   "country": "AR",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/ar-1.ogg",
+   "text": "Okay, that one was hard. The answer was Argentina.",
+   "ms": 4880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/at-1": {
+   "group": "nobody",
+   "country": "AT",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/at-1.ogg",
+   "text": "Tricky! It was Austria.",
+   "ms": 2330,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/au-1": {
+   "group": "nobody",
+   "country": "AU",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/au-1.ogg",
+   "text": "Okay, that one was hard. The answer was Australia.",
+   "ms": 6690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/az-1": {
+   "group": "nobody",
+   "country": "AZ",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/az-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Azerbaijan!",
+   "ms": 3680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ba-1": {
+   "group": "nobody",
+   "country": "BA",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/ba-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Bosnia and Herzegovina.",
+   "ms": 4980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bb-1": {
+   "group": "nobody",
+   "country": "BB",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/bb-1.ogg",
+   "text": "Ooh, tough one! It was Barbados.",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bd-1": {
+   "group": "nobody",
+   "country": "BD",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/bd-1.ogg",
+   "text": "Okay, that one was hard. The answer was Bangladesh.",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/be-1": {
+   "group": "nobody",
+   "country": "BE",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/be-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Belgium!",
+   "ms": 5480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bf-1": {
+   "group": "nobody",
+   "country": "BF",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/bf-1.ogg",
+   "text": "Ooh, tough one! It was Burkina Faso.",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bg-1": {
+   "group": "nobody",
+   "country": "BG",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/bg-1.ogg",
+   "text": "Okay, that one was hard. The answer was Bulgaria.",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bh-1": {
+   "group": "nobody",
+   "country": "BH",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/bh-1.ogg",
+   "text": "Oof! It was Bahrain. Next one's yours!",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bi-1": {
+   "group": "nobody",
+   "country": "BI",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/bi-1.ogg",
+   "text": "Nobody got that one! The answer was Burundi.",
+   "ms": 3880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bj-1": {
+   "group": "nobody",
+   "country": "BJ",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/bj-1.ogg",
+   "text": "Tricky! It was Benin.",
+   "ms": 3380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bn-1": {
+   "group": "nobody",
+   "country": "BN",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/bn-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Brunei.",
+   "ms": 4580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bo-1": {
+   "group": "nobody",
+   "country": "BO",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/bo-1.ogg",
+   "text": "Oof! It was Bolivia. Next one's yours!",
+   "ms": 4290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/br-1": {
+   "group": "nobody",
+   "country": "BR",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/br-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Brazil.",
+   "ms": 6290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bt-1": {
+   "group": "nobody",
+   "country": "BT",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/bt-1.ogg",
+   "text": "Ooh, tough one! It was Bhutan.",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bw-1": {
+   "group": "nobody",
+   "country": "BW",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/bw-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Botswana.",
+   "ms": 4680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/by-1": {
+   "group": "nobody",
+   "country": "BY",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/by-1.ogg",
+   "text": "Oof! It was Belarus. Next one's yours!",
+   "ms": 3680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/bz-1": {
+   "group": "nobody",
+   "country": "BZ",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/bz-1.ogg",
+   "text": "Nobody got that one! The answer was Belize.",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ca-1": {
+   "group": "nobody",
+   "country": "CA",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/ca-1.ogg",
+   "text": "Tricky! It was Canada.",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cd-1": {
+   "group": "nobody",
+   "country": "CD",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/cd-1.ogg",
+   "text": "<sigh> Nobody? Really? It was the Democratic Republic of the Congo!",
+   "ms": 6980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cf-1": {
+   "group": "nobody",
+   "country": "CF",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/cf-1.ogg",
+   "text": "Okay, that one was hard. The answer was the Central African Republic.",
+   "ms": 4790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cg-1": {
+   "group": "nobody",
+   "country": "CG",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/cg-1.ogg",
+   "text": "Oof! It was the Republic of the Congo. Next one's yours!",
+   "ms": 4880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ch-1": {
+   "group": "nobody",
+   "country": "CH",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/ch-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Switzerland.",
+   "ms": 3990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ci-1": {
+   "group": "nobody",
+   "country": "CI",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/ci-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Ivory Coast.",
+   "ms": 4780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cl-1": {
+   "group": "nobody",
+   "country": "CL",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/cl-1.ogg",
+   "text": "Ooh, tough one! It was Chile.",
+   "ms": 3180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cm-1": {
+   "group": "nobody",
+   "country": "CM",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/cm-1.ogg",
+   "text": "Ooh, tough one! It was Cameroon.",
+   "ms": 3380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cn-1": {
+   "group": "nobody",
+   "country": "CN",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/cn-1.ogg",
+   "text": "Nobody got that one! The answer was China.",
+   "ms": 4490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/co-1": {
+   "group": "nobody",
+   "country": "CO",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/co-1.ogg",
+   "text": "Nobody got that one! The answer was Colombia.",
+   "ms": 5690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cr-1": {
+   "group": "nobody",
+   "country": "CR",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/cr-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Costa Rica.",
+   "ms": 5380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cu-1": {
+   "group": "nobody",
+   "country": "CU",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/cu-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Cuba!",
+   "ms": 4090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cv-1": {
+   "group": "nobody",
+   "country": "CV",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/cv-1.ogg",
+   "text": "Nobody got that one! The answer was Cape Verde.",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cy-1": {
+   "group": "nobody",
+   "country": "CY",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/cy-1.ogg",
+   "text": "Ooh, tough one! It was Cyprus.",
+   "ms": 4090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/cz-1": {
+   "group": "nobody",
+   "country": "CZ",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/cz-1.ogg",
+   "text": "Nobody got that one! The answer was the Czech Republic.",
+   "ms": 4790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/de-1": {
+   "group": "nobody",
+   "country": "DE",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/de-1.ogg",
+   "text": "Tricky! It was Germany.",
+   "ms": 1730,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/dj-1": {
+   "group": "nobody",
+   "country": "DJ",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/dj-1.ogg",
+   "text": "Tricky! It was Djibouti.",
+   "ms": 2110,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/dk-1": {
+   "group": "nobody",
+   "country": "DK",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/dk-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Denmark.",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/dm-1": {
+   "group": "nobody",
+   "country": "DM",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/dm-1.ogg",
+   "text": "Okay, that one was hard. The answer was Dominica.",
+   "ms": 5180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/do-1": {
+   "group": "nobody",
+   "country": "DO",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/do-1.ogg",
+   "text": "Oof! It was the Dominican Republic. Next one's yours!",
+   "ms": 3880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/dz-1": {
+   "group": "nobody",
+   "country": "DZ",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/dz-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Algeria.",
+   "ms": 4380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ec-1": {
+   "group": "nobody",
+   "country": "EC",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/ec-1.ogg",
+   "text": "Tricky! It was Ecuador.",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ee-1": {
+   "group": "nobody",
+   "country": "EE",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/ee-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Estonia!",
+   "ms": 5390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/eg-1": {
+   "group": "nobody",
+   "country": "EG",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/eg-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Egypt!",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/er-1": {
+   "group": "nobody",
+   "country": "ER",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/er-1.ogg",
+   "text": "Okay, that one was hard. The answer was Eritrea.",
+   "ms": 4280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/es-1": {
+   "group": "nobody",
+   "country": "ES",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/es-1.ogg",
+   "text": "Okay, that one was hard. The answer was Spain.",
+   "ms": 2530,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/et-1": {
+   "group": "nobody",
+   "country": "ET",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/et-1.ogg",
+   "text": "Oof! It was Ethiopia. Next one's yours!",
+   "ms": 5280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/fi-1": {
+   "group": "nobody",
+   "country": "FI",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/fi-1.ogg",
+   "text": "Oof! It was Finland. Next one's yours!",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/fj-1": {
+   "group": "nobody",
+   "country": "FJ",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/fj-1.ogg",
+   "text": "Oof! It was Fiji. Next one's yours!",
+   "ms": 4490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/fm-1": {
+   "group": "nobody",
+   "country": "FM",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/fm-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Micronesia.",
+   "ms": 5480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/fr-1": {
+   "group": "nobody",
+   "country": "FR",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/fr-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was France.",
+   "ms": 5890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ga-1": {
+   "group": "nobody",
+   "country": "GA",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/ga-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Gabon.",
+   "ms": 5280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/gb-1": {
+   "group": "nobody",
+   "country": "GB",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/gb-1.ogg",
+   "text": "Ooh, tough one! It was the United Kingdom.",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/gd-1": {
+   "group": "nobody",
+   "country": "GD",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/gd-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Grenada.",
+   "ms": 5980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ge-1": {
+   "group": "nobody",
+   "country": "GE",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/ge-1.ogg",
+   "text": "Tricky! It was Georgia.",
+   "ms": 1970,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/gh-1": {
+   "group": "nobody",
+   "country": "GH",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/gh-1.ogg",
+   "text": "Ooh, tough one! It was Ghana.",
+   "ms": 2390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/gm-1": {
+   "group": "nobody",
+   "country": "GM",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/gm-1.ogg",
+   "text": "Nobody got that one! The answer was the Gambia.",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/gn-1": {
+   "group": "nobody",
+   "country": "GN",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/gn-1.ogg",
+   "text": "Tricky! It was Guinea.",
+   "ms": 2870,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/gq-1": {
+   "group": "nobody",
+   "country": "GQ",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/gq-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Equatorial Guinea.",
+   "ms": 5780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/gr-1": {
+   "group": "nobody",
+   "country": "GR",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/gr-1.ogg",
+   "text": "Nobody got that one! The answer was Greece.",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/gt-1": {
+   "group": "nobody",
+   "country": "GT",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/gt-1.ogg",
+   "text": "Ooh, tough one! It was Guatemala.",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/gw-1": {
+   "group": "nobody",
+   "country": "GW",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/gw-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Guinea-Bissau!",
+   "ms": 5090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/gy-1": {
+   "group": "nobody",
+   "country": "GY",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/gy-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Guyana.",
+   "ms": 5490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/hn-1": {
+   "group": "nobody",
+   "country": "HN",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/hn-1.ogg",
+   "text": "Nobody got that one! The answer was Honduras.",
+   "ms": 3780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/hr-1": {
+   "group": "nobody",
+   "country": "HR",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/hr-1.ogg",
+   "text": "Tricky! It was Croatia.",
+   "ms": 2890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ht-1": {
+   "group": "nobody",
+   "country": "HT",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/ht-1.ogg",
+   "text": "Tricky! It was Haiti.",
+   "ms": 1830,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/hu-1": {
+   "group": "nobody",
+   "country": "HU",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/hu-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Hungary.",
+   "ms": 4690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/id-1": {
+   "group": "nobody",
+   "country": "ID",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/id-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Indonesia.",
+   "ms": 3990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ie-1": {
+   "group": "nobody",
+   "country": "IE",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/ie-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Ireland!",
+   "ms": 6090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/il-1": {
+   "group": "nobody",
+   "country": "IL",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/il-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Israel!",
+   "ms": 4790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/in-1": {
+   "group": "nobody",
+   "country": "IN",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/in-1.ogg",
+   "text": "Okay, that one was hard. The answer was India.",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/iq-1": {
+   "group": "nobody",
+   "country": "IQ",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/iq-1.ogg",
+   "text": "Oof! It was Iraq. Next one's yours!",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ir-1": {
+   "group": "nobody",
+   "country": "IR",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/ir-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Iran.",
+   "ms": 5980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/is-1": {
+   "group": "nobody",
+   "country": "IS",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/is-1.ogg",
+   "text": "Okay, that one was hard. The answer was Iceland.",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/it-1": {
+   "group": "nobody",
+   "country": "IT",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/it-1.ogg",
+   "text": "Oof! It was Italy. Next one's yours!",
+   "ms": 4680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/jm-1": {
+   "group": "nobody",
+   "country": "JM",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/jm-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Jamaica.",
+   "ms": 4990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/jo-1": {
+   "group": "nobody",
+   "country": "JO",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/jo-1.ogg",
+   "text": "Nobody got that one! The answer was Jordan.",
+   "ms": 2930,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/jp-1": {
+   "group": "nobody",
+   "country": "JP",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/jp-1.ogg",
+   "text": "Ooh, tough one! It was Japan.",
+   "ms": 3390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ke-1": {
+   "group": "nobody",
+   "country": "KE",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/ke-1.ogg",
+   "text": "Okay, that one was hard. The answer was Kenya.",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/kg-1": {
+   "group": "nobody",
+   "country": "KG",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/kg-1.ogg",
+   "text": "Tricky! It was Kyrgyzstan.",
+   "ms": 3880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/kh-1": {
+   "group": "nobody",
+   "country": "KH",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/kh-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Cambodia.",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ki-1": {
+   "group": "nobody",
+   "country": "KI",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/ki-1.ogg",
+   "text": "Ooh, tough one! It was Kiribati.",
+   "ms": 3280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/km-1": {
+   "group": "nobody",
+   "country": "KM",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/km-1.ogg",
+   "text": "Oof! It was the Comoros. Next one's yours!",
+   "ms": 4380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/kn-1": {
+   "group": "nobody",
+   "country": "KN",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/kn-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Saint Kitts and Nevis!",
+   "ms": 5480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/kp-1": {
+   "group": "nobody",
+   "country": "KP",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/kp-1.ogg",
+   "text": "<sigh> Nobody? Really? It was North Korea!",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/kr-1": {
+   "group": "nobody",
+   "country": "KR",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/kr-1.ogg",
+   "text": "Okay, that one was hard. The answer was South Korea.",
+   "ms": 5180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/kw-1": {
+   "group": "nobody",
+   "country": "KW",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/kw-1.ogg",
+   "text": "Oof! It was Kuwait. Next one's yours!",
+   "ms": 4090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/kz-1": {
+   "group": "nobody",
+   "country": "KZ",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/kz-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Kazakhstan.",
+   "ms": 4890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/la-1": {
+   "group": "nobody",
+   "country": "LA",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/la-1.ogg",
+   "text": "Ooh, tough one! It was Laos.",
+   "ms": 3580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/lb-1": {
+   "group": "nobody",
+   "country": "LB",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/lb-1.ogg",
+   "text": "Nobody got that one! The answer was Lebanon.",
+   "ms": 4980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/lc-1": {
+   "group": "nobody",
+   "country": "LC",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/lc-1.ogg",
+   "text": "Okay, that one was hard. The answer was Saint Lucia.",
+   "ms": 3780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/li-1": {
+   "group": "nobody",
+   "country": "LI",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/li-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Liechtenstein.",
+   "ms": 5180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/lk-1": {
+   "group": "nobody",
+   "country": "LK",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/lk-1.ogg",
+   "text": "Tricky! It was Sri Lanka.",
+   "ms": 2610,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/lr-1": {
+   "group": "nobody",
+   "country": "LR",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/lr-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Liberia.",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ls-1": {
+   "group": "nobody",
+   "country": "LS",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/ls-1.ogg",
+   "text": "Ooh, tough one! It was Lesotho.",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/lt-1": {
+   "group": "nobody",
+   "country": "LT",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/lt-1.ogg",
+   "text": "Ooh, tough one! It was Lithuania.",
+   "ms": 2750,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/lu-1": {
+   "group": "nobody",
+   "country": "LU",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/lu-1.ogg",
+   "text": "Nobody got that one! The answer was Luxembourg.",
+   "ms": 4580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/lv-1": {
+   "group": "nobody",
+   "country": "LV",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/lv-1.ogg",
+   "text": "Tricky! It was Latvia.",
+   "ms": 2510,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ly-1": {
+   "group": "nobody",
+   "country": "LY",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/ly-1.ogg",
+   "text": "Nobody got that one! The answer was Libya.",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ma-1": {
+   "group": "nobody",
+   "country": "MA",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/ma-1.ogg",
+   "text": "Tricky! It was Morocco.",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mc-1": {
+   "group": "nobody",
+   "country": "MC",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/mc-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Monaco.",
+   "ms": 6580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/md-1": {
+   "group": "nobody",
+   "country": "MD",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/md-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Moldova!",
+   "ms": 4890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/me-1": {
+   "group": "nobody",
+   "country": "ME",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/me-1.ogg",
+   "text": "Okay, that one was hard. The answer was Montenegro.",
+   "ms": 5280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mg-1": {
+   "group": "nobody",
+   "country": "MG",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/mg-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Madagascar.",
+   "ms": 5590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mh-1": {
+   "group": "nobody",
+   "country": "MH",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/mh-1.ogg",
+   "text": "Nobody got that one! The answer was the Marshall Islands.",
+   "ms": 4980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mk-1": {
+   "group": "nobody",
+   "country": "MK",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/mk-1.ogg",
+   "text": "Oof! It was North Macedonia. Next one's yours!",
+   "ms": 4880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ml-1": {
+   "group": "nobody",
+   "country": "ML",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/ml-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Mali!",
+   "ms": 3490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mm-1": {
+   "group": "nobody",
+   "country": "MM",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/mm-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Myanmar.",
+   "ms": 5290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mn-1": {
+   "group": "nobody",
+   "country": "MN",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/mn-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Mongolia!",
+   "ms": 5180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mr-1": {
+   "group": "nobody",
+   "country": "MR",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/mr-1.ogg",
+   "text": "Okay, that one was hard. The answer was Mauritania.",
+   "ms": 4690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mt-1": {
+   "group": "nobody",
+   "country": "MT",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/mt-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Malta.",
+   "ms": 6180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mu-1": {
+   "group": "nobody",
+   "country": "MU",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/mu-1.ogg",
+   "text": "Oof! It was Mauritius. Next one's yours!",
+   "ms": 3480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mw-1": {
+   "group": "nobody",
+   "country": "MW",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/mw-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Malawi.",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mx-1": {
+   "group": "nobody",
+   "country": "MX",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/mx-1.ogg",
+   "text": "Oof! It was Mexico. Next one's yours!",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/my-1": {
+   "group": "nobody",
+   "country": "MY",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/my-1.ogg",
+   "text": "Okay, that one was hard. The answer was Malaysia.",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/mz-1": {
+   "group": "nobody",
+   "country": "MZ",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/mz-1.ogg",
+   "text": "Ooh, tough one! It was Mozambique.",
+   "ms": 2850,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/na-1": {
+   "group": "nobody",
+   "country": "NA",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/na-1.ogg",
+   "text": "Nobody got that one! The answer was Namibia.",
+   "ms": 3180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ne-1": {
+   "group": "nobody",
+   "country": "NE",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/ne-1.ogg",
+   "text": "Tricky! It was Niger.",
+   "ms": 1890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ng-1": {
+   "group": "nobody",
+   "country": "NG",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/ng-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Nigeria.",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ni-1": {
+   "group": "nobody",
+   "country": "NI",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/ni-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Nicaragua.",
+   "ms": 5280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/nl-1": {
+   "group": "nobody",
+   "country": "NL",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/nl-1.ogg",
+   "text": "Ooh, tough one! It was the Netherlands.",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/no-1": {
+   "group": "nobody",
+   "country": "NO",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/no-1.ogg",
+   "text": "Nobody got that one! The answer was Norway.",
+   "ms": 4380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/np-1": {
+   "group": "nobody",
+   "country": "NP",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/np-1.ogg",
+   "text": "Oof! It was Nepal. Next one's yours!",
+   "ms": 4380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/nr-1": {
+   "group": "nobody",
+   "country": "NR",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/nr-1.ogg",
+   "text": "Tricky! It was Nauru.",
+   "ms": 2990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/nz-1": {
+   "group": "nobody",
+   "country": "NZ",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/nz-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was New Zealand.",
+   "ms": 5680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/om-1": {
+   "group": "nobody",
+   "country": "OM",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/om-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Oman.",
+   "ms": 5080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/pa-1": {
+   "group": "nobody",
+   "country": "PA",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/pa-1.ogg",
+   "text": "Ooh, tough one! It was Panama.",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/pe-1": {
+   "group": "nobody",
+   "country": "PE",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/pe-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Peru!",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/pg-1": {
+   "group": "nobody",
+   "country": "PG",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/pg-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Papua New Guinea!",
+   "ms": 4880,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ph-1": {
+   "group": "nobody",
+   "country": "PH",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/ph-1.ogg",
+   "text": "Ooh, tough one! It was the Philippines.",
+   "ms": 2750,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/pk-1": {
+   "group": "nobody",
+   "country": "PK",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/pk-1.ogg",
+   "text": "Nobody got that one! The answer was Pakistan.",
+   "ms": 4490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/pl-1": {
+   "group": "nobody",
+   "country": "PL",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/pl-1.ogg",
+   "text": "Tricky! It was Poland.",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ps-1": {
+   "group": "nobody",
+   "country": "PS",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/ps-1.ogg",
+   "text": "Tricky! It was Palestine.",
+   "ms": 1790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/pt-1": {
+   "group": "nobody",
+   "country": "PT",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/pt-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Portugal.",
+   "ms": 4380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/pw-1": {
+   "group": "nobody",
+   "country": "PW",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/pw-1.ogg",
+   "text": "Okay, that one was hard. The answer was Palau.",
+   "ms": 4680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/py-1": {
+   "group": "nobody",
+   "country": "PY",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/py-1.ogg",
+   "text": "Okay, that one was hard. The answer was Paraguay.",
+   "ms": 5490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/qa-1": {
+   "group": "nobody",
+   "country": "QA",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/qa-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Qatar.",
+   "ms": 4080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ro-1": {
+   "group": "nobody",
+   "country": "RO",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/ro-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Romania!",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/rs-1": {
+   "group": "nobody",
+   "country": "RS",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/rs-1.ogg",
+   "text": "Okay, that one was hard. The answer was Serbia.",
+   "ms": 3580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ru-1": {
+   "group": "nobody",
+   "country": "RU",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/ru-1.ogg",
+   "text": "Oof! It was Russia. Next one's yours!",
+   "ms": 3290,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/rw-1": {
+   "group": "nobody",
+   "country": "RW",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/rw-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Rwanda!",
+   "ms": 5190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sa-1": {
+   "group": "nobody",
+   "country": "SA",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/sa-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Saudi Arabia!",
+   "ms": 4280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sb-1": {
+   "group": "nobody",
+   "country": "SB",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/sb-1.ogg",
+   "text": "Oof! It was the Solomon Islands. Next one's yours!",
+   "ms": 5480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sc-1": {
+   "group": "nobody",
+   "country": "SC",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/sc-1.ogg",
+   "text": "Okay, that one was hard. The answer was the Seychelles.",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sd-1": {
+   "group": "nobody",
+   "country": "SD",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/sd-1.ogg",
+   "text": "Oof! It was Sudan. Next one's yours!",
+   "ms": 5280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/se-1": {
+   "group": "nobody",
+   "country": "SE",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/se-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Sweden.",
+   "ms": 5690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sg-1": {
+   "group": "nobody",
+   "country": "SG",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/sg-1.ogg",
+   "text": "Okay, that one was hard. The answer was Singapore.",
+   "ms": 5180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/si-1": {
+   "group": "nobody",
+   "country": "SI",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/si-1.ogg",
+   "text": "Ooh, tough one! It was Slovenia.",
+   "ms": 4980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sk-1": {
+   "group": "nobody",
+   "country": "SK",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/sk-1.ogg",
+   "text": "Nobody got that one! The answer was Slovakia.",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sl-1": {
+   "group": "nobody",
+   "country": "SL",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/sl-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Sierra Leone.",
+   "ms": 5380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sm-1": {
+   "group": "nobody",
+   "country": "SM",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/sm-1.ogg",
+   "text": "Tricky! It was San Marino.",
+   "ms": 2790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sn-1": {
+   "group": "nobody",
+   "country": "SN",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/sn-1.ogg",
+   "text": "Ooh, tough one! It was Senegal.",
+   "ms": 2490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/so-1": {
+   "group": "nobody",
+   "country": "SO",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/so-1.ogg",
+   "text": "Nobody got that one! The answer was Somalia.",
+   "ms": 4180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sr-1": {
+   "group": "nobody",
+   "country": "SR",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/sr-1.ogg",
+   "text": "Oof! It was Suriname. Next one's yours!",
+   "ms": 3190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ss-1": {
+   "group": "nobody",
+   "country": "SS",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/ss-1.ogg",
+   "text": "Tricky! It was South Sudan.",
+   "ms": 2730,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/st-1": {
+   "group": "nobody",
+   "country": "ST",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/st-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was São Tomé and Príncipe.",
+   "ms": 6690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sv-1": {
+   "group": "nobody",
+   "country": "SV",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/sv-1.ogg",
+   "text": "Nobody got that one! The answer was El Salvador.",
+   "ms": 5390,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sy-1": {
+   "group": "nobody",
+   "country": "SY",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/sy-1.ogg",
+   "text": "Oof! It was Syria. Next one's yours!",
+   "ms": 4480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/sz-1": {
+   "group": "nobody",
+   "country": "SZ",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/sz-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Eswatini!",
+   "ms": 4090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/td-1": {
+   "group": "nobody",
+   "country": "TD",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/td-1.ogg",
+   "text": "Okay, that one was hard. The answer was Chad.",
+   "ms": 4680,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/tg-1": {
+   "group": "nobody",
+   "country": "TG",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/tg-1.ogg",
+   "text": "Oof! It was Togo. Next one's yours!",
+   "ms": 4180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/th-1": {
+   "group": "nobody",
+   "country": "TH",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/th-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Thailand.",
+   "ms": 4590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/tj-1": {
+   "group": "nobody",
+   "country": "TJ",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/tj-1.ogg",
+   "text": "Ooh, tough one! It was Tajikistan.",
+   "ms": 4180,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/tl-1": {
+   "group": "nobody",
+   "country": "TL",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/tl-1.ogg",
+   "text": "Nobody got that one! The answer was East Timor.",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/tm-1": {
+   "group": "nobody",
+   "country": "TM",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/tm-1.ogg",
+   "text": "Tricky! It was Turkmenistan.",
+   "ms": 2450,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/tn-1": {
+   "group": "nobody",
+   "country": "TN",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/tn-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Tunisia.",
+   "ms": 4590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/to-1": {
+   "group": "nobody",
+   "country": "TO",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/to-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Tonga.",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/tr-1": {
+   "group": "nobody",
+   "country": "TR",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/tr-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Turkey.",
+   "ms": 7380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/tt-1": {
+   "group": "nobody",
+   "country": "TT",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/tt-1.ogg",
+   "text": "Tricky! It was Trinidad and Tobago.",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/tv-1": {
+   "group": "nobody",
+   "country": "TV",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/tv-1.ogg",
+   "text": "Ooh, tough one! It was Tuvalu.",
+   "ms": 2910,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/tw-1": {
+   "group": "nobody",
+   "country": "TW",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/tw-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Taiwan.",
+   "ms": 5480,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/tz-1": {
+   "group": "nobody",
+   "country": "TZ",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/tz-1.ogg",
+   "text": "Ooh, tough one! It was Tanzania.",
+   "ms": 2530,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ua-1": {
+   "group": "nobody",
+   "country": "UA",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/ua-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Ukraine!",
+   "ms": 3690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ug-1": {
+   "group": "nobody",
+   "country": "UG",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/ug-1.ogg",
+   "text": "Nobody got that one! The answer was Uganda.",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/us-1": {
+   "group": "nobody",
+   "country": "US",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/us-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was the United States.",
+   "ms": 5490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/uy-1": {
+   "group": "nobody",
+   "country": "UY",
+   "template": "Not a single correct answer! <chuckle> It was {N}.",
+   "file": "nobody/uy-1.ogg",
+   "text": "Not a single correct answer! <chuckle> It was Uruguay.",
+   "ms": 5380,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/uz-1": {
+   "group": "nobody",
+   "country": "UZ",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/uz-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Uzbekistan!",
+   "ms": 3790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/va-1": {
+   "group": "nobody",
+   "country": "VA",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/va-1.ogg",
+   "text": "Okay, that one was hard. The answer was Vatican City.",
+   "ms": 4980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/vc-1": {
+   "group": "nobody",
+   "country": "VC",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/vc-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Saint Vincent and the Grenadines!",
+   "ms": 6580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ve-1": {
+   "group": "nobody",
+   "country": "VE",
+   "template": "Ooh, tough one! It was {N}.",
+   "file": "nobody/ve-1.ogg",
+   "text": "Ooh, tough one! It was Venezuela.",
+   "ms": 3080,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/vn-1": {
+   "group": "nobody",
+   "country": "VN",
+   "template": "Okay, that one was hard. The answer was {N}.",
+   "file": "nobody/vn-1.ogg",
+   "text": "Okay, that one was hard. The answer was Vietnam.",
+   "ms": 4490,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/vu-1": {
+   "group": "nobody",
+   "country": "VU",
+   "template": "Nobody got that one! The answer was {N}.",
+   "file": "nobody/vu-1.ogg",
+   "text": "Nobody got that one! The answer was Vanuatu.",
+   "ms": 3590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ws-1": {
+   "group": "nobody",
+   "country": "WS",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/ws-1.ogg",
+   "text": "Tricky! It was Samoa.",
+   "ms": 3280,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/xk-1": {
+   "group": "nobody",
+   "country": "XK",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/xk-1.ogg",
+   "text": "Oof! It was Kosovo. Next one's yours!",
+   "ms": 3790,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/ye-1": {
+   "group": "nobody",
+   "country": "YE",
+   "template": "Oof! It was {N}. Next one's yours!",
+   "file": "nobody/ye-1.ogg",
+   "text": "Oof! It was Yemen. Next one's yours!",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/za-1": {
+   "group": "nobody",
+   "country": "ZA",
+   "template": "Tricky! It was {N}.",
+   "file": "nobody/za-1.ogg",
+   "text": "Tricky! It was South Africa.",
+   "ms": 3090,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/zm-1": {
+   "group": "nobody",
+   "country": "ZM",
+   "template": "Wow, that one got everybody! <laugh> It was {N}.",
+   "file": "nobody/zm-1.ogg",
+   "text": "Wow, that one got everybody! <laugh> It was Zambia.",
+   "ms": 4690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "nobody/zw-1": {
+   "group": "nobody",
+   "country": "ZW",
+   "template": "<sigh> Nobody? Really? It was {N}!",
+   "file": "nobody/zw-1.ogg",
+   "text": "<sigh> Nobody? Really? It was Zimbabwe!",
+   "ms": 3780,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "tail_easy/great-job-chat": {
+   "group": "tail_easy",
+   "file": "tail_easy/great-job-chat.ogg",
+   "text": "Great job, chat!",
+   "ms": 1270,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "tail_easy/lots-of-points-this-round": {
+   "group": "tail_easy",
+   "file": "tail_easy/lots-of-points-this-round.ogg",
+   "text": "Lots of points this round!",
+   "ms": 2710,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "tail_easy/most-of-you-got-that-one": {
+   "group": "tail_easy",
+   "file": "tail_easy/most-of-you-got-that-one.ogg",
+   "text": "Most of you got that one!",
+   "ms": 1550,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "tail_easy/too-easy-for-you-huh": {
+   "group": "tail_easy",
+   "file": "tail_easy/too-easy-for-you-huh.ogg",
+   "text": "Too easy for you, huh? <laugh>",
+   "ms": 2930,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "tail_hard/not-many-got-that-one": {
+   "group": "tail_hard",
+   "file": "tail_hard/not-many-got-that-one.ogg",
+   "text": "Not many got that one!",
+   "ms": 2590,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "tail_hard/only-a-few-of-you-got": {
+   "group": "tail_hard",
+   "file": "tail_hard/only-a-few-of-you-got.ogg",
+   "text": "Only a few of you got it.",
+   "ms": 2350,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "tail_hard/respect-if-you-got-that-right": {
+   "group": "tail_hard",
+   "file": "tail_hard/respect-if-you-got-that-right.ogg",
+   "text": "Respect if you got that right!",
+   "ms": 1690,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "tail_hard/that-one-was-sneaky": {
+   "group": "tail_hard",
+   "file": "tail_hard/that-one-was-sneaky.ogg",
+   "text": "That one was sneaky.",
+   "ms": 1210,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "winner/and-thats-the-game-we-have": {
+   "group": "winner",
+   "file": "winner/and-thats-the-game-we-have.ogg",
+   "text": "And that's the game! We have a champion! Congratulations!",
+   "ms": 4990,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "winner/congratulations-to-first-place-what-a": {
+   "group": "winner",
+   "file": "winner/congratulations-to-first-place-what-a.ogg",
+   "text": "Congratulations to first place! <laugh> What a match.",
+   "ms": 4580,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "winner/game-over-huge-congrats-to-our": {
+   "group": "winner",
+   "file": "winner/game-over-huge-congrats-to-our.ogg",
+   "text": "Game over! Huge congrats to our winner!",
+   "ms": 2910,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "winner/thats-it-well-played-champion": {
+   "group": "winner",
+   "file": "winner/thats-it-well-played-champion.ogg",
+   "text": "That's it! Well played, champion!",
+   "ms": 3980,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "winner/we-have-a-winner-amazing": {
+   "group": "winner",
+   "file": "winner/we-have-a-winner-amazing.ogg",
+   "text": "We have a winner! Amazing!",
+   "ms": 3890,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  },
+  "winner/what-a-game-congratulations-to-the": {
+   "group": "winner",
+   "file": "winner/what-a-game-congratulations-to-the.ogg",
+   "text": "What a game! <laugh> Congratulations to the champion!",
+   "ms": 4190,
+   "voice": "Kore",
+   "model": "gemini-3.8-flash-lite-tts"
+  }
+ }
+}

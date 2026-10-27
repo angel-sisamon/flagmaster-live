@@ -117,6 +117,17 @@ comentarios al resto del directo, solo los ve quien los envía).
 Control: `/api/chatbot` (estado) · `/api/chatbot/pause` · `/api/chatbot/resume` · `/api/chatbot/say?text=...` (propone
 ese texto). En modo prueba (sin usuario de TikTok): `/api/test-chat?user=pepe&text=hola`.
 
+## Voz del locutor
+
+`client/live-voice.js` habla en inglés con locuciones pregeneradas con Gemini TTS (voz Kore), en
+`client/voices/en/<grupo>/*.ogg` con su índice `index.json`: respuesta por país (`answer/jp-1`, `nobody/jp-1`),
+saludos, likes, última pregunta, ganador, etc. Las frases no llevan nicks. Si falta un audio, la frase se dice con
+la voz del navegador (`speechSynthesis`).
+
+- Textos y estilo: `client/voices/phrases.json`. `npm run voices` genera solo lo nuevo o cambiado (necesita
+  `GEMINI_API_KEY` en `.env`; ver opciones al inicio de `scripts/voices.js`).
+- `npm run voices:check` transcribe los audios y lista los sospechosos; `npm run voices -- --redo <id>,<id>` los rehace.
+
 ## Avatar VTuber (opcional)
 
 Con `VTUBER=1` en `.env`, el servidor mueve un avatar Live2D en **VTube Studio** por su API (WebSocket,

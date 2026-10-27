@@ -15,3 +15,7 @@ site/data/
 .demo/
 *.log
 *.tmp
+# Pruebas de voz (npm run voices:test)
+client/voices/test/
+# WAV originales de las locuciones (npm run voices): se recodifican sin volver a pagar
+.voices-cache/

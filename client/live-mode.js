@@ -670,7 +670,8 @@ var LiveMode = (function () {
     _voice('setPhase', 'results');
     if (r.remaining >= r.duration) {
       var q = _lastQuestion && _lastQuestion.round === r.round ? _lastQuestion : null;
-      _voice('announceAnswer', r.correctLetter, q && q.correct.names ? q.correct.names.en : '', r.correctCount === 0, r.correctPct);
+      _voice('announceAnswer', r.correctLetter, q && q.correct.names ? q.correct.names.en : '', r.correctCount === 0, r.correctPct,
+        q && q.correct ? q.correct.code : '');
       if (r.ranking) _voice('announceLeaders', r.ranking);
     }
     _renderRound(r);
