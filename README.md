@@ -16,13 +16,13 @@ TikTok LIVE ──chat/likes/regalos──▶ server/ ──Socket.io──▶ p
 | Carpeta | Qué hay |
 |---|---|
 | `game/` | Copia del juego (index, css, js, assets) con la que se juega el directo. Se actualiza con `npm run sync:game` |
-| `server/` | Servidor del directo (Node). `index.js` conecta las piezas de `src/`: `tiktok.js` (conexión), `game.js` (rondas y puntos), `recorder.js` (graba cada directo), `standings.js` (TOP del mes en directo), `moderation.js` (`!optout`), `publisher.js` (sube a GitHub), `live-page.js` (página del directo), `chatbot/` (bot del chat, ver abajo) |
+| `server/` | Servidor del directo (Node). `index.js` conecta las piezas de `src/`: `tiktok.js` (conexión), `game.js` (rondas y puntos), `recorder.js` (graba cada directo), `standings.js` (TOP del mes en directo), `moderation.js` (`!optout`), `publisher.js` (sube a GitHub), `live-page.js` (página del directo), `chatbot/` (bot del chat, ver abajo), `vtuber/` (avatar en VTube Studio, ver abajo) |
 | `client/` | Capa LIVE que se inyecta sobre el juego: pantallas, estilos, voz, fuegos artificiales y textos. Y `bot-panel.html`, el panel del bot (`/bot`) |
 | `shared/stats.js` | Cálculo de clasificaciones, común al servidor y a la web |
 | `data/sessions/AAAA-MM/` | **Fuente de verdad**: un JSON por directo. Se sube al repo |
 | `data/moderation.json` | Quién no sale en la web (`optout` desde el chat, `banned` a mano) |
 | `scripts/` | `aggregate.js` (sesiones → JSON de la web), `publish.js`, `demo-data.js`, `serve-site.js`, `studio-coords.js` y `studio-test.js` (bot) |
-| `*.bat` | `arrancar_live.bat` (el directo), `coordenadas_chat.bat` y `probar_studio.bat` (bot → Studio) |
+| `*.bat` | `arrancar_live.bat` (el directo), `coordenadas_chat.bat` y `probar_studio.bat` (bot → Studio), `probar_vtuber.bat` (avatar) |
 | `site/` | Web estática de clasificaciones (Vanilla JS). `site/data/` lo genera Actions |
 
 El directo es **independiente del repo del juego**: juega con su propia copia en `game/`, que solo cambia cuando
@@ -117,6 +117,69 @@ comentarios al resto del directo, solo los ve quien los envía).
 Control: `/api/chatbot` (estado) · `/api/chatbot/pause` · `/api/chatbot/resume` · `/api/chatbot/say?text=...` (propone
 ese texto). En modo prueba (sin usuario de TikTok): `/api/test-chat?user=pepe&text=hola`.
 
+## Avatar VTuber (opcional)
+
+Con `VTUBER=1` en `.env`, el servidor mueve un avatar Live2D en **VTube Studio** por su API (WebSocket,
+`ws://127.0.0.1:8001`) según lo que pasa en el directo. Si VTube Studio no está abierto, el directo sigue igual y se
+reconecta solo cuando lo abras.
+
+**La boca no la mueve el servidor:** VTube Studio hace el lip-sync escuchando un micrófono. El audio del navegador
+(la voz del locutor) sale por **CABLE Input** (VB-Audio Virtual Cable) y en VTube Studio se elige como micrófono
+**CABLE Output**: lo que suena, lo habla el avatar.
+
+| Prioridad | Cuándo | Qué hace |
+|---|---|---|
+| Alta (corta lo demás) | Regalo · saludo en el chat · `!wave` `!dance` `!love` `!wow` `!sad` · follow · fin de partida | Celebra, saluda, corazón, sorpresa… |
+| Media | Pregunta nueva · quedan 5 s · resultado de la ronda | Pensar; sorpresa si casi nadie acierta, alegría si casi todos, pena si nadie vota |
+| Baja | Entra gente · ráfaga de likes · reposo | Asiente, inclina la cabeza, mira a un lado y a otro |
+
+Los comandos del público tienen 20 s de espera por persona y 5 s entre comandos. Una reacción alta que llega mientras
+hay otra espera su turno (regalos, follows, fin de partida) o se descarta (saludos, comandos).
+
+**Qué hace con tu modelo:** busca por nombre (sin mayúsculas ni acentos) en sus hotkeys y expresiones: `happy`
+(happy, smile, sonrisa…), `surprised` (surprise, shock, wow…), `sad`, `thinking`, `love` (heart, kiss…), `wave`
+(wave, hello, saludo…), `celebrate` (cheer, clap, dance, baile…). Lo que no encuentra no lo hace, pero los gestos de
+cabeza y cara (asentir, negar, inclinar, saltar, reír, pensar, encoger los hombros, mirar alrededor; sonrisa y cejas
+para alegría y sorpresa) funcionan con cualquier modelo, y los de brazos si se enlazan (abajo). Para elegir a mano, `server/.vtuber-map.json`
+(no va al repo; `""` desactiva):
+
+```json
+{ "anim": { "wave": "Saludo mano", "celebrate": "" }, "face": { "happy": "Smile.exp3.json" } }
+```
+
+### Piezas (`server/src/vtuber/`)
+
+| Fichero | Qué hace |
+|---|---|
+| `vts-client.js` | Conexión (librería `ws` sin compresión: con el WebSocket de Node las respuestas de VTube Studio llegan vacías), token (`server/.vtuber-token`), latido cada 5 s y reconexión 1 s → 30 s |
+| `avatar.js` | Hotkeys, expresiones y movimiento (cabeza `FaceAngleX/Y/Z`, sonrisa `MouthSmile`, cejas `Brows`, brazos `FMArmLeft/Right`, en modo suma, 20 veces por segundo): gestos, respiración y acompañar la voz (lee `VoiceVolume`) |
+| `behavior.js` | Prioridades alta / media / baja con duración, cola corta, esperas por tipo y reposo |
+| `rules.js` | Evento → reacción (tabla de arriba) y palabras clave de cada intención |
+| `index.js` | Engancha juego, chat, regalos y follows |
+
+### Preparar VTube Studio (una vez)
+
+1. VTube Studio (Steam) con un modelo cargado. **Ajustes (rueda) → "Iniciar API"** activado, puerto 8001.
+2. **Micrófono:** en los ajustes de VTube Studio, sección de micrófono, elige **CABLE Output**, activa el micrófono y
+   el lip-sync simple (por volumen). En los ajustes del modelo, el parámetro de la boca (*Mouth Open*) con entrada
+   `VoiceVolume` (o `VoiceVolumePlusMouthOpen` si además usas cámara). Sube la ganancia hasta que la boca se abra
+   bien con la voz.
+3. `probar_vtuber.bat`: la primera vez VTube Studio pregunta si permites "FlagMaster LIVE" → **Permitir**. Lista los
+   hotkeys y expresiones, dice cuáles ha reconocido y hace una tanda de reacciones.
+4. **Brazos** (opcional): al conectar se crean las entradas `FMArmLeft` y `FMArmRight` (-1 abajo, 1 arriba). En los
+   ajustes del modelo, añade un parámetro por brazo: entrada `FMArmLeft` → salida `ParamArmLeftA` (y `FMArmRight` →
+   `ParamArmRightA`), rangos -1…1 en los dos lados. Los nombres de salida dependen del modelo.
+5. **Fondo para TikTok LIVE Studio:** fondo *Color Picker* verde puro (`00FF00`) en VTube Studio, cámara virtual de
+   VTube Studio activada y, en Studio, fuente de cámara "VTube Studio Cam" con *recortar fondo → croma* en `00FF00`.
+   Si Studio no ofrece croma, pasa por OBS (captura con *Transparent in capture* o Spout2 → cámara virtual de OBS).
+6. **Sitio en pantalla:** con `VTUBER=1` las pantallas del directo dejan libre la **esquina inferior derecha** (38 % del
+   ancho × 50 % del ancho de alto, con una luz de escenario). Coloca ahí la fuente del avatar en Studio, por encima de
+   la captura del navegador. Para verlo sin VTube Studio: abre la página con `?avatar=1`.
+
+Control: `/api/vtuber` (estado, modelo y lo reconocido) · `/api/vtuber/test?event=gift` (también `greeting`, `follow`,
+`game:over`, `round:question`, `round:results&pct=10`, `command&text=!love`) · `/api/vtuber/refresh` (tras cambiar de
+modelo) · `/api/vtuber/pause` · `/api/vtuber/resume`.
+
 ## Qué se guarda de cada directo
 
 Por jugador: @usuario, nick, puntos, mensajes en el chat, respuestas, aciertos, veces 1º en acertar, partidas jugadas y ganadas, mejor
@@ -152,4 +215,4 @@ Play Console → Adquisición de usuarios (el enlace lleva UTM `tiktok_live`).
 
 ## Tests
 
-`npm test` (clasificaciones, grabador, recuperación tras cierre, regalos, identidad, página del directo y bot del chat).
+`npm test` (clasificaciones, grabador, recuperación tras cierre, regalos, identidad, página del directo, bot del chat y avatar).

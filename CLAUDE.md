@@ -18,4 +18,7 @@ arquitectura completa.
   (Studio los pinta como una X) y siempre por `content-filter.js` (nada de pedir likes, follows, compartir, regalos ni
   enlaces). Escribe en TikTok LIVE Studio con ratón/teclado del sistema, no con navegador automatizado (TikTok oculta
   esos comentarios).
+- Avatar (`server/src/vtuber/`, ver README "Avatar VTuber"): VTube Studio por su API con `ws` y `perMessageDeflate: false`
+  (con el WebSocket de Node las respuestas comprimidas llegan vacías). La boca la mueve el lip-sync de VTube Studio por el cable virtual, no el servidor. Si VTube Studio no
+  está, el directo sigue igual.
 - `npm test` antes de dar algo por terminado.

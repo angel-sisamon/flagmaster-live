@@ -6,6 +6,9 @@ server/.live/
 server/.chatbot-profile/
 # Ajustes de escritura en Studio del panel /bot
 server/.chatbot-studio.json
+# Avatar VTuber: token de VTube Studio y mapa a mano de animaciones/expresiones del modelo
+server/.vtuber-token
+server/.vtuber-map.json
 # Datos de la web: los genera GitHub Actions desde data/sessions
 site/data/
 # Directos simulados (npm run demo)
