@@ -178,10 +178,11 @@ async function align(wavBuf, texts, tries = 3) {
   });
   const json = await res.json();
   if (!res.ok) throw new Error(`alineado: ${res.status} ${json.error ? json.error.message : ''}`);
-  const segs = JSON.parse(json.candidates[0].content.parts.map(p => p.text || '').join(''));
+  let segs = null;
+  try { segs = JSON.parse(json.candidates[0].content.parts.map(p => p.text || '').join('')); } catch (e) { /* JSON roto: se reintenta */ }
   if (Array.isArray(segs) && segs.length === texts.length) return segs;
   if (tries > 1) return align(wavBuf, texts, tries - 1);
-  throw new Error(`alineado: ${segs.length} frases en vez de ${texts.length}`);
+  throw new Error(`alineado: ${segs ? segs.length : 'JSON roto,'} frases en vez de ${texts.length}`);
 }
 
 async function splitBatch(wavBuf, texts) {

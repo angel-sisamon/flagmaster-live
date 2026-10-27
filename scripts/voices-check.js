@@ -55,6 +55,8 @@ function problems(clip, heard) {
     const country = name.length ? name : want.filter(w => !words(clip.template.replace('{N}', '')).includes(w));
     if (country.some(w => !gotSet.has(w))) out.push('país no reconocido');
   }
+  // Lee en voz alta el separador de los lotes (<long pause>)
+  if (/\b(pause|delay)\b/i.test(heard) && !/\b(pause|delay)\b/i.test(clip.text.replace(/<[^>]*>/g, ''))) out.push('lee la etiqueta de pausa');
   if (/\((cough|throat|sneeze|hiccup)/i.test(heard)) out.push('ruido: ' + heard.match(/\((cough|throat|sneeze|hiccup)[^)]*\)/i)[0]);
   if (clip.ms > clip.text.replace(/<[^>]*>/g, '').length * 110 + 2500) out.push(`muy largo (${(clip.ms / 1000).toFixed(1)} s)`);
   return out;
