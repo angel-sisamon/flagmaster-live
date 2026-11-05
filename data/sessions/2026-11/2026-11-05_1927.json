@@ -1,0 +1,232 @@
+{
+ "schema": 1,
+ "id": "2026-11-05_1927",
+ "month": "2026-11",
+ "host": "flagmaster_quiz",
+ "startedAt": "2026-11-05T18:27:48.033Z",
+ "updatedAt": "2026-11-05T18:37:59.785Z",
+ "endedAt": "2026-11-05T18:38:05.220Z",
+ "roomId": "7704757154904820483",
+ "totals": {
+  "games": 2,
+  "rounds": 9,
+  "answers": 7,
+  "correct": 7,
+  "likes": 0,
+  "gifts": 0,
+  "follows": 0,
+  "shares": 0,
+  "joins": 11,
+  "messages": 8,
+  "peakViewers": 3
+ },
+ "games": [
+  {
+   "n": 1,
+   "startedAt": "2026-11-05T18:27:48.034Z",
+   "endedAt": "2026-11-05T18:34:14.899Z",
+   "totalRounds": 30,
+   "rounds": 2,
+   "players": 0,
+   "winner": null
+  },
+  {
+   "n": 2,
+   "startedAt": "2026-11-05T18:34:14.899Z",
+   "endedAt": "2026-11-05T18:38:05.220Z",
+   "totalRounds": 30,
+   "rounds": 7,
+   "players": 1,
+   "winner": null
+  }
+ ],
+ "questions": [
+  {
+   "g": 1,
+   "r": 1,
+   "mode": "guess-country-from-capital",
+   "code": "GM",
+   "flag": "🇬🇲",
+   "es": "Gambia",
+   "en": "Gambia",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 2,
+   "mode": "guess-country-from-capital",
+   "code": "DO",
+   "flag": "🇩🇴",
+   "es": "Rep. Dominicana",
+   "en": "Dominican Republic",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 3,
+   "mode": "guess-country",
+   "code": "AL",
+   "flag": "🇦🇱",
+   "es": "Albania",
+   "en": "Albania",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    0,
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 4,
+   "mode": "guess-country",
+   "code": "NR",
+   "flag": "🇳🇷",
+   "es": "Nauru",
+   "en": "Nauru",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "g": 2,
+   "r": 5,
+   "mode": "guess-flag",
+   "code": "TW",
+   "flag": "🇹🇼",
+   "es": "Taiwán",
+   "en": "Taiwan",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    1,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 6,
+   "mode": "guess-capital",
+   "code": "BH",
+   "flag": "🇧🇭",
+   "es": "Baréin",
+   "en": "Bahrain",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    1,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 7,
+   "mode": "guess-capital",
+   "code": "IE",
+   "flag": "🇮🇪",
+   "es": "Irlanda",
+   "en": "Ireland",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "g": 2,
+   "r": 8,
+   "mode": "guess-flag",
+   "code": "ZW",
+   "flag": "🇿🇼",
+   "es": "Zimbabue",
+   "en": "Zimbabwe",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    1,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 9,
+   "mode": "guess-flag",
+   "code": "AR",
+   "flag": "🇦🇷",
+   "es": "Argentina",
+   "en": "Argentina",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    0,
+    0,
+    1,
+    0
+   ]
+  }
+ ],
+ "players": {
+  "p5e87976b8a36": {
+   "u": "_mtdc_",
+   "n": "matteo.dic",
+   "pts": 70,
+   "ans": 7,
+   "ok": 7,
+   "first": 7,
+   "wins": 0,
+   "games": 1,
+   "streak": 7,
+   "fast": 7378,
+   "tms": 57828,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 8,
+   "modes": {
+    "guess-country": [
+     2,
+     2
+    ],
+    "guess-flag": [
+     3,
+     3
+    ],
+    "guess-capital": [
+     2,
+     2
+    ]
+   }
+  }
+ }
+}
