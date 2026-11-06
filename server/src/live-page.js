@@ -11,7 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const LIVE_SCRIPTS = ['live-i18n.js', 'live-fireworks.js', 'live-voice.js', 'live-mode.js'];
+const LIVE_SCRIPTS = ['live-i18n.js', 'live-fireworks.js', 'live-voice.js', 'live-teacher.js', 'live-mode.js'];
 
 /* Ajustes del juego para el directo, justo antes de main.js (que es quien los usa al arrancar):
  *  - Sin aviso de actualización: la copia del juego es fija y, el día que la app pida una versión mínima más

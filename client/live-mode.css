@@ -508,6 +508,121 @@ body.live-avatar .lf-stats { grid-template-columns:repeat(2,1fr); }
 body.live-avatar.live-in-game .live-greetings { right:auto;left:calc(var(--stage-x) + .75rem);align-items:flex-start;
   max-width:calc(var(--stage-w) - var(--avatar-w) - 1rem); }
 
+/* ── La profe (live-teacher.js, body.live-teacher) ─────────────────
+ * Personaje en SVG pegado abajo, a la izquierda o a la derecha según el momento (data-side), con el bocadillo al
+ * lado o encima (data-bubble). Cada pantalla le deja libre su hueco (body[data-teacher-spot], ver la tabla de
+ * live-teacher.js): nada del juego queda debajo de ella ni de su bocadillo. */
+body.live-mode { --teacher-w:calc(var(--u) * 26); --teacher-h:calc(var(--u) * 34); --teacher-edge:calc(var(--u) * 2);
+  --teacher-bottom:calc(var(--sab) + var(--u) * 1); --teacher-top-bubble:calc(var(--u) * 38); }
+.lt-root { display:none; }
+body.live-teacher .lt-root { display:block;position:fixed;z-index:45;pointer-events:none;
+  width:var(--teacher-w);height:var(--teacher-h);bottom:var(--teacher-bottom);
+  left:calc(var(--stage-x) + var(--teacher-edge));
+  transition:left .95s cubic-bezier(.45,.05,.35,1),bottom .6s ease; }
+body.live-teacher .lt-root[data-side="right"] { left:calc(var(--stage-x) + var(--stage-w) - var(--teacher-w) - var(--teacher-edge)); }
+/* En resultados y tabla, por encima de la barra de progreso */
+body.live-teacher[data-teacher-spot="results"] .lt-root,
+body.live-teacher[data-teacher-spot="table"] .lt-root { bottom:calc(var(--sab) + var(--u) * 6); }
+
+.lt-figure { display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 calc(var(--u) * 1.2) calc(var(--u) * 2.4) rgba(0,0,0,.45));
+  transform-origin:50% 100%;transition:transform .35s ease; }
+.lt-root[data-face="left"] .lt-figure { transform:scaleX(-1); }
+.lt-shadow { fill:rgba(0,0,0,.28); }
+.lt-figure g, .lt-figure path, .lt-figure ellipse { transform-box:fill-box; }
+
+/* Respira, mueve un poco la cabeza y parpadea */
+.lt-body { transform-origin:50% 100%;animation:lt-breathe 3.6s ease-in-out infinite; }
+.lt-head { transform-origin:50% 90%;animation:lt-head 4.2s ease-in-out infinite; }
+.lt-eyes { transform-origin:50% 50%;animation:lt-blink 5.2s infinite; }
+@keyframes lt-breathe { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.018)} }
+@keyframes lt-head { 0%,100%{transform:rotate(-2deg) translateY(0)} 50%{transform:rotate(2deg) translateY(-1.5%)} }
+@keyframes lt-blink { 0%,93%,100%{transform:scaleY(1)} 95.5%{transform:scaleY(.08)} }
+/* Hablando: la cabeza acompaña un poco más */
+.lt-talking .lt-head { animation:lt-head-talk 1.1s ease-in-out infinite; }
+@keyframes lt-head-talk { 0%,100%{transform:rotate(-3deg) translateY(0)} 50%{transform:rotate(3deg) translateY(-2%)} }
+
+/* Boca: 0 cerrada (sonrisa), 1 entreabierta, 2 abierta; "o" de sorpresa con mood wow/sad sin hablar */
+.lt-mouth > * { display:none; }
+.lt-root[data-mouth="0"] .lt-m0, .lt-root[data-mouth="1"] .lt-m1, .lt-root[data-mouth="2"] .lt-m2 { display:inline; }
+.lt-root:not(.lt-talking)[data-mood="wow"] .lt-m0,
+.lt-root:not(.lt-talking)[data-mood="sad"] .lt-m0 { display:none; }
+.lt-root:not(.lt-talking)[data-mood="wow"] .lt-mo,
+.lt-root:not(.lt-talking)[data-mood="sad"] .lt-mo { display:inline; }
+
+/* Brazo del puntero: gira desde el hombro (146, 194 del viewBox) */
+.lt-figure .lt-arm { transform-box:view-box;transform-origin:146px 194px;transition:transform .45s cubic-bezier(.34,1.4,.64,1); }
+.lt-brows path { transform-origin:50% 50%;transition:transform .35s ease; }
+.lt-root[data-mood="point"] .lt-arm,
+.lt-root[data-mood="happy"] .lt-arm { transform:rotate(-58deg); }
+.lt-root[data-mood="cheer"] .lt-arm { animation:lt-cheer-arm .7s ease-in-out infinite alternate; }
+.lt-root[data-mood="wave"] .lt-arm { animation:lt-wave .45s ease-in-out infinite alternate; }
+@keyframes lt-cheer-arm { from{transform:rotate(-95deg)} to{transform:rotate(-125deg)} }
+@keyframes lt-wave { from{transform:rotate(-100deg)} to{transform:rotate(-140deg)} }
+.lt-root[data-mood="happy"] .lt-brows path,
+.lt-root[data-mood="cheer"] .lt-brows path,
+.lt-root[data-mood="wow"] .lt-brows path { transform:translateY(-22%); }
+.lt-root[data-mood="sad"] .lt-brow-l { transform:rotate(-14deg) translateY(-10%); }
+.lt-root[data-mood="sad"] .lt-brow-r { transform:rotate(14deg) translateY(-10%); }
+.lt-root[data-mood="cheer"] .lt-figure { animation:lt-jump .7s cubic-bezier(.3,.7,.4,1) 3; }
+.lt-root[data-face="left"][data-mood="cheer"] .lt-figure { animation-name:lt-jump-flip; }
+@keyframes lt-jump { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-9%)} }
+@keyframes lt-jump-flip { 0%,100%{transform:scaleX(-1) translateY(0)} 40%{transform:scaleX(-1) translateY(-9%)} }
+
+/* Cruzando la pantalla: saltitos */
+.lt-root.lt-walking .lt-figure { animation:lt-hop .32s ease-in-out infinite; }
+.lt-root.lt-walking[data-face="left"] .lt-figure { animation-name:lt-hop-flip; }
+@keyframes lt-hop { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-6%) rotate(3deg)} }
+@keyframes lt-hop-flip { 0%,100%{transform:scaleX(-1) translateY(0) rotate(0)} 50%{transform:scaleX(-1) translateY(-6%) rotate(3deg)} }
+
+/* Bocadillo: lo que dice la voz; las palabras se encienden a medida que se dicen */
+.lt-bubble { position:absolute;z-index:1;width:max-content;max-width:calc(var(--stage-w) - var(--teacher-w) - var(--teacher-edge) * 2 - var(--u) * 4);
+  padding:calc(var(--u) * 2.2) calc(var(--u) * 3.2);border-radius:calc(var(--u) * 4);
+  background:#fff;color:#1d1433;box-shadow:0 calc(var(--u) * 1.2) calc(var(--u) * 4) rgba(0,0,0,.4); }
+.lt-bubble[hidden] { display:none; }
+.lt-bubble::after { content:'';position:absolute;width:calc(var(--u) * 4);height:calc(var(--u) * 4);background:#fff;
+  transform:rotate(45deg);border-radius:calc(var(--u) * .6); }
+.lt-root[data-bubble="right"] .lt-bubble { left:calc(100% + var(--u) * 1.5);top:calc(var(--u) * 3);transform-origin:0 50%; }
+.lt-root[data-bubble="right"] .lt-bubble::after { left:calc(var(--u) * -1.4);top:calc(var(--u) * 4); }
+.lt-root[data-bubble="left"] .lt-bubble { right:calc(100% + var(--u) * 1.5);top:calc(var(--u) * 3);transform-origin:100% 50%; }
+.lt-root[data-bubble="left"] .lt-bubble::after { right:calc(var(--u) * -1.4);top:calc(var(--u) * 4); }
+.lt-root[data-bubble="top"] .lt-bubble { right:0;bottom:calc(100% + var(--u) * 1.5);max-width:var(--teacher-top-bubble);
+  width:max-content;transform-origin:80% 100%; }
+.lt-root[data-bubble="top"] .lt-bubble::after { right:calc(var(--teacher-w) * .42);bottom:calc(var(--u) * -1.4); }
+.lt-bubble--in { animation:lt-bubble-in .35s cubic-bezier(.34,1.5,.64,1) both; }
+@keyframes lt-bubble-in { from{opacity:0;transform:scale(.6)} to{opacity:1;transform:none} }
+.lt-bubble-text { position:relative;z-index:1;margin:0;font-family:var(--font);font-size:calc(var(--u) * 3.5);font-weight:800;
+  line-height:1.3;overflow-wrap:anywhere; }
+.lt-w { opacity:.28;transition:opacity .18s ease; }
+.lt-w--on { opacity:1; }
+
+/* Huecos que le dejan las pantallas */
+/* Sala de espera: abajo a la izquierda, bocadillo a la derecha → el contenido queda por encima.
+   Sin el globo: la mascota es ella (y así cabe todo en 9:16) */
+body.live-teacher .lobby-globe { display:none; }
+body.live-teacher .lobby-shell { padding-top:calc(var(--sat) + var(--u) * 4);padding-bottom:calc(var(--sab) + var(--teacher-h) + var(--u) * 2); }
+/* Pregunta: abajo a la derecha, bocadillo a la izquierda → el juego reserva abajo su alto */
+body.live-teacher #screen-game .game-layout { padding-bottom:calc(var(--teacher-h) + var(--u) * 4); }
+/* Resultados: tarjetas pegadas arriba (ranking corto, TEACHER_RANKING_SHOWN) y la profe debajo */
+body.live-teacher .lr-head { margin-bottom:0; }
+body.live-teacher .lr-shell { padding-bottom:calc(var(--u) * 3); }
+body.live-teacher .lr-shell > .lr-ranking { margin-bottom:calc(var(--teacher-h) + var(--u) * 6); }
+/* Tabla: la columna derecha (bandera, aciertos…) se acorta y deja abajo la profe con el bocadillo encima */
+body.live-teacher .lr-table { --lt-side-w:var(--teacher-top-bubble);margin-right:calc(var(--u) * -2); }
+body.live-teacher .lt-side { margin-right:calc(var(--u) * 2);max-height:calc(100% - var(--teacher-h) - var(--u) * 20);overflow:hidden; }
+/* Final: podio a todo el ancho; el resto a la izquierda de la profe */
+body.live-teacher .lf-rest, body.live-teacher .lf-stats,
+body.live-teacher .lf-site, body.live-teacher .lf-actions { margin-right:calc(var(--teacher-top-bubble) - var(--u) * 2); }
+body.live-teacher .lf-stats { grid-template-columns:repeat(2,1fr); }
+/* Saludos: en la misma franja que la profe, al otro lado y por debajo del bocadillo (que va a la altura de su
+   cabeza); sin crecer hacia el contenido: si hay muchos, los más viejos se cortan arriba */
+body.live-mode.live-teacher .live-greetings { bottom:calc(var(--sab) + var(--u) * 1);max-height:calc(var(--u) * 13);
+  max-width:calc(var(--stage-w) - var(--teacher-w) - var(--u) * 8);overflow:hidden;justify-content:flex-end;
+  left:calc(var(--stage-x) + var(--u) * 2);right:auto;align-items:flex-start; }
+body.live-mode.live-teacher[data-teacher-spot="lobby"] .live-greetings,
+body.live-mode.live-teacher[data-teacher-spot="results"] .live-greetings { left:auto;right:calc(var(--stage-x) + var(--u) * 2);align-items:flex-end; }
+body.live-mode.live-teacher[data-teacher-spot="results"] .live-greetings,
+body.live-mode.live-teacher[data-teacher-spot="table"] .live-greetings { bottom:calc(var(--sab) + var(--u) * 6); }
+
 /* ── Saludos a quien entra al directo ─────────────────────────── */
 .live-greetings { position:fixed;z-index:50;left:calc(var(--stage-x, 0px) + 1rem);bottom:calc(var(--sab) + 1rem);
   display:flex;flex-direction:column;align-items:flex-start;gap:.45rem;pointer-events:none;
@@ -563,6 +678,6 @@ body.live-in-game .live-likes { left:calc(var(--stage-x) + calc(var(--u) * 4) + 
 @media (prefers-reduced-motion:reduce) {
   .live-bg-color, .live-bg-mesh, .live-likes-heart, .live-promo--in, .live-bg-flags,
   .live-cta b, body.live-mode .flag-emoji-lg, body.live-mode .hud-progress-text, .live-avatar-spot::before,
-  .live-avatar-spot::after { animation:none; }
+  .live-avatar-spot::after, .lt-body, .lt-head, .lt-figure, .lt-arm, .lt-bubble--in { animation:none !important; }
   .live-bg-flags { display:none; }
 }

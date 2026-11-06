@@ -30,6 +30,8 @@
  * Fondo (todas las pantallas LIVE): banderas que suben sin parar y color que oscila solo y cambia en cada pregunta.
  * Avatar VTuber: si el servidor lo tiene (live:status.avatar, VTUBER=1) o la URL lleva ?avatar=1, body.live-avatar
  * deja libre la esquina inferior derecha del escenario para ponerle encima el avatar en TikTok LIVE Studio.
+ * La profe (live-teacher.js): sin avatar VTuber (o con ?teacher=1) presenta ella, dentro de la página; body.live-teacher
+ * y body[data-teacher-spot] le dejan libre su sitio en cada pantalla. ?teacher=0 la quita.
  *
  * Clasificación mensual (server/src/standings.js):
  *   - month:update → TOP 3 del mes en la sala de espera, con la dirección de la web,
@@ -55,6 +57,8 @@ var LiveMode = (function () {
   var TABLE_AT_SECONDS = 5;    // resultados: a falta de estos segundos se pasa a la tabla de todos los acertantes
   var TABLE_ROWS_ANIMATED = 16;
   var AVATAR_KEY = 'avatar';   // ?avatar=1 / ?avatar=0 en la URL fuerza el hueco del avatar (para probar sin VTube Studio)
+  var TEACHER_KEY = 'teacher'; // ?teacher=0 quita la profe; ?teacher=1 la pone aunque haya avatar VTuber
+  var TEACHER_RANKING_SHOWN = 5;   // con la profe, el ranking de resultados es más corto: ella va debajo
   var REVEAL_MS = 1600;        // tiempo viendo la opción correcta antes de pasar a la vista de resultados
   var RANKING_SHOWN = 10;
   var LOBBY_RANKING_SHOWN = 3;
@@ -141,6 +145,10 @@ var LiveMode = (function () {
     if (typeof LiveVoice !== 'undefined') LiveVoice[method].apply(null, Array.prototype.slice.call(arguments, 1));
   }
 
+  function _teacher(method) {
+    if (typeof LiveTeacher !== 'undefined') LiveTeacher[method].apply(null, Array.prototype.slice.call(arguments, 1));
+  }
+
   function _randomFlag() {
     return COUNTRIES[Math.floor(Math.random() * COUNTRIES.length)].flag;
   }
@@ -211,7 +219,13 @@ var LiveMode = (function () {
 
   function _setAvatar(on) {
     var forced = _avatarParam();
-    document.body.classList.toggle('live-avatar', _active && (forced === null ? !!on : forced));
+    var avatar = _active && (forced === null ? !!on : forced);
+    document.body.classList.toggle('live-avatar', avatar);
+    // La profe presenta cuando no hay avatar VTuber (los dos a la vez se pisarían el hueco)
+    var m = new RegExp('[?&]' + TEACHER_KEY + '=([01])').exec(location.search);
+    var teacher = _active && (m ? m[1] === '1' : !avatar);
+    if (teacher) document.body.classList.remove('live-avatar');
+    document.body.classList.toggle('live-teacher', teacher);
   }
 
   function _leaveRoundScreen() {
@@ -227,6 +241,7 @@ var LiveMode = (function () {
     _state = 'lobby';
     _promoRound = -1;
     _voice('setPhase', 'idle');
+    _teacher('setSpot', 'lobby');
     document.body.classList.remove('live-in-game');
     var cd = _el('lobby-countdown');
     if (cd) cd.hidden = true;
@@ -421,6 +436,8 @@ var LiveMode = (function () {
     if (bar && _totalRounds) bar.style.width = (q.round / _totalRounds * 100) + '%';
     if (isLast && q.remaining >= q.duration) _voice('announceLastRound');
     _voice('setPhase', 'answer');
+    _teacher('setSpot', 'question');
+    _teacher('react', isLast ? 'wow' : 'point', 1800);
     _setTimer(q.remaining, q.duration, 'answer');
     if (q.round !== _promoRound) _shiftBgColor();   // antes de _placePromo, que apunta la ronda
     _placePromo(q.round);
@@ -568,8 +585,9 @@ var LiveMode = (function () {
     _el('lr-winners').innerHTML = winners.length ? '<ul class="live-winners">' + chips + '</ul>'
       : '<p class="lr-empty">' + t('live_no_winners') + '</p>';
 
-    _el('lr-ranking').innerHTML = _rankingHtml(_ranking, RANKING_SHOWN) +
-      (_players > RANKING_SHOWN ? '<p class="lr-players">' + t('lr_players', { n: _players }) + '</p>' : '');
+    var shown = document.body.classList.contains('live-teacher') ? TEACHER_RANKING_SHOWN : RANKING_SHOWN;
+    _el('lr-ranking').innerHTML = _rankingHtml(_ranking, shown) +
+      (_players > shown ? '<p class="lr-players">' + t('lr_players', { n: _players }) + '</p>' : '');
     _setRoundCountdown(r.remaining, r.duration);
   }
 
@@ -577,6 +595,7 @@ var LiveMode = (function () {
     if (!_active || _state !== 'game') return;
     _onRoundScreen = true;
     showScreen('live-round');
+    _teacher('setSpot', 'results');
     requestAnimationFrame(function () {
       document.querySelectorAll('#lr-stats [data-w]').forEach(function (b) { b.style.width = b.dataset.w + '%'; });
     });
@@ -613,6 +632,7 @@ var LiveMode = (function () {
     var box = _el('lr-table');
     box.hidden = false;
     box.parentNode.classList.add('lr-shell--table');
+    _teacher('setSpot', 'table');
     _sfx('screenTransition');
     _autoScroll(_el('lt-scroll'), Math.max(1, remaining) * 1000);
   }
@@ -665,6 +685,9 @@ var LiveMode = (function () {
     if (r.ranking) { _ranking = r.ranking; _players = r.players || 0; }
     _hideTable();
     _lastResults = r;
+
+    // La profe señala la respuesta y pone cara según cómo le ha ido al chat
+    _teacher('react', r.correctCount === 0 || r.correctPct <= 25 ? 'sad' : r.correctPct >= 70 ? 'cheer' : 'happy', 4500);
 
     // Locución en inglés de la respuesta (y a veces de quién va primero); no a quien se conecta a mitad
     _voice('setPhase', 'results');
@@ -782,6 +805,8 @@ var LiveMode = (function () {
     _players = d.players || 0;
     _renderFinal(d);
     showScreen('live-final');
+    _teacher('setSpot', 'final');
+    _teacher('react', 'cheer', 6000);
     _sfx('newRecord');
     if (typeof LiveFireworks !== 'undefined') LiveFireworks.start(_el('live-final-fx'), 1);
     var champ = _ranking[0];
@@ -814,6 +839,7 @@ var LiveMode = (function () {
     document.body.classList.add('live-mode');
     _setAvatar(false);   // el servidor dice en live:status si hay avatar; ?avatar=1 lo fuerza
     _voice('enable');
+    _teacher('enable');  // dentro del clic en LIVE: el navegador deja arrancar el audio para la boca
     _el('hud-progress-text').textContent = '🔴 LIVE';
     _showLobby();
     _setStatus('connecting', t('live_connecting'));
@@ -856,9 +882,10 @@ var LiveMode = (function () {
     clearInterval(_countdownTimer);
     _leaveRoundScreen();
     _voice('disable');
+    _teacher('disable');
     _ranking = []; _players = 0; _month = null;
     if (_socket) { _socket.emit('game:stop'); _socket.disconnect(); _socket = null; }
-    document.body.classList.remove('live-mode', 'live-in-game', 'live-limited', 'live-avatar');
+    document.body.classList.remove('live-mode', 'live-in-game', 'live-limited', 'live-avatar', 'live-teacher');
     var box = _el('live-results');
     if (box) { box.hidden = true; box.innerHTML = ''; }
     var greets = _el('live-greetings');
@@ -886,10 +913,36 @@ var LiveMode = (function () {
     if (!actions || !grid) console.warn('[LiveMode] El index.html del juego ha cambiado: no se encuentra .home-topbar-actions o #options-grid');
   }
 
+  /* Emitiendo desde el móvil (compartir pantalla): al entrar en LIVE, pantalla completa como F11 en el PC.
+   * Solo en pantallas táctiles (en LIVE Studio no hace falta) y solo tras un toque, que es lo que pide el navegador.
+   * En iPhone Safari no existe para páginas: allí, "Añadir a pantalla de inicio" y abrirla desde el icono. */
+  function _isTouchScreen() {
+    return !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  }
+  function _enterFullscreen() {
+    var root = document.documentElement;
+    var req = root.requestFullscreen || root.webkitRequestFullscreen;
+    if (!_isTouchScreen() || !req || document.fullscreenElement || document.webkitFullscreenElement) return;
+    try {
+      var p = req.call(root, { navigationUI: 'hide' });
+      if (p && p.catch) p.catch(function () { /* el navegador no lo permite: se sigue sin pantalla completa */ });
+    } catch (e) { /* idem */ }
+  }
+  function _exitFullscreen() {
+    var exit = document.exitFullscreen || document.webkitExitFullscreen;
+    if (!exit || !(document.fullscreenElement || document.webkitFullscreenElement)) return;
+    try {
+      var p = exit.call(document);
+      if (p && p.catch) p.catch(function () {});
+    } catch (e) { /* nada */ }
+  }
+
   function init() {
     _injectGameUi();
     var btn = _el('btn-live-mode');
-    if (btn) btn.addEventListener('click', function () { _active ? stop() : start(); });
+    if (btn) btn.addEventListener('click', function () {
+      if (_active) { _exitFullscreen(); stop(); } else { _enterFullscreen(); start(); }
+    });
     var startBtn = _el('btn-lobby-start');
     if (startBtn) startBtn.addEventListener('click', function () { _startCountdown('auto'); });
     var newBtn = _el('btn-lobby-new');

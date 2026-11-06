@@ -128,6 +128,28 @@ la voz del navegador (`speechSynthesis`).
   `GEMINI_API_KEY` en `.env`; ver opciones al inicio de `scripts/voices.js`).
 - `npm run voices:check` transcribe los audios y lista los sospechosos; `npm run voices -- --redo <id>,<id>` los rehace.
 
+## La profe (presentadora animada)
+
+`client/live-teacher.js` dibuja en la propia página (SVG) una profesora que presenta el directo. No necesita nada
+fuera del navegador, así que también sale emitiendo desde el móvil. Sale siempre que no haya avatar VTuber
+(`VTUBER=1`); `?teacher=0` en la URL la quita y `?teacher=1` la fuerza.
+
+| Momento | Dónde | Bocadillo |
+|---|---|---|
+| Sala de espera | abajo a la izquierda (saluda con la mano de vez en cuando) | a la derecha |
+| Pregunta (y revelación) | abajo a la derecha (señala al empezar) | a la izquierda |
+| Resultados | abajo a la izquierda (cara según el % de acierto) | a la derecha |
+| Tabla de acertantes | abajo a la derecha | encima |
+| Final | abajo a la derecha (celebra) | encima |
+
+Cada pantalla le deja libre su hueco (`body.live-teacher` y `body[data-teacher-spot]` en `live-mode.css`): sin globo en la
+sala, ranking de resultados de 5 filas con las tarjetas arriba, columna derecha de la tabla más corta y saludos en su
+misma franja, al otro lado.
+
+Va sincronizada con la voz (`LiveVoice.setObserver`): el bocadillo muestra la frase que suena (`text` de
+`voices/en/index.json`, o el texto de `speechSynthesis`) y enciende las palabras a medida que se dicen. Con las
+locuciones grabadas la boca sigue el volumen real del audio (Web Audio); con la voz del navegador, boca simulada.
+
 ## Avatar VTuber (opcional)
 
 Con `VTUBER=1` en `.env`, el servidor mueve un avatar Live2D en **VTube Studio** por su API (WebSocket,
