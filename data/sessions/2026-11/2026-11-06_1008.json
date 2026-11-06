@@ -1,0 +1,198 @@
+{
+ "schema": 1,
+ "id": "2026-11-06_1008",
+ "month": "2026-11",
+ "host": "flagmaster_quiz",
+ "startedAt": "2026-11-06T09:08:06.359Z",
+ "updatedAt": "2026-11-06T09:12:07.070Z",
+ "endedAt": "2026-11-06T09:12:10.239Z",
+ "roomId": null,
+ "totals": {
+  "games": 1,
+  "rounds": 8,
+  "answers": 1,
+  "correct": 1,
+  "likes": 0,
+  "gifts": 0,
+  "follows": 0,
+  "shares": 0,
+  "joins": 9,
+  "messages": 1,
+  "peakViewers": 3
+ },
+ "games": [
+  {
+   "n": 1,
+   "startedAt": "2026-11-06T09:08:15.752Z",
+   "endedAt": "2026-11-06T09:12:10.239Z",
+   "totalRounds": 30,
+   "rounds": 8,
+   "players": 1,
+   "winner": null
+  }
+ ],
+ "questions": [
+  {
+   "g": 1,
+   "r": 1,
+   "mode": "guess-flag",
+   "code": "CY",
+   "flag": "🇨🇾",
+   "es": "Chipre",
+   "en": "Cyprus",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 2,
+   "mode": "guess-flag",
+   "code": "EC",
+   "flag": "🇪🇨",
+   "es": "Ecuador",
+   "en": "Ecuador",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 3,
+   "mode": "guess-country-from-capital",
+   "code": "BZ",
+   "flag": "🇧🇿",
+   "es": "Belice",
+   "en": "Belize",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 4,
+   "mode": "guess-capital",
+   "code": "MH",
+   "flag": "🇲🇭",
+   "es": "Islas Marshall",
+   "en": "Marshall Islands",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 5,
+   "mode": "guess-country-from-capital",
+   "code": "TV",
+   "flag": "🇹🇻",
+   "es": "Tuvalu",
+   "en": "Tuvalu",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 6,
+   "mode": "guess-country-from-capital",
+   "code": "GN",
+   "flag": "🇬🇳",
+   "es": "Guinea",
+   "en": "Guinea",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 7,
+   "mode": "guess-capital",
+   "code": "KG",
+   "flag": "🇰🇬",
+   "es": "Kirguistán",
+   "en": "Kyrgyzstan",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 8,
+   "mode": "guess-country",
+   "code": "SN",
+   "flag": "🇸🇳",
+   "es": "Senegal",
+   "en": "Senegal",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ ],
+ "players": {
+  "p2cae4286cb58": {
+   "u": "flagmaster_game",
+   "n": "FlagMaster",
+   "pts": 10,
+   "ans": 1,
+   "ok": 1,
+   "first": 1,
+   "wins": 0,
+   "games": 1,
+   "streak": 1,
+   "fast": 13076,
+   "tms": 13076,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 1,
+   "modes": {
+    "guess-flag": [
+     1,
+     1
+    ]
+   }
+  }
+ }
+}
