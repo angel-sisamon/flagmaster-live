@@ -15,6 +15,8 @@
  *   LiveVoice.greet(nickname)              alguien entra al directo (se saluda solo de vez en cuando; si entra
  *                                          mucha gente, a veces un saludo general sin nombre)
  *   LiveVoice.thankLike(nickname)          "Me gusta" (aún menos frecuente que los saludos)
+ *   LiveVoice.setObserver({ start(text, audio), boundary(charIndex), end() })   quien quiera seguir la voz (la profe
+ *                                          de live-teacher.js): start por cada audio o frase, end al acabar la locución
  *
  * Además, cada 45–110 s (al azar) suelta un comentario genérico durante la votación, si la voz está callada.
  * Las frases no se repiten hasta que ha salido buena parte de su lista.
@@ -207,6 +209,8 @@ var LiveVoice = (function () {
   var _voice = null;
   var _queue = [];            // { speech: { clips, text }, priority: 'high'|'low', notBefore, expiresAt }
   var _clipPools = null;      // 'grupo' o 'grupo/ISO' -> [ruta del audio], de index.json
+  var _clipTexts = {};        // ruta del audio -> texto que dice (para el bocadillo de la profe)
+  var _observer = null;       // setObserver(): sigue la voz (boca y bocadillo de la profe)
   var _audio = null;          // locución grabada sonando
   var _speaking = false;
   var _nextAllowedAt = 0;     // fin de la pausa tras la última locución
@@ -265,6 +269,7 @@ var LiveVoice = (function () {
         var c = index.clips[id];
         var key = c.country ? c.group + '/' + c.country : c.group;
         (pools[key] || (pools[key] = [])).push(CLIPS_BASE + c.file);
+        if (c.text) _clipTexts[CLIPS_BASE + c.file] = c.text;
       });
       _clipPools = pools;
     }).catch(function () { /* sin índice: se habla con speechSynthesis */ });
@@ -291,6 +296,12 @@ var LiveVoice = (function () {
       if (score > bestScore) { best = v; bestScore = score; }
     });
     _voice = best;
+  }
+
+  /* Avisa a quien sigue la voz; un fallo suyo no puede parar la cola */
+  function _notify(name) {
+    if (!_observer || typeof _observer[name] !== 'function') return;
+    try { _observer[name].apply(null, Array.prototype.slice.call(arguments, 1)); } catch (e) { /* nada */ }
   }
 
   /* ── Cola ─────────────────────────────────────────── */
@@ -340,6 +351,7 @@ var LiveVoice = (function () {
     if (!_speaking) return;
     _speaking = false;
     clearTimeout(_watchdog);
+    _notify('end');
     _lastSpokeAt = Date.now();
     _nextAllowedAt = Date.now() + _rand(GAP_MIN_MS, GAP_MAX_MS);
     _schedule(_nextAllowedAt - Date.now());
@@ -353,7 +365,8 @@ var LiveVoice = (function () {
 
   /* Reproduce los audios uno tras otro; si uno no se puede reproducir, se dice el texto con la voz del navegador */
   function _playClips(list, fallbackText) {
-    var a = new Audio(list.shift());
+    var src = list.shift();
+    var a = new Audio(src);
     _audio = a;
     var done = false;
     function next(failed) {
@@ -369,6 +382,7 @@ var LiveVoice = (function () {
     a.onerror = function () { next(true); };
     clearTimeout(_watchdog);
     _watchdog = setTimeout(function () { a.pause(); next(false); }, 20000);
+    a.addEventListener('playing', function () { _notify('start', _clipTexts[src] || fallbackText || '', a); }, { once: true });
     var p = a.play();
     if (p && p.catch) p.catch(function () { next(true); });
   }
@@ -383,6 +397,8 @@ var LiveVoice = (function () {
     u.rate = _rand(0.96, 1.06);
     u.pitch = _rand(0.95, 1.08);
     u.volume = 1;
+    u.onstart = function () { _notify('start', text, null); };
+    u.onboundary = function (e) { if (e && e.name !== 'sentence') _notify('boundary', e.charIndex); };
     u.onend = _finish;
     u.onerror = _finish;
     // Vigilante: ~80 ms por carácter + margen; si 'end' no llega, la cola sigue igualmente
@@ -411,6 +427,7 @@ var LiveVoice = (function () {
     clearTimeout(_pumpTimer);
     clearTimeout(_watchdog);
     clearTimeout(_ambientTimer);
+    if (_speaking) _notify('end');
     _speaking = false;
     _phase = 'idle';
     _lastLeader = null;
@@ -550,6 +567,7 @@ var LiveVoice = (function () {
     greet: greet,
     thankLike: thankLike,
     isSupported: function () { return SUPPORTED; },
+    setObserver: function (o) { _observer = o || null; },
     // Para pruebas desde la consola: LiveVoice._say('Hello there') o LiveVoice._sayClip('answer/JP')
     _say: function (text) { _enqueue(text, 'high', 0, ANSWER_TTL_MS); },
     _sayClip: function (key) { var c = _clip(key); return !!c && _enqueue({ clips: [c] }, 'high', 0, ANSWER_TTL_MS); }

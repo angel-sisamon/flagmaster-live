@@ -57,8 +57,10 @@ console.log(`🎲 Modos del reto diario: ${GAME_DATA.modes.map((m, i) => `${m}×
 /* ── Express + Socket.io ───────────────────────────────────── */
 // Solo orígenes locales: navegador en localhost, WebView de Capacitor y file:// ("null").
 const LOCAL_ORIGIN = /^(https?|capacitor|ionic):\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/;
+// …y la red de casa (IPs privadas): el móvil abre http://<IP-del-PC>:3000 para emitir compartiendo pantalla
+const LAN_ORIGIN = /^https?:\/\/(10\.\d{1,3}|192\.168|172\.(1[6-9]|2\d|3[01]))\.\d{1,3}\.\d{1,3}(:\d+)?$/;
 function corsOrigin(origin, cb) {
-  if (!origin || origin === 'null' || LOCAL_ORIGIN.test(origin)) return cb(null, true);
+  if (!origin || origin === 'null' || LOCAL_ORIGIN.test(origin) || LAN_ORIGIN.test(origin)) return cb(null, true);
   cb(new Error(`Origen no permitido por CORS: ${origin}`));
 }
 
