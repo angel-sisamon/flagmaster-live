@@ -2,7 +2,8 @@
  * server/src/game.js — Partidas del directo.
  *
  * Una partida dura totalRounds rondas (lo elige quien emite en la sala; 0 = sin límite):
- * ANSWER_SECONDS de votación + RESULTS_SECONDS de resultados por ronda. ✕ / desconexión la pausan
+ * ANSWER_SECONDS de votación + RESULTS_SECONDS de resultados por ronda. Con el contador a 0 se siguen
+ * aceptando votos lateSeconds más (el directo llega con retraso a quien lo ve). ✕ / desconexión la pausan
  * (se puede reanudar); al acabar la última ronda o con "Terminar" pasa a 'over' y se emite game:over.
  * La siguiente partida empieza de cero.
  *
@@ -24,7 +25,7 @@ const VOTES_BROADCAST_MS = 500;
 const MAX_WINNERS_SENT = 500;   // la tabla de acertantes de la pantalla de resultados los enseña todos
 const POSITION_POINTS = [10, 8, 6, 5, 4, 3, 2];
 const MIN_POINTS = 1;
-const RANKING_SIZE = 10;
+const RANKING_SIZE = 25;      // la tabla de resultados enseña hasta 25; el resto de pantallas, menos
 const MAX_TOTAL_ROUNDS = 2000;
 const LETTERS = ['A', 'B', 'C', 'D'];
 const ANSWER_RE = /^\s*([abcd])\s*$/i;
@@ -42,7 +43,7 @@ function newStats() {
   return { answers: 0, correct: 0, participants: new Set(), hardest: null };
 }
 
-function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds }) {
+function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSeconds = 0 }) {
   const events = new EventEmitter();
   const scores = new Map();   // pid -> { nickname, points, reachedAt }   (ranking de la partida)
   const game = {
@@ -99,7 +100,7 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds }) {
       correct: game.question.correct,
       options: game.question.options,
       duration: answerSeconds,
-      remaining: game.remaining,
+      remaining: Math.max(0, game.remaining),
     };
   }
 
@@ -172,13 +173,14 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds }) {
 
   function tick() {
     game.remaining--;
-    if (game.remaining <= 0) {
-      if (game.phase === 'answer') finishRound();
-      else if (game.totalRounds && game.round >= game.totalRounds) endGame();
+    // En la votación el contador se queda en 0 durante lateSeconds (llegan los votos de quien va con retraso)
+    if (game.phase === 'answer' && game.remaining <= -lateSeconds) return finishRound();
+    if (game.phase !== 'answer' && game.remaining <= 0) {
+      if (game.totalRounds && game.round >= game.totalRounds) endGame();
       else startRound();
       return;
     }
-    emit('round:tick', { round: game.round, phase: game.phase, remaining: game.remaining });
+    emit('round:tick', { round: game.round, phase: game.phase, remaining: Math.max(0, game.remaining) });
   }
 
   /* opts.totalRounds: duración de una partida nueva. opts.fresh: descarta la partida en pausa.

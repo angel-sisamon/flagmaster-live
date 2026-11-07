@@ -54,11 +54,12 @@ var LiveMode = (function () {
   var BG_FLAGS = 22;           // banderas subiendo por el fondo (todas las pantallas LIVE)
   // Tonos del fondo (giro sobre el morado base) por los que va saltando en cada pregunta: morado, azul, rosa, turquesa, rojo, índigo
   var BG_HUES = [0, -45, 40, -90, 75, -20];
-  var TABLE_AT_SECONDS = 5;    // resultados: a falta de estos segundos se pasa a la tabla de todos los acertantes
+  var TABLE_AT_SECONDS = 8;    // resultados: a falta de estos segundos se pasa a la tabla de todos los acertantes
   var TABLE_ROWS_ANIMATED = 16;
   var AVATAR_KEY = 'avatar';   // ?avatar=1 / ?avatar=0 en la URL fuerza el hueco del avatar (para probar sin VTube Studio)
   var TEACHER_KEY = 'teacher'; // ?teacher=0 quita la profe; ?teacher=1 la pone aunque haya avatar VTuber
   var TEACHER_RANKING_SHOWN = 5;   // con la profe, el ranking de resultados es más corto: ella va debajo
+  var TABLE_RANKING_SHOWN = 25;    // tabla de los últimos segundos: clasificación de la partida (baja sola si no cabe)
   var REVEAL_MS = 1600;        // tiempo viendo la opción correcta antes de pasar a la vista de resultados
   var RANKING_SHOWN = 10;
   var LOBBY_RANKING_SHOWN = 3;
@@ -83,6 +84,7 @@ var LiveMode = (function () {
   var _state = 'off';         // 'off' | 'lobby' | 'countdown' | 'game' | 'final'
   var _connected = false;
   var _duration = 20;
+  var _resultsDuration = 13;
   var _countdownTimer = null;
   var _revealTimer = null;
   var _onRoundScreen = false;  // dentro de 'game': true mientras se ve #screen-live-round
@@ -92,7 +94,6 @@ var LiveMode = (function () {
   var _lastQuestion = null;
   var _lastResults = null;
   var _tableShown = false;
-  var _tableRaf = 0;
   var _bgStep = 0;
   var _ranking = [];          // TOP acumulado de la sesión, ya ordenado por el servidor
   var _month = null;          // { month, top: [{nickname, points}], players } del evento month:update
@@ -461,12 +462,13 @@ var LiveMode = (function () {
 
   function _onTick(tk) {
     if (!_active || _state !== 'game') return;
-    _setTimer(tk.remaining, tk.phase === 'answer' ? _duration : 10, tk.phase);
+    _setTimer(tk.remaining, tk.phase === 'answer' ? _duration : _resultsDuration, tk.phase);
     if (tk.phase !== 'answer') {
-      _setRoundCountdown(tk.remaining, 10);
+      _setRoundCountdown(tk.remaining, _resultsDuration);
       if (_onRoundScreen && tk.remaining <= TABLE_AT_SECONDS) _showTable(tk.remaining);
       return;
     }
+    if (tk.remaining <= 0) return;                     // tiempo extra para los votos que llegan con retraso
     if (tk.remaining <= 5) _sfx('timerWarning');      // pitido doble: se acaba el tiempo
     else if (tk.remaining <= 10) _sfx('tick');
   }
@@ -614,6 +616,8 @@ var LiveMode = (function () {
     var q = _lastQuestion && _lastQuestion.round === r.round ? _lastQuestion : null;
     var extra = r.correctCount - r.winners.length;
     _el('lt-count').textContent = r.correctCount;
+    _el('lt-players').textContent = _players || '';
+    _el('lt-ranking').innerHTML = _rankingHtml(_ranking, TABLE_RANKING_SHOWN);
     _el('lt-scroll').innerHTML = '<ol class="lt-list">' + r.winners.map(function (w, i) {
       return '<li class="lt-row' + (i < 3 ? ' lt-row--' + (i + 1) : '') + '"' +
         (i < TABLE_ROWS_ANIMATED ? ' style="animation-delay:' + (0.25 + i * 0.07).toFixed(2) + 's"' : '') + '>' +
@@ -626,8 +630,7 @@ var LiveMode = (function () {
       (q ? '<span class="lt-flag">' + q.correct.flag + '</span>' : '') +
       '<p class="lt-country"><b class="lr-letter">' + r.correctLetter + '</b>' + (q ? _esc(cn(q.correct)) : '') + '</p>' +
       '<p class="lt-big"><b>' + r.correctCount + '</b><span class="lr-label">' + t('lt_count') + '</span></p>' +
-      '<p class="lt-pct">✅ ' + r.correctPct + '%</p>' +
-      '<p class="lt-first"><span class="lr-label">⚡ ' + t('lt_first') + '</span><b>' + _esc(r.winners[0].nickname) + '</b></p>';
+      '<p class="lt-pct">✅ ' + r.correctPct + '%</p>';
 
     var box = _el('lr-table');
     box.hidden = false;
@@ -635,11 +638,12 @@ var LiveMode = (function () {
     _teacher('setSpot', 'table');
     _sfx('screenTransition');
     _autoScroll(_el('lt-scroll'), Math.max(1, remaining) * 1000);
+    _autoScroll(_el('lt-ranking'), Math.max(1, remaining) * 1000);
   }
 
   /* Baja poco a poco hasta el último acertante: empieza cuando han entrado las primeras filas y acaba antes del cambio */
   function _autoScroll(box, ms) {
-    cancelAnimationFrame(_tableRaf);
+    cancelAnimationFrame(box._raf);
     box.scrollTop = 0;
     var begin = performance.now() + 1000;
     var dur = Math.max(800, ms - 2000);
@@ -647,14 +651,14 @@ var LiveMode = (function () {
       var k = Math.min(1, Math.max(0, (now - begin) / dur));
       var max = box.scrollHeight - box.clientHeight;
       if (max > 0) box.scrollTop = max * (k < 0.5 ? 2 * k * k : 1 - Math.pow(2 - 2 * k, 2) / 2);
-      if (k < 1) _tableRaf = requestAnimationFrame(step);
+      if (k < 1) box._raf = requestAnimationFrame(step);
     }
-    _tableRaf = requestAnimationFrame(step);
+    box._raf = requestAnimationFrame(step);
   }
 
   function _hideTable() {
     _tableShown = false;
-    cancelAnimationFrame(_tableRaf);
+    ['lt-scroll', 'lt-ranking'].forEach(function (id) { var b = _el(id); if (b) cancelAnimationFrame(b._raf); });
     var box = _el('lr-table');
     if (box) { box.hidden = true; box.parentNode.classList.remove('lr-shell--table'); }
   }
@@ -685,6 +689,7 @@ var LiveMode = (function () {
     if (r.ranking) { _ranking = r.ranking; _players = r.players || 0; }
     _hideTable();
     _lastResults = r;
+    _resultsDuration = r.duration || _resultsDuration;
 
     // La profe señala la respuesta y pone cara según cómo le ha ido al chat
     _teacher('react', r.correctCount === 0 || r.correctPct <= 25 ? 'sad' : r.correctPct >= 70 ? 'cheer' : 'happy', 4500);

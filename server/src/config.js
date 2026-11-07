@@ -64,7 +64,11 @@ module.exports = {
   VTUBER_URL: process.env.VTUBER_URL || 'ws://127.0.0.1:8001',
 
   ANSWER_SECONDS: 20,
-  RESULTS_SECONDS: 10,
+  RESULTS_SECONDS: 13,
+  // El directo llega a los espectadores con retraso: tras llegar el contador a 0 se siguen aceptando votos
+  // estos segundos (los de quien vota en el último momento de lo que ve). 0 = cierra en el acto.
+  LATE_VOTE_SECONDS: process.env.LATE_VOTE_SECONDS === undefined || process.env.LATE_VOTE_SECONDS === ''
+    ? 4 : Math.max(0, Math.min(10, Number(process.env.LATE_VOTE_SECONDS) || 0)),
   RECONNECT_MS: 15000,
   // Un directo caído (cierre o cuelgue) se retoma si se vuelve a arrancar antes de este margen
   RESUME_WINDOW_MS: 30 * 60 * 1000,

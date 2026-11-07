@@ -370,10 +370,29 @@ body.live-mode .live-promo--in { opacity:.88;transform:translateY(-50%) scale(1)
 .lr-pts { flex-shrink:0;font-weight:900;color:var(--gold); }
 .lr-pts small { font-size:.7em;color:var(--text-2); }
 
-/* Tabla de todos los acertantes (últimos segundos de los resultados): lista con scroll automático a la izquierda,
-   resumen a la derecha (con avatar, justo encima de él) */
-.lr-table { flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) var(--lt-side-w);
-  grid-template-rows:minmax(0,1fr);gap:calc(var(--u) * 2.4);--lt-side-w:calc(var(--u) * 32); }
+/* Tabla de los últimos segundos de los resultados: arriba una franja con la respuesta y cuántos acertaron;
+   debajo, la clasificación de la partida (columna ancha, hasta 25, baja sola) y los acertantes de la ronda
+   (columna estrecha, termina por encima de la profe / del avatar). Las dos listas bajan solas si no caben. */
+.lr-table { flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+  grid-template-rows:auto minmax(0,1fr);gap:calc(var(--u) * 2); }
+.lt-side { grid-column:1 / span 2;grid-row:1; }
+.lt-rank { grid-column:1;grid-row:2; }
+.lt-main { grid-column:2;grid-row:2;align-self:start;max-height:100%; }
+.lt-rank, .lt-main { min-height:0;display:flex;flex-direction:column;padding:calc(var(--u) * 2.2) calc(var(--u) * 2.4); }
+.lt-rank { animation:lt-in .6s cubic-bezier(.34,1.3,.64,1) both; }
+.lt-rank .lr-title, .lt-main .lr-title { margin-bottom:calc(var(--u) * .4);font-size:calc(var(--u) * 3.4); }
+.lt-count.lt-count--gold { background:var(--gold);color:#2a1a00; }
+.lt-rank .lr-title { white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+/* Filas compactas para que quepan muchas */
+.lt-rank .lr-rank { padding:calc(var(--u) * 2) 0 calc(var(--u) * 6);gap:calc(var(--u) * .55); }
+.lt-rank .lr-row { gap:calc(var(--u) * 1.4);padding:calc(var(--u) * .55) calc(var(--u) * 1.6);font-size:calc(var(--u) * 3.1); }
+.lt-rank .lr-row--top { font-size:calc(var(--u) * 3.4); }
+.lt-rank .lr-pos { width:calc(var(--u) * 5); }
+.lt-rank .lr-pts small { display:none; }
+.lt-main .lt-list { padding:calc(var(--u) * 2) 0 calc(var(--u) * 6);gap:calc(var(--u) * .55); }
+.lt-main .lt-row { gap:calc(var(--u) * 1.2);padding:calc(var(--u) * .55) calc(var(--u) * 1.6);font-size:calc(var(--u) * 3.1); }
+.lt-main .lt-row--1 { font-size:calc(var(--u) * 3.3); }
+.lt-main .lt-row .lr-pos { width:calc(var(--u) * 4.5); }
 .lr-table[hidden] { display:none; }
 .lr-shell--table { overflow:hidden; }
 .lr-shell--table > .lr-answer, .lr-shell--table > .lr-stats,
@@ -399,22 +418,21 @@ body.live-mode .live-promo--in { opacity:.88;transform:translateY(-50%) scale(1)
 .lt-row--more { justify-content:center;font-weight:900;color:var(--text-2); }
 .lt-pts { flex-shrink:0;padding:.05rem .5rem;border-radius:999px;background:var(--green);color:#fff;font-size:.8em;font-weight:900; }
 
-.lt-side { align-self:start;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u) * 1.4);text-align:center;
-  padding:calc(var(--u) * 3) calc(var(--u) * 2.4);animation:lt-side-in .6s cubic-bezier(.34,1.3,.64,1) .15s both; }
-@keyframes lt-side-in { from{opacity:0;transform:translateX(30px) scale(.94)} to{opacity:1;transform:none} }
+.lt-side { display:flex;align-items:center;gap:calc(var(--u) * 2.4);padding:calc(var(--u) * 1.6) calc(var(--u) * 3);
+  animation:lt-side-in .6s cubic-bezier(.34,1.3,.64,1) .1s both; }
+@keyframes lt-side-in { from{opacity:0;transform:translateY(-20px) scale(.96)} to{opacity:1;transform:none} }
 .lt-side p { margin:0; }
-.lt-flag { font-size:calc(var(--u) * 15);line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,.45));
-  animation:lr-flag-in .7s cubic-bezier(.34,1.46,.64,1) .3s both,live-flag-float 4s ease-in-out 1s infinite; }
-.lt-country { display:flex;align-items:center;justify-content:center;gap:calc(var(--u) * 1.4);flex-wrap:wrap;
-  font-size:calc(var(--u) * 4);font-weight:900;line-height:1.15;color:var(--text); }
-.lt-country .lr-letter { width:calc(var(--u) * 7);height:calc(var(--u) * 7);font-size:calc(var(--u) * 3.8); }
-.lt-big { display:flex;flex-direction:column;align-items:center; }
-.lt-big b { font-size:calc(var(--u) * 13);font-weight:900;line-height:1;color:var(--green);text-shadow:0 0 26px rgba(34,197,94,.55);
+.lt-flag { flex-shrink:0;font-size:calc(var(--u) * 9);line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,.45));
+  animation:lr-flag-in .7s cubic-bezier(.34,1.46,.64,1) .3s both; }
+.lt-country { flex:1;min-width:0;display:flex;align-items:center;gap:calc(var(--u) * 1.4);
+  font-size:calc(var(--u) * 3.8);font-weight:900;line-height:1.15;color:var(--text); }
+.lt-country .lr-letter { width:calc(var(--u) * 6);height:calc(var(--u) * 6);font-size:calc(var(--u) * 3.4); }
+.lt-big { flex-shrink:0;display:flex;flex-direction:column;align-items:center; }
+.lt-big b { font-size:calc(var(--u) * 7);font-weight:900;line-height:1;color:var(--green);text-shadow:0 0 22px rgba(34,197,94,.55);
   animation:lt-big-pop .8s cubic-bezier(.34,1.46,.64,1) .45s both; }
+.lt-big .lr-label { font-size:calc(var(--u) * 2.4); }
 @keyframes lt-big-pop { from{transform:scale(.2);opacity:0} to{transform:none;opacity:1} }
-.lt-pct { font-size:calc(var(--u) * 4.4);font-weight:900;color:var(--text); }
-.lt-first { display:flex;flex-direction:column;gap:.15rem;max-width:100%; }
-.lt-first b { overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:calc(var(--u) * 3.8);font-weight:900;color:var(--gold); }
+.lt-pct { flex-shrink:0;font-size:calc(var(--u) * 3.8);font-weight:900;color:var(--text); }
 
 .lr-progress { flex-shrink:0;margin-top:auto;height:calc(var(--u) * 1.4);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.12); }
 .lr-progress span { display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));
@@ -493,8 +511,7 @@ body.live-avatar .live-avatar-spot { display:block;position:fixed;z-index:0;poin
 /* Resultados: tarjetas pegadas arriba (sin centrar) para que el ranking acabe por encima del avatar */
 body.live-avatar .lr-progress { margin-right:var(--avatar-gap); }
 body.live-avatar .lr-head { margin-bottom:0; }
-body.live-avatar .lr-table { --lt-side-w:var(--avatar-w);margin-right:calc(var(--u) * -4); }
-body.live-avatar .lt-side { margin-right:calc(var(--u) * 4);max-height:calc(100% - var(--avatar-h) + var(--u) * 6);overflow:hidden; }
+body.live-avatar .lt-main { max-height:calc(100% - var(--avatar-h) + var(--u) * 6); }
 
 /* Sala de espera: el contenido se centra en lo que queda por encima del avatar */
 body.live-avatar .lobby-shell { padding-bottom:calc(var(--sab) + var(--avatar-h) * .8); }
@@ -606,9 +623,8 @@ body.live-teacher #screen-game .game-layout { padding-bottom:calc(var(--teacher-
 body.live-teacher .lr-head { margin-bottom:0; }
 body.live-teacher .lr-shell { padding-bottom:calc(var(--u) * 3); }
 body.live-teacher .lr-shell > .lr-ranking { margin-bottom:calc(var(--teacher-h) + var(--u) * 6); }
-/* Tabla: la columna derecha (bandera, aciertos…) se acorta y deja abajo la profe con el bocadillo encima */
-body.live-teacher .lr-table { --lt-side-w:var(--teacher-top-bubble);margin-right:calc(var(--u) * -2); }
-body.live-teacher .lt-side { margin-right:calc(var(--u) * 2);max-height:calc(100% - var(--teacher-h) - var(--u) * 20);overflow:hidden; }
+/* Tabla: la columna de acertantes se acorta y deja abajo la profe con el bocadillo encima */
+body.live-teacher .lt-main { max-height:calc(100% - var(--teacher-h) - var(--u) * 18); }
 /* Final: podio a todo el ancho; el resto a la izquierda de la profe */
 body.live-teacher .lf-rest, body.live-teacher .lf-stats,
 body.live-teacher .lf-site, body.live-teacher .lf-actions { margin-right:calc(var(--teacher-top-bubble) - var(--u) * 2); }

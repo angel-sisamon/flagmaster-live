@@ -57,7 +57,7 @@
 </div>
 
 <!-- ═══════════════════════════════ PANTALLA: RESULTADOS DE RONDA LIVE ═════════════ -->
-<!-- Vista intermedia entre preguntas (fase de resultados de 10 s); la rellena live-mode.js -->
+<!-- Vista intermedia entre preguntas (fase de resultados de 13 s); la rellena live-mode.js -->
 <div id="screen-live-round" class="screen">
   <canvas class="live-fx" id="live-fx" aria-hidden="true"></canvas>
   <div class="lr-shell">
@@ -80,6 +80,10 @@
     </section>
     <!-- Segunda mitad de los resultados: todos los acertantes en orden, con scroll automático -->
     <div class="lr-table" id="lr-table" hidden>
+      <section class="lr-card lt-rank">
+        <h2 class="lr-title">🏆 <span data-i18n="lr_ranking">Ranking LIVE</span> <b class="lt-count lt-count--gold" id="lt-players"></b></h2>
+        <div class="lt-scroll" id="lt-ranking"></div>
+      </section>
       <section class="lr-card lt-main">
         <h2 class="lr-title">🎯 <span data-i18n="lr_winners">Acertantes de la ronda</span> <b class="lt-count" id="lt-count"></b></h2>
         <div class="lt-scroll" id="lt-scroll"></div>
