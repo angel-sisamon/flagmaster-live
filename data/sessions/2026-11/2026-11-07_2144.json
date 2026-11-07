@@ -1,0 +1,1741 @@
+{
+ "schema": 1,
+ "id": "2026-11-07_2144",
+ "month": "2026-11",
+ "host": "flagmaster_game",
+ "startedAt": "2026-11-07T20:44:19.983Z",
+ "updatedAt": "2026-11-07T21:18:33.125Z",
+ "endedAt": "2026-11-07T21:18:50.479Z",
+ "roomId": null,
+ "totals": {
+  "games": 2,
+  "rounds": 45,
+  "answers": 217,
+  "correct": 193,
+  "likes": 1273,
+  "gifts": 0,
+  "follows": 1,
+  "shares": 0,
+  "joins": 102,
+  "messages": 278,
+  "peakViewers": 10
+ },
+ "games": [
+  {
+   "n": 1,
+   "startedAt": "2026-11-07T20:44:30.075Z",
+   "endedAt": "2026-11-07T21:00:04.305Z",
+   "totalRounds": 25,
+   "rounds": 25,
+   "players": 21,
+   "winner": "p3bb8348fdfa3"
+  },
+  {
+   "n": 2,
+   "startedAt": "2026-11-07T21:00:22.721Z",
+   "endedAt": "2026-11-07T21:12:50.047Z",
+   "totalRounds": 20,
+   "rounds": 20,
+   "players": 10,
+   "winner": "p3bb8348fdfa3"
+  }
+ ],
+ "questions": [
+  {
+   "g": 1,
+   "r": 1,
+   "mode": "guess-flag",
+   "code": "ML",
+   "flag": "🇲🇱",
+   "es": "Mali",
+   "en": "Mali",
+   "votes": 5,
+   "ok": 4,
+   "counts": [
+    1,
+    4,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 2,
+   "mode": "guess-country",
+   "code": "SA",
+   "flag": "🇸🇦",
+   "es": "Arabia Saudita",
+   "en": "Saudi Arabia",
+   "votes": 5,
+   "ok": 5,
+   "counts": [
+    5,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 3,
+   "mode": "guess-country-from-capital",
+   "code": "JM",
+   "flag": "🇯🇲",
+   "es": "Jamaica",
+   "en": "Jamaica",
+   "votes": 7,
+   "ok": 7,
+   "counts": [
+    0,
+    7,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 4,
+   "mode": "guess-country",
+   "code": "UG",
+   "flag": "🇺🇬",
+   "es": "Uganda",
+   "en": "Uganda",
+   "votes": 7,
+   "ok": 7,
+   "counts": [
+    0,
+    0,
+    7,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 5,
+   "mode": "guess-flag",
+   "code": "AL",
+   "flag": "🇦🇱",
+   "es": "Albania",
+   "en": "Albania",
+   "votes": 7,
+   "ok": 7,
+   "counts": [
+    7,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 6,
+   "mode": "guess-country-from-capital",
+   "code": "NE",
+   "flag": "🇳🇪",
+   "es": "Níger",
+   "en": "Niger",
+   "votes": 5,
+   "ok": 4,
+   "counts": [
+    4,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 7,
+   "mode": "guess-capital",
+   "code": "CY",
+   "flag": "🇨🇾",
+   "es": "Chipre",
+   "en": "Cyprus",
+   "votes": 6,
+   "ok": 6,
+   "counts": [
+    0,
+    0,
+    0,
+    6
+   ]
+  },
+  {
+   "g": 1,
+   "r": 8,
+   "mode": "guess-country",
+   "code": "OM",
+   "flag": "🇴🇲",
+   "es": "Omán",
+   "en": "Oman",
+   "votes": 6,
+   "ok": 5,
+   "counts": [
+    0,
+    5,
+    0,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 9,
+   "mode": "guess-flag",
+   "code": "GY",
+   "flag": "🇬🇾",
+   "es": "Guyana",
+   "en": "Guyana",
+   "votes": 5,
+   "ok": 4,
+   "counts": [
+    0,
+    0,
+    4,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 10,
+   "mode": "guess-capital",
+   "code": "TL",
+   "flag": "🇹🇱",
+   "es": "Timor Oriental",
+   "en": "Timor-Leste",
+   "votes": 6,
+   "ok": 4,
+   "counts": [
+    2,
+    0,
+    4,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 11,
+   "mode": "guess-capital",
+   "code": "NA",
+   "flag": "🇳🇦",
+   "es": "Namibia",
+   "en": "Namibia",
+   "votes": 5,
+   "ok": 4,
+   "counts": [
+    4,
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 12,
+   "mode": "guess-country",
+   "code": "BD",
+   "flag": "🇧🇩",
+   "es": "Bangladés",
+   "en": "Bangladesh",
+   "votes": 6,
+   "ok": 5,
+   "counts": [
+    0,
+    0,
+    1,
+    5
+   ]
+  },
+  {
+   "g": 1,
+   "r": 13,
+   "mode": "guess-capital",
+   "code": "SV",
+   "flag": "🇸🇻",
+   "es": "El Salvador",
+   "en": "El Salvador",
+   "votes": 7,
+   "ok": 5,
+   "counts": [
+    0,
+    1,
+    5,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 14,
+   "mode": "guess-flag",
+   "code": "SL",
+   "flag": "🇸🇱",
+   "es": "Sierra Leona",
+   "en": "Sierra Leone",
+   "votes": 7,
+   "ok": 6,
+   "counts": [
+    0,
+    0,
+    6,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 15,
+   "mode": "guess-country-from-capital",
+   "code": "PE",
+   "flag": "🇵🇪",
+   "es": "Perú",
+   "en": "Peru",
+   "votes": 8,
+   "ok": 8,
+   "counts": [
+    0,
+    0,
+    8,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 16,
+   "mode": "guess-country",
+   "code": "GQ",
+   "flag": "🇬🇶",
+   "es": "Guinea Ecuatorial",
+   "en": "Equatorial Guinea",
+   "votes": 4,
+   "ok": 4,
+   "counts": [
+    0,
+    0,
+    4,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 17,
+   "mode": "guess-capital",
+   "code": "CL",
+   "flag": "🇨🇱",
+   "es": "Chile",
+   "en": "Chile",
+   "votes": 4,
+   "ok": 4,
+   "counts": [
+    0,
+    0,
+    0,
+    4
+   ]
+  },
+  {
+   "g": 1,
+   "r": 18,
+   "mode": "guess-country-from-capital",
+   "code": "VC",
+   "flag": "🇻🇨",
+   "es": "San Vicente y las Granadinas",
+   "en": "Saint Vincent and the Grenadines",
+   "votes": 5,
+   "ok": 1,
+   "counts": [
+    1,
+    3,
+    0,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 19,
+   "mode": "guess-country",
+   "code": "CR",
+   "flag": "🇨🇷",
+   "es": "Costa Rica",
+   "en": "Costa Rica",
+   "votes": 4,
+   "ok": 4,
+   "counts": [
+    0,
+    0,
+    4,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 20,
+   "mode": "guess-capital",
+   "code": "BF",
+   "flag": "🇧🇫",
+   "es": "Burkina Faso",
+   "en": "Burkina Faso",
+   "votes": 5,
+   "ok": 4,
+   "counts": [
+    0,
+    4,
+    0,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 21,
+   "mode": "guess-country",
+   "code": "MC",
+   "flag": "🇲🇨",
+   "es": "Mónaco",
+   "en": "Monaco",
+   "votes": 6,
+   "ok": 6,
+   "counts": [
+    0,
+    0,
+    6,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 22,
+   "mode": "guess-flag",
+   "code": "KG",
+   "flag": "🇰🇬",
+   "es": "Kirguistán",
+   "en": "Kyrgyzstan",
+   "votes": 5,
+   "ok": 4,
+   "counts": [
+    0,
+    4,
+    1,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 23,
+   "mode": "guess-flag",
+   "code": "NO",
+   "flag": "🇳🇴",
+   "es": "Noruega",
+   "en": "Norway",
+   "votes": 5,
+   "ok": 5,
+   "counts": [
+    5,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 24,
+   "mode": "guess-country-from-capital",
+   "code": "IN",
+   "flag": "🇮🇳",
+   "es": "India",
+   "en": "India",
+   "votes": 5,
+   "ok": 4,
+   "counts": [
+    0,
+    0,
+    4,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 25,
+   "mode": "guess-capital",
+   "code": "RS",
+   "flag": "🇷🇸",
+   "es": "Serbia",
+   "en": "Serbia",
+   "votes": 5,
+   "ok": 5,
+   "counts": [
+    5,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 26,
+   "mode": "guess-flag",
+   "code": "ST",
+   "flag": "🇸🇹",
+   "es": "S. Tomé y Príncipe",
+   "en": "São Tomé and Príncipe",
+   "votes": 4,
+   "ok": 4,
+   "counts": [
+    4,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 27,
+   "mode": "guess-flag",
+   "code": "CU",
+   "flag": "🇨🇺",
+   "es": "Cuba",
+   "en": "Cuba",
+   "votes": 4,
+   "ok": 4,
+   "counts": [
+    0,
+    4,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 28,
+   "mode": "guess-country-from-capital",
+   "code": "KW",
+   "flag": "🇰🇼",
+   "es": "Kuwait",
+   "en": "Kuwait",
+   "votes": 3,
+   "ok": 3,
+   "counts": [
+    0,
+    0,
+    3,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 29,
+   "mode": "guess-country",
+   "code": "MR",
+   "flag": "🇲🇷",
+   "es": "Mauritania",
+   "en": "Mauritania",
+   "votes": 3,
+   "ok": 3,
+   "counts": [
+    3,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 30,
+   "mode": "guess-capital",
+   "code": "BG",
+   "flag": "🇧🇬",
+   "es": "Bulgaria",
+   "en": "Bulgaria",
+   "votes": 3,
+   "ok": 3,
+   "counts": [
+    0,
+    0,
+    3,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 31,
+   "mode": "guess-capital",
+   "code": "BE",
+   "flag": "🇧🇪",
+   "es": "Bélgica",
+   "en": "Belgium",
+   "votes": 3,
+   "ok": 3,
+   "counts": [
+    0,
+    0,
+    3,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 32,
+   "mode": "guess-flag",
+   "code": "ZM",
+   "flag": "🇿🇲",
+   "es": "Zambia",
+   "en": "Zambia",
+   "votes": 3,
+   "ok": 3,
+   "counts": [
+    0,
+    0,
+    3,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 33,
+   "mode": "guess-country-from-capital",
+   "code": "FM",
+   "flag": "🇫🇲",
+   "es": "Micronesia",
+   "en": "Micronesia",
+   "votes": 4,
+   "ok": 3,
+   "counts": [
+    3,
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 34,
+   "mode": "guess-flag",
+   "code": "MW",
+   "flag": "🇲🇼",
+   "es": "Malaui",
+   "en": "Malawi",
+   "votes": 3,
+   "ok": 3,
+   "counts": [
+    0,
+    0,
+    3,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 35,
+   "mode": "guess-flag",
+   "code": "NG",
+   "flag": "🇳🇬",
+   "es": "Nigeria",
+   "en": "Nigeria",
+   "votes": 3,
+   "ok": 3,
+   "counts": [
+    3,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 36,
+   "mode": "guess-capital",
+   "code": "FJ",
+   "flag": "🇫🇯",
+   "es": "Fiyi",
+   "en": "Fiji",
+   "votes": 3,
+   "ok": 0,
+   "counts": [
+    1,
+    2,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 37,
+   "mode": "guess-capital",
+   "code": "DO",
+   "flag": "🇩🇴",
+   "es": "Rep. Dominicana",
+   "en": "Dominican Republic",
+   "votes": 3,
+   "ok": 3,
+   "counts": [
+    0,
+    3,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 38,
+   "mode": "guess-flag",
+   "code": "LY",
+   "flag": "🇱🇾",
+   "es": "Libia",
+   "en": "Libya",
+   "votes": 4,
+   "ok": 4,
+   "counts": [
+    0,
+    0,
+    0,
+    4
+   ]
+  },
+  {
+   "g": 2,
+   "r": 39,
+   "mode": "guess-country-from-capital",
+   "code": "TJ",
+   "flag": "🇹🇯",
+   "es": "Tayikistán",
+   "en": "Tajikistan",
+   "votes": 4,
+   "ok": 2,
+   "counts": [
+    0,
+    0,
+    2,
+    2
+   ]
+  },
+  {
+   "g": 2,
+   "r": 40,
+   "mode": "guess-country",
+   "code": "KZ",
+   "flag": "🇰🇿",
+   "es": "Kazajistán",
+   "en": "Kazakhstan",
+   "votes": 4,
+   "ok": 4,
+   "counts": [
+    0,
+    0,
+    4,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 41,
+   "mode": "guess-country",
+   "code": "MK",
+   "flag": "🇲🇰",
+   "es": "Macedonia del Norte",
+   "en": "North Macedonia",
+   "votes": 4,
+   "ok": 4,
+   "counts": [
+    0,
+    0,
+    4,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 42,
+   "mode": "guess-capital",
+   "code": "VE",
+   "flag": "🇻🇪",
+   "es": "Venezuela",
+   "en": "Venezuela",
+   "votes": 5,
+   "ok": 5,
+   "counts": [
+    5,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 43,
+   "mode": "guess-country",
+   "code": "BZ",
+   "flag": "🇧🇿",
+   "es": "Belice",
+   "en": "Belize",
+   "votes": 5,
+   "ok": 5,
+   "counts": [
+    0,
+    5,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 2,
+   "r": 44,
+   "mode": "guess-country",
+   "code": "JP",
+   "flag": "🇯🇵",
+   "es": "Japón",
+   "en": "Japan",
+   "votes": 6,
+   "ok": 6,
+   "counts": [
+    0,
+    0,
+    0,
+    6
+   ]
+  },
+  {
+   "g": 2,
+   "r": 45,
+   "mode": "guess-country-from-capital",
+   "code": "RU",
+   "flag": "🇷🇺",
+   "es": "Rusia",
+   "en": "Russia",
+   "votes": 6,
+   "ok": 6,
+   "counts": [
+    6,
+    0,
+    0,
+    0
+   ]
+  }
+ ],
+ "players": {
+  "p7419285cfb38": {
+   "u": "itz_k1414",
+   "n": "️Itz_ K🇹🇹",
+   "pts": 143,
+   "ans": 25,
+   "ok": 23,
+   "first": 1,
+   "wins": 0,
+   "games": 1,
+   "streak": 17,
+   "fast": 5519,
+   "tms": 200321,
+   "likes": 947,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 27,
+   "modes": {
+    "guess-flag": [
+     6,
+     6
+    ],
+    "guess-country": [
+     7,
+     7
+    ],
+    "guess-country-from-capital": [
+     5,
+     3
+    ],
+    "guess-capital": [
+     7,
+     7
+    ]
+   }
+  },
+  "pd22ed71c0c73": {
+   "u": "gak.n2",
+   "n": "gak n",
+   "pts": 25,
+   "ans": 7,
+   "ok": 6,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 6,
+   "fast": 8079,
+   "tms": 70780,
+   "likes": 8,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 8,
+   "modes": {
+    "guess-flag": [
+     2,
+     1
+    ],
+    "guess-country": [
+     2,
+     2
+    ],
+    "guess-country-from-capital": [
+     2,
+     2
+    ],
+    "guess-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "p569d93f305e9": {
+   "u": "maxiking.eurovision",
+   "n": "Maxi King ESC",
+   "pts": 232,
+   "ans": 30,
+   "ok": 29,
+   "first": 7,
+   "wins": 0,
+   "games": 2,
+   "streak": 17,
+   "fast": 5153,
+   "tms": 212572,
+   "likes": 69,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 36,
+   "modes": {
+    "guess-flag": [
+     8,
+     8
+    ],
+    "guess-country": [
+     8,
+     8
+    ],
+    "guess-country-from-capital": [
+     6,
+     5
+    ],
+    "guess-capital": [
+     8,
+     8
+    ]
+   }
+  },
+  "p96474c3170f5": {
+   "u": "ericeg8",
+   "n": "Dereck Esteves",
+   "pts": 6,
+   "ans": 1,
+   "ok": 1,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 1,
+   "fast": 9797,
+   "tms": 9797,
+   "likes": 64,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 1,
+   "modes": {
+    "guess-flag": [
+     1,
+     1
+    ]
+   }
+  },
+  "p3bb8348fdfa3": {
+   "u": "spghj4",
+   "n": "Bellaise Samuel",
+   "pts": 399,
+   "ans": 45,
+   "ok": 42,
+   "first": 34,
+   "wins": 2,
+   "games": 2,
+   "streak": 17,
+   "fast": 5153,
+   "tms": 280830,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 59,
+   "modes": {
+    "guess-flag": [
+     12,
+     12
+    ],
+    "guess-country": [
+     12,
+     12
+    ],
+    "guess-country-from-capital": [
+     9,
+     7
+    ],
+    "guess-capital": [
+     12,
+     11
+    ]
+   }
+  },
+  "p3c9841d07f0d": {
+   "u": "ilayydates",
+   "n": "ilayda🧸",
+   "pts": 36,
+   "ans": 12,
+   "ok": 9,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 4,
+   "fast": 8927,
+   "tms": 113968,
+   "likes": 3,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 14,
+   "modes": {
+    "guess-country": [
+     4,
+     4
+    ],
+    "guess-country-from-capital": [
+     2,
+     1
+    ],
+    "guess-flag": [
+     2,
+     2
+    ],
+    "guess-capital": [
+     4,
+     2
+    ]
+   }
+  },
+  "p06df671c7990": {
+   "u": "euroyouko",
+   "n": "юккo @",
+   "pts": 4,
+   "ans": 1,
+   "ok": 1,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 1,
+   "fast": 11411,
+   "tms": 11411,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 1,
+   "modes": {
+    "guess-country-from-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "p850b3290d8a0": {
+   "u": "agnunue",
+   "n": "Палина",
+   "pts": 7,
+   "ans": 2,
+   "ok": 2,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 2,
+   "fast": 10789,
+   "tms": 23822,
+   "likes": 24,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 2,
+   "modes": {
+    "guess-country-from-capital": [
+     1,
+     1
+    ],
+    "guess-country": [
+     1,
+     1
+    ]
+   }
+  },
+  "p52513c7ab607": {
+   "u": "isaac.david.olave",
+   "n": "inodoro columpio 🦖",
+   "pts": 10,
+   "ans": 2,
+   "ok": 2,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 2,
+   "fast": 7407,
+   "tms": 15486,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 4,
+   "modes": {
+    "guess-country": [
+     1,
+     1
+    ],
+    "guess-flag": [
+     1,
+     1
+    ]
+   }
+  },
+  "p5534b24ac694": {
+   "u": "fra444.naia8",
+   "n": "Fra444 Naia",
+   "pts": 2,
+   "ans": 1,
+   "ok": 1,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 1,
+   "fast": 9870,
+   "tms": 9870,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 1,
+   "modes": {
+    "guess-flag": [
+     1,
+     1
+    ]
+   }
+  },
+  "p76236b796a60": {
+   "u": "m1stridon",
+   "n": "m1stridis_g",
+   "pts": 3,
+   "ans": 2,
+   "ok": 1,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 1,
+   "fast": 17802,
+   "tms": 17802,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 2,
+   "modes": {
+    "guess-capital": [
+     1,
+     1
+    ],
+    "guess-country": [
+     1,
+     0
+    ]
+   }
+  },
+  "p1e9bdbb86031": {
+   "u": "max.b422",
+   "n": "Max.B",
+   "pts": 0,
+   "ans": 0,
+   "ok": 0,
+   "first": 0,
+   "wins": 0,
+   "games": 0,
+   "streak": 0,
+   "fast": 0,
+   "tms": 0,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 1,
+   "modes": {}
+  },
+  "p65645deba395": {
+   "u": "kim..254",
+   "n": "Kim",
+   "pts": 59,
+   "ans": 14,
+   "ok": 11,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 5,
+   "fast": 8444,
+   "tms": 115739,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 16,
+   "modes": {
+    "guess-country": [
+     5,
+     4
+    ],
+    "guess-flag": [
+     2,
+     1
+    ],
+    "guess-capital": [
+     5,
+     5
+    ],
+    "guess-country-from-capital": [
+     2,
+     1
+    ]
+   }
+  },
+  "pd21c03309b7c": {
+   "u": "jack.main00",
+   "n": "jack.main00",
+   "pts": 0,
+   "ans": 1,
+   "ok": 0,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 0,
+   "fast": 0,
+   "tms": 0,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 1,
+   "modes": {
+    "guess-capital": [
+     1,
+     0
+    ]
+   }
+  },
+  "p31d2422c1a57": {
+   "u": "dyh332_",
+   "n": "D🫨",
+   "pts": 5,
+   "ans": 2,
+   "ok": 1,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 1,
+   "fast": 9204,
+   "tms": 9204,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 5,
+   "modes": {
+    "guess-country": [
+     1,
+     1
+    ],
+    "guess-capital": [
+     1,
+     0
+    ]
+   }
+  },
+  "pe5a7dee05a1b": {
+   "u": "harrybrooks8",
+   "n": "Harry Brooks",
+   "pts": 3,
+   "ans": 3,
+   "ok": 1,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 1,
+   "fast": 10988,
+   "tms": 10988,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 6,
+   "modes": {
+    "guess-capital": [
+     1,
+     0
+    ],
+    "guess-flag": [
+     1,
+     0
+    ],
+    "guess-country-from-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "pc49de2c2f622": {
+   "u": "foreverunited_rj",
+   "n": "foreverunited",
+   "pts": 10,
+   "ans": 2,
+   "ok": 2,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 2,
+   "fast": 8137,
+   "tms": 19125,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 2,
+   "modes": {
+    "guess-flag": [
+     1,
+     1
+    ],
+    "guess-country-from-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "p54aeb954e266": {
+   "u": "jeesusss_m_",
+   "n": "jesuus",
+   "pts": 8,
+   "ans": 2,
+   "ok": 2,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 2,
+   "fast": 10175,
+   "tms": 21596,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 2,
+   "modes": {
+    "guess-flag": [
+     1,
+     1
+    ],
+    "guess-country-from-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "pea848b041511": {
+   "u": "mandyg078",
+   "n": "MandyG",
+   "pts": 1,
+   "ans": 1,
+   "ok": 1,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 1,
+   "fast": 14303,
+   "tms": 14303,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 1,
+   "modes": {
+    "guess-country-from-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "p4166b71756de": {
+   "u": "suzy5093",
+   "n": "Suzy joe❤️",
+   "pts": 13,
+   "ans": 4,
+   "ok": 2,
+   "first": 1,
+   "wins": 0,
+   "games": 1,
+   "streak": 1,
+   "fast": 16087,
+   "tms": 32345,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 5,
+   "modes": {
+    "guess-country-from-capital": [
+     1,
+     1
+    ],
+    "guess-capital": [
+     1,
+     0
+    ],
+    "guess-country": [
+     1,
+     1
+    ],
+    "guess-flag": [
+     1,
+     0
+    ]
+   }
+  },
+  "pe10a5eed7049": {
+   "u": "juliaalwxbt",
+   "n": "Julián jtji",
+   "pts": 34,
+   "ans": 7,
+   "ok": 7,
+   "first": 0,
+   "wins": 0,
+   "games": 2,
+   "streak": 7,
+   "fast": 8437,
+   "tms": 90588,
+   "likes": 51,
+   "gifts": 0,
+   "follows": 1,
+   "shares": 0,
+   "msgs": 21,
+   "modes": {
+    "guess-country": [
+     1,
+     1
+    ],
+    "guess-flag": [
+     4,
+     4
+    ],
+    "guess-country-from-capital": [
+     1,
+     1
+    ],
+    "guess-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "pbd9a8b292fdf": {
+   "u": "iski1986",
+   "n": "iskiwiski",
+   "pts": 14,
+   "ans": 3,
+   "ok": 3,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 3,
+   "fast": 10819,
+   "tms": 46408,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 3,
+   "modes": {
+    "guess-flag": [
+     1,
+     1
+    ],
+    "guess-country-from-capital": [
+     1,
+     1
+    ],
+    "guess-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "pd9ab9afb91b9": {
+   "u": "soy_pegasus__",
+   "n": "ANGEL🐦‍🔥",
+   "pts": 125,
+   "ans": 20,
+   "ok": 18,
+   "first": 1,
+   "wins": 0,
+   "games": 1,
+   "streak": 9,
+   "fast": 7606,
+   "tms": 166221,
+   "likes": 91,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 21,
+   "modes": {
+    "guess-flag": [
+     6,
+     6
+    ],
+    "guess-country-from-capital": [
+     4,
+     3
+    ],
+    "guess-country": [
+     5,
+     5
+    ],
+    "guess-capital": [
+     5,
+     4
+    ]
+   }
+  },
+  "pc98ba7823de4": {
+   "u": "artis845",
+   "n": "A",
+   "pts": 20,
+   "ans": 3,
+   "ok": 3,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 3,
+   "fast": 7779,
+   "tms": 28587,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 3,
+   "modes": {
+    "guess-capital": [
+     1,
+     1
+    ],
+    "guess-flag": [
+     1,
+     1
+    ],
+    "guess-country-from-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "p6c067bb45f8d": {
+   "u": "matteo_lechthaler",
+   "n": "Gojo",
+   "pts": 0,
+   "ans": 0,
+   "ok": 0,
+   "first": 0,
+   "wins": 0,
+   "games": 0,
+   "streak": 0,
+   "fast": 0,
+   "tms": 0,
+   "likes": 1,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 0,
+   "modes": {}
+  },
+  "p6f915ae7b3c7": {
+   "u": "lautycolovos",
+   "n": "lauty💫",
+   "pts": 24,
+   "ans": 4,
+   "ok": 3,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 3,
+   "fast": 7112,
+   "tms": 23401,
+   "likes": 3,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 5,
+   "modes": {
+    "guess-country-from-capital": [
+     1,
+     1
+    ],
+    "guess-flag": [
+     2,
+     2
+    ],
+    "guess-capital": [
+     1,
+     0
+    ]
+   }
+  },
+  "pe87747cc7a72": {
+   "u": "santitoro7",
+   "n": "Santi👻",
+   "pts": 56,
+   "ans": 9,
+   "ok": 8,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 6,
+   "fast": 7709,
+   "tms": 72614,
+   "likes": 12,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 10,
+   "modes": {
+    "guess-capital": [
+     2,
+     2
+    ],
+    "guess-flag": [
+     1,
+     1
+    ],
+    "guess-country-from-capital": [
+     2,
+     1
+    ],
+    "guess-country": [
+     4,
+     4
+    ]
+   }
+  },
+  "pab48adbf95ad": {
+   "u": "kendrick_angel.jr",
+   "n": "Ken_Angel29💵📈💫👑",
+   "pts": 44,
+   "ans": 8,
+   "ok": 8,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 8,
+   "fast": 8820,
+   "tms": 107819,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 13,
+   "modes": {
+    "guess-flag": [
+     1,
+     1
+    ],
+    "guess-country-from-capital": [
+     2,
+     2
+    ],
+    "guess-country": [
+     4,
+     4
+    ],
+    "guess-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "p41fdf1658271": {
+   "u": "lilianjet",
+   "n": "mimione",
+   "pts": 15,
+   "ans": 4,
+   "ok": 4,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 4,
+   "fast": 9623,
+   "tms": 55286,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 4,
+   "modes": {
+    "guess-capital": [
+     1,
+     1
+    ],
+    "guess-country": [
+     2,
+     2
+    ],
+    "guess-country-from-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "pb67f3cffd071": {
+   "u": "mateuszboek09",
+   "n": "Invis",
+   "pts": 7,
+   "ans": 2,
+   "ok": 2,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 2,
+   "fast": 9623,
+   "tms": 20747,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 3,
+   "modes": {
+    "guess-country": [
+     1,
+     1
+    ],
+    "guess-country-from-capital": [
+     1,
+     1
+    ]
+   }
+  },
+  "pfd788539086a": {
+   "u": "m0mm50",
+   "n": "m0mm€",
+   "pts": 0,
+   "ans": 0,
+   "ok": 0,
+   "first": 0,
+   "wins": 0,
+   "games": 0,
+   "streak": 0,
+   "fast": 0,
+   "tms": 0,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 1,
+   "modes": {}
+  }
+ }
+}
