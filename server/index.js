@@ -106,6 +106,7 @@ const game = createGame({
   buildQuestion: createQuestionFactory(GAME_DATA),
   answerSeconds: config.ANSWER_SECONDS,
   resultsSeconds: config.RESULTS_SECONDS,
+  lateSeconds: config.LATE_VOTE_SECONDS,
 });
 
 // Panel de sugerencias del bot (/bot): espacio de nombres propio para no contar como pantalla del juego
@@ -488,7 +489,7 @@ process.on('uncaughtException', err => {
 
 server.listen(config.PORT, () => {
   console.log(`🚀 FlagMaster LIVE en http://localhost:${config.PORT}  (juego servido desde ${config.GAME_DIR})`);
-  console.log(`⏱️  Rondas: ${config.ANSWER_SECONDS} s de respuesta + ${config.RESULTS_SECONDS} s de resultados`);
+  console.log(`⏱️  Rondas: ${config.ANSWER_SECONDS} s de respuesta (+${config.LATE_VOTE_SECONDS} s para votos con retraso) + ${config.RESULTS_SECONDS} s de resultados`);
   console.log(config.RECORD
     ? `💾 Grabando el directo en ${path.relative(config.ROOT, config.DATA_DIR)}/sessions · publicación automática: ${config.AUTOPUBLISH ? 'sí' : 'no'}`
     : '🧪 Modo prueba: no se graba el directo (LIVE_RECORD=1 para forzarlo)');

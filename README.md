@@ -50,6 +50,10 @@ Si se va la luz o se cierra la ventana, nada se pierde: hay una copia continua e
 arrancar en menos de 30 minutos se **retoma el mismo directo**; si no, se guarda y se publica lo que hubo.
 Si algo no se pudo subir, se reintenta al arrancar o con `npm run publish:data`.
 
+**Rondas:** 20 s para responder y 13 s de resultados (los 8 últimos, la clasificación de la partida
+hasta el 25.º y los acertantes de la ronda, que bajan solas si no caben). El directo llega a quien lo ve con unos segundos de retraso, así que con el contador ya a 0
+se siguen aceptando votos `LATE_VOTE_SECONDS` más (4 por defecto; súbelo si emitiendo desde el móvil hay más retraso).
+
 **Comandos en el chat:** `A`/`B`/`C`/`D` responde · `!yo` (`!me`, `!rank`) muestra tu puesto del mes en pantalla ·
 `!optout` te quita de la web.
 
