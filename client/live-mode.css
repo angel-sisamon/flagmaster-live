@@ -450,44 +450,88 @@ body.live-mode .live-promo--in { opacity:.88;transform:translateY(-50%) scale(1)
 .lf-title span { background:linear-gradient(135deg,var(--gold),var(--gold-2));-webkit-background-clip:text;background-clip:text;color:transparent; }
 .lf-sub { margin:.3rem 0 0;font-size:calc(var(--u) * 3.4);font-weight:700;color:var(--text-2); }
 
-/* Podio: 2º · 1º · 3º */
+/* Podio: 2º · 1º · 3º, con un muñequito por puesto (la cara es su foto); sale el 3º, el 2º y el 1º el último,
+   que levanta la copa (--raise = cuándo, lo pone live-mode.js) */
 .lf-podium { flex-shrink:0;display:flex;justify-content:center;align-items:flex-end;gap:calc(var(--u) * 2);
-  padding-top:calc(var(--u) * 4); }
-.lf-place { position:relative;flex:0 1 31%;min-width:0;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u) * .6);
+  padding-top:calc(var(--u) * 6); }
+.lf-place { position:relative;flex:0 1 31%;min-width:0;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u) * .4);
   animation:lf-rise .7s cubic-bezier(.34,1.3,.64,1) both; }
 @keyframes lf-rise { from{opacity:0;transform:translateY(40px) scale(.8)} to{opacity:1;transform:none} }
-.lf-crown { position:absolute;top:calc(var(--u) * -7);font-size:calc(var(--u) * 7);line-height:1;
-  animation:lobby-bob 2.4s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(255,208,64,.7)); }
-.lf-medal { font-size:calc(var(--u) * 9);line-height:1; }
-.lf-place--1 .lf-medal { font-size:calc(var(--u) * 11); }
+.lf-figure { position:relative;width:calc(var(--u) * 17);aspect-ratio:100 / 130;margin-bottom:calc(var(--u) * -.6);
+  animation:lf-sway 2.6s ease-in-out infinite;transform-origin:50% 100%; }
+.lf-place--1 .lf-figure { width:calc(var(--u) * 21);animation:lf-hop .55s ease-in-out calc(var(--raise) + .7s) 4,lf-sway 2.6s ease-in-out calc(var(--raise) + 3s) infinite; }
+.lf-place--3 .lf-figure { animation-delay:-1.3s; }
+@keyframes lf-sway { 0%,100%{transform:rotate(-2.5deg)} 50%{transform:rotate(2.5deg)} }
+@keyframes lf-hop { 0%,100%{transform:translateY(0)} 45%{transform:translateY(-12%)} }
+.lf-body { position:absolute;inset:0;width:100%;height:100%;overflow:visible; }
+.lf-body .lf-arm { transform-box:view-box; }
+.lf-body .lf-arm-r { transform-origin:69px 62px; }
+.lf-body .lf-arm-l { transform-origin:31px 62px; }
+/* 2º y 3º saludan; el 1º sube el brazo con la copa y la agita */
+.lf-place--2 .lf-arm-r, .lf-place--3 .lf-arm-r { animation:lf-wave .5s ease-in-out infinite alternate; }
+.lf-place--3 .lf-arm-r { animation-delay:-.25s; }
+@keyframes lf-wave { from{transform:rotate(-12deg)} to{transform:rotate(14deg)} }
+.lf-place--1 .lf-arm-r { animation:lf-raise .8s cubic-bezier(.34,1.5,.64,1) var(--raise) both,
+  lf-cup 1.3s ease-in-out calc(var(--raise) + .8s) infinite; }
+@keyframes lf-raise { from{transform:rotate(150deg)} to{transform:rotate(0)} }
+@keyframes lf-cup { 0%,100%{transform:rotate(0)} 50%{transform:rotate(-9deg)} }
+.lf-cup { filter:drop-shadow(0 0 3px rgba(255,208,64,.9)); }
+.lf-spark { transform-box:fill-box;transform-origin:50% 50%;animation:lf-spark 1.3s ease-in-out infinite; }
+@keyframes lf-spark { 0%,100%{transform:scale(.3);opacity:.2} 50%{transform:scale(1.2) rotate(45deg);opacity:1} }
+/* Cara: la foto redonda encima de la cabeza del muñequito (círculo de 42 % de ancho) */
+.lf-face { position:absolute;left:29%;top:6%;width:42%;aspect-ratio:1;border-radius:50%;overflow:hidden;
+  border:calc(var(--u) * .5) solid #fff;box-shadow:0 calc(var(--u) * .6) calc(var(--u) * 1.6) rgba(0,0,0,.4);box-sizing:border-box; }
+.lf-place--1 .lf-face { border-color:var(--gold); }
+.lf-face > .lt-av-ini, .lf-face > img, .lf-mini > .lt-av-ini, .lf-mini > img { position:absolute;inset:0;width:100%;height:100%; }
+.lf-face > img, .lf-mini > img { object-fit:cover; }
+.lf-face .lt-av-ini { font-size:calc(var(--u) * 4); }
 .lf-name { max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-  font-size:calc(var(--u) * 4);font-weight:900;color:var(--text); }
-.lf-place--1 .lf-name { font-size:calc(var(--u) * 4.8);color:var(--gold); }
-.lf-pts { font-size:calc(var(--u) * 3.8);font-weight:900;color:var(--gold); }
+  font-size:calc(var(--u) * 3.6);font-weight:900;color:var(--text); }
+.lf-place--1 .lf-name { font-size:calc(var(--u) * 4.4);color:var(--gold); }
+.lf-pts { font-size:calc(var(--u) * 3.4);font-weight:900;color:var(--gold); }
 .lf-pts small { font-size:.7em;color:var(--text-2); }
-.lf-block { width:100%;display:flex;align-items:flex-start;justify-content:center;padding-top:calc(var(--u) * 1.5);
-  border-radius:calc(var(--u) * 3) calc(var(--u) * 3) 0 0;font-size:calc(var(--u) * 6);line-height:1;font-weight:900;color:rgba(0,0,0,.45);
+.lf-block { width:100%;display:flex;align-items:flex-start;justify-content:center;padding-top:calc(var(--u) * 1.2);
+  border-radius:calc(var(--u) * 3) calc(var(--u) * 3) 0 0;font-size:calc(var(--u) * 6);line-height:1;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 30px rgba(0,0,0,.35); }
-.lf-place--1 .lf-block { height:calc(var(--u) * 18);background:linear-gradient(180deg,#ffe27a,#f0a500); }
-.lf-place--2 .lf-block { height:calc(var(--u) * 12);background:linear-gradient(180deg,#eef2fa,#9aa6bd); }
-.lf-place--3 .lf-block { height:calc(var(--u) * 10);background:linear-gradient(180deg,#f0b27a,#a8642a); }
+.lf-place--1 .lf-block { height:calc(var(--u) * 12);background:linear-gradient(180deg,#ffe27a,#f0a500); }
+.lf-place--2 .lf-block { height:calc(var(--u) * 9);background:linear-gradient(180deg,#eef2fa,#9aa6bd); }
+.lf-place--3 .lf-block { height:calc(var(--u) * 7);background:linear-gradient(180deg,#f0b27a,#a8642a); }
 
+/* Clasificación: puestos 4..10 fijos (salen uno a uno) y del 11 en adelante pasando en bucle */
 .lf-rest[hidden] { display:none; }
 .lf-podium .lr-empty { font-size:calc(var(--u) * 4.4);padding:calc(var(--u) * 4) 0; }
-.lf-rest { animation-delay:1.6s; }
+.lf-rest { position:relative;animation-delay:2.4s;padding:calc(var(--u) * 2.2) calc(var(--u) * 3); }
+.lf-rest .lr-title { margin-bottom:calc(var(--u) * 1);font-size:calc(var(--u) * 3.6); }
+.lf-rest .lr-rank { gap:calc(var(--u) * .6); }
+.lf-row { gap:calc(var(--u) * 1.6);padding:calc(var(--u) * .5) calc(var(--u) * 1.8);font-size:calc(var(--u) * 3.2); }
+.lf-row .lr-pos { width:calc(var(--u) * 5); }
+.lf-mini { position:relative;flex-shrink:0;width:calc(var(--u) * 4.6);height:calc(var(--u) * 4.6);border-radius:50%;overflow:hidden;
+  border:1px solid rgba(255,255,255,.35); }
+.lf-mini .lt-av-ini { font-size:calc(var(--u) * 2.4); }
+.lf-ticker { --row-h:calc(var(--u) * 6.4);position:relative;height:calc(var(--rows) * var(--row-h));overflow:hidden;
+  margin-top:calc(var(--u) * 1.2);padding-top:calc(var(--u) * 1.2);border-top:1px dashed rgba(255,255,255,.2);
+  animation:lr-card-in .5s ease both; }
+.lf-ticker--moving { -webkit-mask:linear-gradient(transparent,#000 18%,#000 82%,transparent);
+  mask:linear-gradient(transparent,#000 18%,#000 82%,transparent); }
+.lf-ticker .lr-rank { padding-bottom:calc(var(--u) * .6); }
+.lf-ticker .lf-row { animation:none;height:calc(var(--row-h) - var(--u) * .6);box-sizing:border-box; }
+.lf-ticker--moving .lf-ticker-track { animation-name:lf-ticker;animation-timing-function:linear;animation-iteration-count:infinite; }
+@keyframes lf-ticker { to{transform:translateY(-50%)} }
+.lf-more { margin:calc(var(--u) * 1) 0 0;text-align:right;font-size:calc(var(--u) * 2.6);font-weight:700;color:var(--text-2); }
 
-.lf-stats { flex-shrink:0;display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--u) * 1.6);
-  animation:lr-card-in .5s cubic-bezier(.34,1.3,.64,1) 1.8s both; }
-.lf-stat { display:flex;flex-direction:column;align-items:center;gap:.1rem;padding:calc(var(--u) * 2) calc(var(--u) * 1);
-  border-radius:calc(var(--u) * 3.5);background:var(--glass);border:1px solid var(--glass-bd);text-align:center; }
-.lf-stat .lr-label { font-size:calc(var(--u) * 2.4);letter-spacing:.04em; }
-.lf-stat-icon { font-size:calc(var(--u) * 4.5);line-height:1; }
-.lf-stat-num { font-size:calc(var(--u) * 5.4);font-weight:900;color:var(--text);line-height:1.1; }
-.lf-stat--wide { grid-column:1 / -1;flex-direction:row;justify-content:center;gap:calc(var(--u) * 3);text-align:left; }
-.lf-hard-flag { font-size:calc(var(--u) * 9);line-height:1; }
-.lf-hard-name { display:block;font-size:calc(var(--u) * 4.2);font-weight:900;color:var(--text); }
+/* Estadísticas en una tira compacta */
+.lf-stats { flex-shrink:0;display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--u) * 1.2);
+  animation:lr-card-in .5s cubic-bezier(.34,1.3,.64,1) 2s both; }
+.lf-stat { display:flex;flex-direction:column;align-items:center;gap:0;padding:calc(var(--u) * 1.2) calc(var(--u) * .6);
+  border-radius:calc(var(--u) * 3);background:var(--glass);border:1px solid var(--glass-bd);text-align:center; }
+.lf-stat .lr-label { font-size:calc(var(--u) * 2.1);letter-spacing:.02em;line-height:1.15; }
+.lf-stat-icon { font-size:calc(var(--u) * 3.4);line-height:1; }
+.lf-stat-num { font-size:calc(var(--u) * 4.4);font-weight:900;color:var(--text);line-height:1.1; }
+.lf-stat--wide { grid-column:1 / -1;flex-direction:row;justify-content:center;gap:calc(var(--u) * 2.4);text-align:left; }
+.lf-hard-flag { font-size:calc(var(--u) * 6);line-height:1; }
+.lf-hard-name { display:block;font-size:calc(var(--u) * 3.6);font-weight:900;color:var(--text); }
 .lf-actions { flex-shrink:0;display:flex;justify-content:center;margin-top:auto; }
-.lf-actions .btn { font-size:calc(var(--u) * 4.2); }
+.lf-actions .btn { font-size:calc(var(--u) * 3.6); }
 
 /* ── Avatar VTuber abajo a la derecha (body.live-avatar) ────────────
  * El avatar lo pone TikTok LIVE Studio encima de la captura del navegador, en la caja de --avatar-w × --avatar-h
@@ -519,7 +563,6 @@ body.live-avatar .lobby-shell { padding-bottom:calc(var(--sab) + var(--avatar-h)
 /* Final: podio a todo el ancho; resto del TOP, estadísticas y botón a la izquierda del avatar */
 body.live-avatar .lf-rest, body.live-avatar .lf-stats,
 body.live-avatar .lf-site, body.live-avatar .lf-actions { margin-right:var(--avatar-gap); }
-body.live-avatar .lf-stats { grid-template-columns:repeat(2,1fr); }
 
 /* Saludos y respuestas a "!yo" en partida: abajo a la izquierda, debajo de la llamada a votar */
 body.live-avatar.live-in-game .live-greetings { right:auto;left:calc(var(--stage-x) + .75rem);align-items:flex-start;
@@ -575,6 +618,44 @@ body.live-teacher[data-teacher-spot="table"] .lt-root { bottom:calc(var(--sab) +
 .lt-root[data-mood="wave"] .lt-arm { animation:lt-wave .45s ease-in-out infinite alternate; }
 @keyframes lt-cheer-arm { from{transform:rotate(-95deg)} to{transform:rotate(-125deg)} }
 @keyframes lt-wave { from{transform:rotate(-100deg)} to{transform:rotate(-140deg)} }
+/* Votación (LiveTeacher.present, data-pose): señala las opciones (arriba, delante) o el chat (abajo, delante),
+   dando golpecitos con el puntero. El palo gira desde la mano (154, 247). Un gesto (data-mood) manda sobre la pose. */
+.lt-figure .lt-arm-tap { transform-box:view-box;transform-origin:146px 194px; }
+.lt-figure .lt-stick { transform-box:view-box;transform-origin:154px 247px;transition:transform .45s cubic-bezier(.34,1.4,.64,1); }
+.lt-root[data-mood=""][data-pose="options"] .lt-arm { transform:rotate(-40deg); }
+.lt-root[data-mood=""][data-pose="options"] .lt-stick { transform:rotate(25deg); }
+.lt-root[data-mood=""][data-pose="chat"] .lt-arm { transform:rotate(-20deg); }
+.lt-root[data-mood=""][data-pose="chat"] .lt-stick { transform:rotate(95deg); }
+.lt-root[data-mood=""][data-pose] .lt-arm-tap { animation:lt-tap .8s ease-in-out infinite; }
+@keyframes lt-tap { 0%,100%{transform:rotate(0)} 50%{transform:rotate(-6deg)} }
+/* Al soltar una pompa la punta del puntero se hincha */
+.lt-figure .lt-tip { transform-box:fill-box;transform-origin:50% 50%; }
+.lt-root.lt-puff .lt-tip { animation:lt-tip-puff .35s ease-out; }
+@keyframes lt-tip-puff { 45%{transform:scale(2.4)} }
+
+/* Pompas de jabón (LiveTeacher.bubbles): live-teacher.js las mueve con Web Animations desde la punta del puntero */
+.lt-soap-layer { position:fixed;inset:0;z-index:44;pointer-events:none;overflow:hidden; }
+.lt-soap { position:fixed;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u) * .5);will-change:transform,opacity; }
+.lt-soap-ball { position:relative;display:block;width:calc(var(--u) * 12);height:calc(var(--u) * 12);border-radius:50%;
+  padding:calc(var(--u) * 1.3);box-sizing:border-box;
+  background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.85) 0 6%,transparent 13%),
+             radial-gradient(circle at 50% 50%,rgba(255,255,255,0) 58%,rgba(160,230,255,.35) 72%,rgba(255,160,230,.55) 86%,rgba(255,255,255,.75) 100%);
+  box-shadow:0 0 calc(var(--u) * 2) rgba(150,220,255,.35);animation:lt-soap-wobble 2s ease-in-out infinite; }
+.lt-soap-ball > .lt-av-ini, .lt-soap-ball > img { position:absolute;inset:calc(var(--u) * 1.3);width:auto;height:auto;border-radius:50%; }
+.lt-soap-ball > img { object-fit:cover;opacity:.95; }
+.lt-av-ini { display:flex;align-items:center;justify-content:center;background:var(--av-color, #7c5cff);color:#fff;
+  font-family:var(--font);font-weight:900;font-size:calc(var(--u) * 4.4);line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.35); }
+/* Brillo de la pompa por encima de la foto */
+.lt-soap-ball::after { content:'';position:absolute;inset:0;border-radius:50%;z-index:1;
+  background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.75) 0 7%,transparent 15%),
+             conic-gradient(from 30deg,rgba(255,120,220,.28),rgba(120,220,255,.28),rgba(255,240,120,.25),rgba(255,120,220,.28));
+  -webkit-mask:radial-gradient(circle,transparent 62%,#000 70%);mask:radial-gradient(circle,transparent 62%,#000 70%); }
+@keyframes lt-soap-wobble { 0%,100%{transform:scale(1,1)} 33%{transform:scale(1.06,.95)} 66%{transform:scale(.96,1.05)} }
+.lt-soap-name { max-width:calc(var(--u) * 22);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  padding:calc(var(--u) * .3) calc(var(--u) * 1.6);border-radius:999px;background:rgba(20,10,48,.72);
+  border:1px solid rgba(255,255,255,.22);color:#fff;font-family:var(--font);font-size:calc(var(--u) * 2.6);font-weight:800; }
+.lt-soap--pop > * { animation:lt-soap-pop .3s ease-out forwards; }
+@keyframes lt-soap-pop { to{transform:scale(1.6);opacity:0} }
 .lt-root[data-mood="happy"] .lt-brows path,
 .lt-root[data-mood="cheer"] .lt-brows path,
 .lt-root[data-mood="wow"] .lt-brows path { transform:translateY(-22%); }
@@ -628,7 +709,6 @@ body.live-teacher .lt-main { max-height:calc(100% - var(--teacher-h) - var(--u) 
 /* Final: podio a todo el ancho; el resto a la izquierda de la profe */
 body.live-teacher .lf-rest, body.live-teacher .lf-stats,
 body.live-teacher .lf-site, body.live-teacher .lf-actions { margin-right:calc(var(--teacher-top-bubble) - var(--u) * 2); }
-body.live-teacher .lf-stats { grid-template-columns:repeat(2,1fr); }
 /* Saludos: en la misma franja que la profe, al otro lado y por debajo del bocadillo (que va a la altura de su
    cabeza); sin crecer hacia el contenido: si hay muchos, los más viejos se cortan arriba */
 body.live-mode.live-teacher .live-greetings { bottom:calc(var(--sab) + var(--u) * 1);max-height:calc(var(--u) * 13);
@@ -694,6 +774,7 @@ body.live-in-game .live-likes { left:calc(var(--stage-x) + calc(var(--u) * 4) + 
 @media (prefers-reduced-motion:reduce) {
   .live-bg-color, .live-bg-mesh, .live-likes-heart, .live-promo--in, .live-bg-flags,
   .live-cta b, body.live-mode .flag-emoji-lg, body.live-mode .hud-progress-text, .live-avatar-spot::before,
-  .live-avatar-spot::after, .lt-body, .lt-head, .lt-figure, .lt-arm, .lt-bubble--in { animation:none !important; }
+  .live-avatar-spot::after, .lt-body, .lt-head, .lt-figure, .lt-arm, .lt-arm-tap, .lt-bubble--in,
+  .lf-figure, .lf-arm, .lf-spark, .lf-ticker-track { animation:none !important; }
   .live-bg-flags { display:none; }
 }

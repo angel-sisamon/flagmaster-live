@@ -69,7 +69,15 @@ var LiveMode = (function () {
   var DURATION_MINUTES = [15, 30, 60, 120, 180, 0];   // botones de la sala (0 = sin límite)
   var DEFAULT_ROUNDS = 120;
   var MAX_ROUNDS = 2000;
-  var FINAL_REST_SHOWN = 7;                    // pantalla final: podio + puestos 4..10
+  // Pantalla final: podio (muñequitos con la foto de cada uno; el 1º levanta la copa), puestos 4..FINAL_TOP fijos
+  // saliendo uno a uno y el resto de la clasificación pasando en bucle por debajo
+  var FINAL_TOP = 10;
+  var FINAL_TICKER_ROWS = 3;                   // alto visible de la lista que pasa (si caben, no se mueve)
+  var FINAL_TICKER_SECS_PER_ROW = 1.3;
+  var FINAL_PODIUM_DELAYS = [1.6, 0.9, 0.3];   // 1º, 2º, 3º: sale el 3º, luego el 2º y por último el 1º
+  var FINAL_ROWS_AT = 2.8;                     // tras el podio, los puestos 4..10
+  var FINAL_ROW_EVERY = 0.38;
+  var AVATAR_COLORS = ['#ff5f8f', '#4fd1ff', '#ffd040', '#7c5cff', '#2fe0a0', '#ff9f43'];
   // Banner junto al reloj invitando a descargar la app. Cambia de lado y de texto en cada pregunta
   // para que no sea siempre el mismo elemento fijo en pantalla.
   // Se alternan pregunta a pregunta. Textos cortos: los largos (o la URL de la web) no caben al lado del reloj
@@ -242,6 +250,7 @@ var LiveMode = (function () {
     _state = 'lobby';
     _promoRound = -1;
     _voice('setPhase', 'idle');
+    _teacher('present', false);
     _teacher('setSpot', 'lobby');
     document.body.classList.remove('live-in-game');
     var cd = _el('lobby-countdown');
@@ -439,6 +448,7 @@ var LiveMode = (function () {
     _voice('setPhase', 'answer');
     _teacher('setSpot', 'question');
     _teacher('react', isLast ? 'wow' : 'point', 1800);
+    _teacher('present', true);
     _setTimer(q.remaining, q.duration, 'answer');
     if (q.round !== _promoRound) _shiftBgColor();   // antes de _placePromo, que apunta la ronda
     _placePromo(q.round);
@@ -458,6 +468,8 @@ var LiveMode = (function () {
   function _onVotes(v) {
     var n = _el('live-votes-total');
     if (n && n.textContent !== String(v.total)) { n.textContent = v.total; addTempClass(n, 'pop', 300); }
+    // Quien acaba de responder sale en una pompa del puntero de la profe (sin decir qué ha votado)
+    if (_active && _state === 'game' && !_onRoundScreen && v.recent && v.recent.length) _teacher('bubbles', v.recent);
   }
 
   function _onTick(tk) {
@@ -677,6 +689,7 @@ var LiveMode = (function () {
     _setTimer(r.remaining, r.duration, 'results');
     var box = _el('live-results');
     if (box) box.hidden = true;
+    _teacher('present', false);
 
     // Fanfarria si alguien acierta (y redoble extra si acierta la mayoría); "fallo" si nadie
     if (r.correctCount > 0) {
@@ -759,31 +772,95 @@ var LiveMode = (function () {
       '<span class="lr-label">' + label + '</span></div>';
   }
 
+  /* Foto de perfil redonda; sin foto (o si no carga) la inicial del nick sobre un color */
+  function _avatarHtml(p, cls) {
+    var nick = String(p.nickname || '?'), h = 0;
+    for (var i = 0; i < nick.length; i++) h = (h * 31 + nick.charCodeAt(i)) | 0;
+    var chars = Array.from ? Array.from(nick.trim()) : nick.trim().split('');
+    var url = typeof p.avatar === 'string' && /^https:\/\//i.test(p.avatar) ? p.avatar : '';
+    return '<span class="' + cls + '" style="--av-color:' + AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length] + '">' +
+      '<span class="lt-av-ini">' + _esc((chars[0] || '?').toUpperCase()) + '</span>' +
+      (url ? '<img alt="" decoding="async" referrerpolicy="no-referrer" src="' + _esc(url) + '" onerror="this.remove()">' : '') +
+      '</span>';
+  }
+
+  /* Muñequito del podio (viewBox 100×130): la cara es la foto (encima, en .lf-face); el 1º levanta la copa */
+  var FIGURE_COLORS = [['#ffc83d', '#d99a00'], ['#d3dcee', '#8f9cb8'], ['#e89a5c', '#a8642a']];
+  var CUP_SVG = '<g class="lf-cup">' +
+      '<path d="M78 2 C66 2 66 14 79 15" stroke="#f0a500" stroke-width="3" fill="none"/>' +
+      '<path d="M96 2 C108 2 108 14 95 15" stroke="#f0a500" stroke-width="3" fill="none"/>' +
+      '<path d="M76 -2 H98 V6 Q98 19 87 20 Q76 19 76 6 Z" fill="#ffd040" stroke="#f0a500" stroke-width="1.5"/>' +
+      '<path d="M80 1 V8 Q80 13 84 15" stroke="#fff6c8" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+      '<rect x="85" y="19" width="4" height="5" fill="#f0a500"/><rect x="80" y="23" width="14" height="4" rx="1.5" fill="#d99a00"/>' +
+      '<path class="lf-spark" d="M104 -8 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z" fill="#fff"/>' +
+    '</g>';
+  function _figureHtml(p, place) {
+    var c = FIGURE_COLORS[place][0], d = FIGURE_COLORS[place][1];
+    return '<div class="lf-figure">' +
+      '<svg class="lf-body" viewBox="0 0 100 130" aria-hidden="true">' +
+        '<ellipse cx="50" cy="128" rx="34" ry="4" fill="rgba(0,0,0,.3)"/>' +
+        '<rect x="34" y="98" width="13" height="27" rx="6" fill="#2b2350"/><rect x="53" y="98" width="13" height="27" rx="6" fill="#2b2350"/>' +
+        '<ellipse cx="39" cy="125" rx="10" ry="4.5" fill="#15102a"/><ellipse cx="61" cy="125" rx="10" ry="4.5" fill="#15102a"/>' +
+        '<g class="lf-arm lf-arm-l"><path d="M31 62 Q16 78 20 95" stroke="' + d + '" stroke-width="10" stroke-linecap="round" fill="none"/>' +
+          '<circle cx="20" cy="97" r="6" fill="#fff"/></g>' +
+        '<path d="M26 60 Q50 47 74 60 L78 104 Q50 110 22 104 Z" fill="' + c + '"/>' +
+        '<path d="M41 52 L50 64 L59 52" fill="none" stroke="' + d + '" stroke-width="3" stroke-linejoin="round"/>' +
+        '<text x="50" y="93" text-anchor="middle" font-size="20" font-weight="900" fill="' + d + '">' + (place + 1) + '</text>' +
+        '<g class="lf-arm lf-arm-r"><path d="M69 62 Q86 46 87 28" stroke="' + d + '" stroke-width="10" stroke-linecap="round" fill="none"/>' +
+          (place === 0 ? CUP_SVG : '') + '<circle cx="87" cy="25" r="6" fill="#fff"/></g>' +
+      '</svg>' + _avatarHtml(p, 'lf-face') + '</div>';
+  }
+
+  function _finalRowHtml(p, pos, delay) {
+    return '<li class="lr-row lf-row"' + (delay != null ? ' style="animation-delay:' + delay.toFixed(2) + 's"' : '') + '>' +
+      '<span class="lr-pos">' + (pos + 1) + '</span>' + _avatarHtml(p, 'lf-mini') +
+      '<span class="lr-name">' + _esc(p.nickname) + '</span>' +
+      '<span class="lr-pts">' + p.points + ' <small>' + t('lr_points') + '</small></span></li>';
+  }
+
   function _renderFinal(d) {
     _el('lf-sub').textContent = t('final_sub', { n: d.rounds });
+    var ranking = d.ranking || [];
 
-    var top = d.ranking.slice(0, 3);
+    var top = ranking.slice(0, 3);
     var podium = _el('lf-podium');
     if (!top.length) {
       podium.innerHTML = '<p class="lr-empty">' + t('final_nobody') + '</p>';
     } else {
-      // Orden visual 2º · 1º · 3º; el 1º aparece el último para crear expectación
+      // Orden visual 2º · 1º · 3º; salen 3º, 2º y el 1º el último, que levanta la copa (--raise)
       podium.innerHTML = [1, 0, 2].filter(function (i) { return top[i]; }).map(function (i) {
-        var p = top[i];
-        return '<div class="lf-place lf-place--' + (i + 1) + '" style="animation-delay:' + [0.9, 0.3, 1.4][i] + 's">' +
-          (i === 0 ? '<span class="lf-crown">👑</span>' : '') +
-          '<span class="lf-medal">' + MEDALS[i] + '</span>' +
+        var p = top[i], delay = FINAL_PODIUM_DELAYS[i];
+        return '<div class="lf-place lf-place--' + (i + 1) + '" style="animation-delay:' + delay + 's;--raise:' + (delay + 0.7) + 's">' +
+          _figureHtml(p, i) +
           '<span class="lf-name">' + _esc(p.nickname) + '</span>' +
           '<span class="lf-pts">' + p.points + ' <small>' + t('lr_points') + '</small></span>' +
-          '<div class="lf-block">' + (i + 1) + '</div></div>';
+          '<div class="lf-block">' + MEDALS[i] + '</div></div>';
       }).join('');
     }
 
-    var rest = d.ranking.slice(3, 3 + FINAL_REST_SHOWN);
+    // Puestos 4..10 fijos, saliendo uno a uno; del 11 en adelante, una lista que va pasando en bucle
+    var fixed = ranking.slice(3, FINAL_TOP);
+    var more = ranking.slice(FINAL_TOP);
     var restBox = _el('lf-rest');
-    restBox.hidden = !rest.length;
-    restBox.innerHTML = '<h2 class="lr-title">🏆 ' + t('final_rest') + '</h2>' + _rankingHtml(rest, FINAL_REST_SHOWN, 3) +
-      (d.players > 3 + FINAL_REST_SHOWN ? '<p class="lr-players">' + t('lr_players', { n: d.players }) + '</p>' : '');
+    restBox.hidden = !fixed.length;
+    var html = '<h2 class="lr-title">🏆 ' + t('final_rest') + '</h2>' +
+      '<ol class="lr-rank lf-fixed">' + fixed.map(function (p, i) {
+        return _finalRowHtml(p, i + 3, FINAL_ROWS_AT + i * FINAL_ROW_EVERY);
+      }).join('') + '</ol>';
+    if (more.length) {
+      var at = FINAL_ROWS_AT + fixed.length * FINAL_ROW_EVERY;
+      var rows = more.map(function (p, i) { return _finalRowHtml(p, i + FINAL_TOP); }).join('');
+      var moving = more.length > FINAL_TICKER_ROWS;
+      // Moviéndose, la lista va dos veces seguidas: al llegar a la mitad vuelve al principio sin que se note
+      html += '<div class="lf-ticker' + (moving ? ' lf-ticker--moving' : '') + '" style="--rows:' + Math.min(more.length, FINAL_TICKER_ROWS) +
+        ';animation-delay:' + at.toFixed(2) + 's">' +
+        '<div class="lf-ticker-track" style="animation-duration:' + (more.length * FINAL_TICKER_SECS_PER_ROW).toFixed(1) +
+        's;animation-delay:' + (at + 1.5).toFixed(2) + 's">' +
+        '<ol class="lr-rank">' + rows + '</ol>' + (moving ? '<ol class="lr-rank" aria-hidden="true">' + rows + '</ol>' : '') +
+        '</div></div>';
+    }
+    if (d.players > ranking.length) html += '<p class="lf-more">' + t('lr_players', { n: d.players }) + '</p>';
+    restBox.innerHTML = html;
 
     var h = d.hardest;
     _el('lf-stats').innerHTML =
@@ -806,15 +883,16 @@ var LiveMode = (function () {
     _state = 'final';
     _voice('setPhase', 'idle');
     document.body.classList.remove('live-in-game');
-    _ranking = d.ranking || [];
+    _ranking = (d.ranking || []).slice(0, TABLE_RANKING_SHOWN);
     _players = d.players || 0;
+    _teacher('present', false);
     _renderFinal(d);
     showScreen('live-final');
     _teacher('setSpot', 'final');
     _teacher('react', 'cheer', 6000);
     _sfx('newRecord');
     if (typeof LiveFireworks !== 'undefined') LiveFireworks.start(_el('live-final-fx'), 1);
-    var champ = _ranking[0];
+    var champ = d.ranking && d.ranking[0];
     _voice('announceWinner', champ ? champ.nickname : '', champ ? champ.points : 0);
   }
 

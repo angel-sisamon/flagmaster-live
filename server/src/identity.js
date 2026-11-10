@@ -4,6 +4,9 @@
  * El @usuario se puede cambiar en TikTok; el id numérico no. Para acumular un mes entero se usa
  * el id numérico, pero cifrado (sha256 truncado): en el repo público y en la web nunca aparece
  * el id real, solo el @ y el nick, que ya son públicos en el chat.
+ *
+ * avatar: URL de la foto de perfil (pública en TikTok) para pintarla en el directo (pompas de la profe, podio).
+ * Solo viaja al navegador del directo; no se graba en las sesiones ni sale en la web.
  */
 
 'use strict';
@@ -14,6 +17,20 @@ function playerId(key) {
   return 'p' + crypto.createHash('sha256').update('flagmaster-live:' + key).digest('hex').slice(0, 12);
 }
 
+const MAX_AVATAR_URL = 2048;
+
+/* Foto de perfil: v1 la da aplanada (profilePictureUrl); v2 en avatarThumb/avatarMedium/avatarLarge (Image.url[]).
+ * Solo https, para que el navegador no reciba otra cosa en el src. */
+function avatarOf(user) {
+  const candidates = [user.profilePictureUrl];
+  for (const key of ['avatarThumb', 'avatarMedium', 'avatarLarge']) {
+    const img = user[key];
+    const list = img && (img.url || img.urlList || img.urls);
+    if (Array.isArray(list)) candidates.push(...list);
+  }
+  return candidates.find(u => typeof u === 'string' && /^https:\/\//i.test(u) && u.length <= MAX_AVATAR_URL) || '';
+}
+
 /* Acepta el usuario de tiktok-live-connector v2 (protobuf: id / displayId) y v1 (userId / uniqueId) */
 function fromTikTokUser(user) {
   if (!user) return null;
@@ -21,7 +38,7 @@ function fromTikTokUser(user) {
   const handle = String(user.uniqueId || user.displayId || '').trim();
   const key = raw || (handle ? '@' + handle.toLowerCase() : '');
   if (!key) return null;
-  return { pid: playerId(key), handle, nickname: String(user.nickname || handle || 'anon') };
+  return { pid: playerId(key), handle, nickname: String(user.nickname || handle || 'anon'), avatar: avatarOf(user) };
 }
 
-module.exports = { playerId, fromTikTokUser };
+module.exports = { playerId, fromTikTokUser, avatarOf };

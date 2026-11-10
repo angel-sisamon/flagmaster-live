@@ -23,6 +23,10 @@
  *   LiveTeacher.enable() / disable()   live-mode.js al entrar / salir del modo LIVE (enable dentro del clic: AudioContext)
  *   LiveTeacher.setSpot(spot)          ver tabla de arriba
  *   LiveTeacher.react(mood, ms)        'happy' | 'sad' | 'wow' | 'cheer' | 'point' | 'wave' (vuelve a normal tras ms)
+ *   LiveTeacher.present(on)            votación en curso: va señalando con el puntero las opciones y el chat
+ *   LiveTeacher.bubbles(list)          [{ nickname, avatar }] quien acaba de responder: le saca una pompa de jabón por
+ *                                      el puntero con su foto y su nick (no su voto); sube por la franja libre de abajo
+ *                                      y explota. Como mucho BUBBLES_MAX a la vez; si el chat va muy rápido, se saltan.
  *
  * Sin SVG o con la clase quitada todo es no-op: el directo sigue igual.
  */
@@ -39,6 +43,13 @@ var LiveTeacher = (function () {
   var MOUTH_HOLD_MS = 70;         // mínimo en cada forma de boca (sin parpadeo nervioso)
   var TTS_MS_PER_CHAR = 62;       // estimación de ritmo de speechSynthesis si no llegan 'boundary'
   var WAVE_EVERY_MS = [9000, 16000];
+  var POSE_EVERY_MS = [2600, 3600];   // votación: cambia de señalar las opciones a señalar el chat
+  var BUBBLES_MAX = 6;                // pompas a la vez en pantalla
+  var BUBBLES_QUEUE = 12;             // pendientes de salir; el resto se descarta (el recuento ya lo dice todo)
+  var BUBBLE_LANES = 4;
+  var BUBBLE_EVERY_MS = 330;         // una pompa cada tanto, aunque lleguen varias juntas
+  var BUBBLE_MS = [4200, 5400];       // vida de cada pompa hasta que explota
+  var BUBBLE_COLORS = ['#ff5f8f', '#4fd1ff', '#ffd040', '#7c5cff', '#2fe0a0', '#ff9f43'];
 
   var SVG =
     '<svg class="lt-figure" viewBox="0 0 200 260" aria-hidden="true">' +
@@ -52,12 +63,12 @@ var LiveTeacher = (function () {
           '<path d="M124 204 H138 M131 197 C127 201 127 207 131 211 C135 207 135 201 131 197" stroke="#1b5f86" stroke-width="1.6" fill="none"/></g>' +
         '<path d="M56 196 C42 220 44 242 60 252" stroke="#c83b48" stroke-width="17" stroke-linecap="round" fill="none"/>' +
         '<circle cx="61" cy="252" r="8" fill="#f6cfae"/>' +
-        '<g class="lt-arm">' +
+        '<g class="lt-arm"><g class="lt-arm-tap">' +
           '<path d="M146 194 C160 212 164 230 154 246" stroke="#c83b48" stroke-width="17" stroke-linecap="round" fill="none"/>' +
-          '<line x1="154" y1="247" x2="192" y2="204" stroke="#8b5a2b" stroke-width="4.5" stroke-linecap="round"/>' +
-          '<circle cx="192" cy="204" r="4" fill="#ffd040"/>' +
+          '<g class="lt-stick"><line x1="154" y1="247" x2="192" y2="204" stroke="#8b5a2b" stroke-width="4.5" stroke-linecap="round"/>' +
+          '<circle class="lt-tip" cx="192" cy="204" r="4" fill="#ffd040"/></g>' +
           '<circle cx="154" cy="247" r="8.5" fill="#f6cfae"/>' +
-        '</g>' +
+        '</g></g>' +
       '</g>' +
       '<g class="lt-head">' +
         '<rect x="91" y="146" width="18" height="28" rx="6" fill="#e9b994"/>' +
@@ -95,6 +106,8 @@ var LiveTeacher = (function () {
   var _walkTimer = null, _moodTimer = null, _hideTimer = null, _waveTimer = null;
   var _ctx = null;
   var _raf = 0;
+  var _presenting = false, _poseTimer = null;
+  var _soap = null, _bubbleQueue = [], _bubbleTimer = null, _lane = 0;
 
   // Habla en curso: segmentos (una frase por audio; "respuesta + coletilla" son dos) y estado de la boca
   var _speech = null;   // { words: [{el, end}], segStart, segLen, audio, analyser, data, startedAt, charIdx, text }
@@ -110,6 +123,7 @@ var LiveTeacher = (function () {
     _root.id = 'live-teacher';
     _root.setAttribute('aria-hidden', 'true');
     _root.dataset.mouth = '0';
+    _root.dataset.mood = '';
     _root.innerHTML = '<div class="lt-bubble" hidden><p class="lt-bubble-text"></p></div>' + SVG;
     document.body.appendChild(_root);
     _bubble = _root.querySelector('.lt-bubble');
@@ -159,6 +173,148 @@ var LiveTeacher = (function () {
       if (_spot === 'lobby' && !_root.dataset.mood) react('wave', 2400);
       _scheduleWave();
     }, ms);
+  }
+
+  /* ── Votación: señala las opciones y el chat ────────── */
+  function present(on) {
+    _build();
+    on = !!on && _enabled;
+    clearTimeout(_poseTimer);
+    if (!on) {
+      _presenting = false;
+      delete _root.dataset.pose;
+      _bubbleQueue = [];
+      clearTimeout(_bubbleTimer); _bubbleTimer = null;
+      _popAll();
+      return;
+    }
+    if (_presenting) return;
+    _presenting = true;
+    // Empieza señalando el chat ("escribid aquí") y va alternando con las opciones
+    var pose = 'options';
+    (function next() {
+      pose = pose === 'options' ? 'chat' : 'options';
+      if (_root) _root.dataset.pose = pose;
+      _poseTimer = setTimeout(next, POSE_EVERY_MS[0] + Math.random() * (POSE_EVERY_MS[1] - POSE_EVERY_MS[0]));
+    })();
+  }
+
+  /* ── Pompas de jabón con quien responde ─────────────── */
+  function _reducedMotion() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  function bubbles(list) {
+    if (!_enabled || !_presenting || !_root || !Array.isArray(list) || _reducedMotion()) return;
+    list.forEach(function (p) {
+      if (p && p.nickname && _bubbleQueue.length < BUBBLES_QUEUE) _bubbleQueue.push(p);
+    });
+    if (!_bubbleTimer) _nextBubble();
+  }
+
+  function _nextBubble() {
+    _bubbleTimer = null;
+    if (!_presenting || !_bubbleQueue.length) return;
+    if (!_soap || _soap.childElementCount < BUBBLES_MAX) _blow(_bubbleQueue.shift());
+    _bubbleTimer = setTimeout(_nextBubble, BUBBLE_EVERY_MS);
+  }
+
+  function _hash(s) {
+    var h = 0;
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+    return Math.abs(h);
+  }
+
+  function _initial(nick) {
+    var chars = Array.from ? Array.from(String(nick).trim()) : String(nick).trim().split('');
+    return (chars[0] || '?').toUpperCase();
+  }
+
+  /* Foto de perfil redonda (o la inicial sobre un color si no hay foto o no carga) */
+  function avatarEl(nickname, avatar, cls) {
+    var box = document.createElement('span');
+    box.className = cls;
+    box.style.setProperty('--av-color', BUBBLE_COLORS[_hash(String(nickname)) % BUBBLE_COLORS.length]);
+    var ini = document.createElement('span');
+    ini.className = 'lt-av-ini';
+    ini.textContent = _initial(nickname);
+    box.appendChild(ini);
+    if (typeof avatar === 'string' && /^https:\/\//i.test(avatar)) {
+      var img = document.createElement('img');
+      img.alt = '';
+      img.decoding = 'async';
+      img.referrerPolicy = 'no-referrer';
+      img.onerror = function () { img.remove(); };
+      img.src = avatar;
+      box.appendChild(img);
+    }
+    return box;
+  }
+
+  function _rand(a, b) { return a + Math.random() * (b - a); }
+
+  function _blow(p) {
+    if (!_soap) {
+      _soap = document.createElement('div');
+      _soap.className = 'lt-soap-layer';
+      _soap.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(_soap);
+    }
+    var tip = _root.querySelector('.lt-tip');
+    if (!tip) return;
+    var r = tip.getBoundingClientRect();
+    if (!r.width) return;   // la profe no se ve
+    var tx = r.left + r.width / 2, ty = r.top + r.height / 2;
+    var W = window.innerWidth, H = window.innerHeight;
+    var stageW = Math.min(W, H * 9 / 16), u = stageW / 100, stageX = (W - stageW) / 2;
+    // Hacia donde mira, por la franja de abajo que la pantalla le deja libre (encima de los saludos)
+    var dir = _root.dataset.face === 'left' ? -1 : 1;
+    var near = tx + dir * 12 * u, far = dir < 0 ? stageX + 9 * u : stageX + stageW - 9 * u;
+    // Cada pompa va a un carril distinto (4 a lo ancho, alternando alto y bajo) para que no se amontonen
+    var lane = _lane++ % BUBBLE_LANES;
+    var x = (dir < 0 ? far > near : far < near) ? near
+      : near + (far - near) * (lane + 0.2 + Math.random() * 0.6) / BUBBLE_LANES;
+    var y = H - (lane % 2 ? _rand(20, 23) : _rand(29, 32)) * u;
+
+    var el = document.createElement('div');
+    el.className = 'lt-soap';
+    el.style.left = tx + 'px';
+    el.style.top = ty + 'px';
+    var ball = avatarEl(p.nickname, p.avatar, 'lt-soap-ball');
+    ball.style.animationDelay = (-Math.random() * 2).toFixed(2) + 's';
+    var name = document.createElement('span');
+    name.className = 'lt-soap-name';
+    name.textContent = p.nickname;   // textContent: el nick nunca se interpreta como HTML
+    el.appendChild(ball);
+    el.appendChild(name);
+    _soap.appendChild(el);
+
+    var dx = x - tx, dy = y - ty, rise = _rand(4, 9) * u, sway = _rand(-3, 3) * u;
+    var base = 'translate(-50%,-50%) ';
+    var ms = _rand(BUBBLE_MS[0], BUBBLE_MS[1]);
+    if (!el.animate) { setTimeout(function () { el.remove(); }, ms); return; }
+    var anim = el.animate([
+      { transform: base + 'translate(0,0) scale(.12)', opacity: 0 },
+      { transform: base + 'translate(' + dx * .35 + 'px,' + dy * .5 + 'px) scale(.7)', opacity: 1, offset: .14 },
+      { transform: base + 'translate(' + dx + 'px,' + dy + 'px) scale(1)', opacity: 1, offset: .42 },
+      { transform: base + 'translate(' + (dx + sway) + 'px,' + (dy - rise) + 'px) scale(1.04)', opacity: 1, offset: .92 },
+      { transform: base + 'translate(' + (dx + sway) + 'px,' + (dy - rise) + 'px) scale(1.45)', opacity: 0 }
+    ], { duration: ms, easing: 'cubic-bezier(.25,.7,.35,1)', fill: 'forwards' });
+    anim.onfinish = function () { el.remove(); };
+    el._anim = anim;
+
+    // El puntero da un toquecito al soltarla
+    _root.classList.remove('lt-puff'); void _root.offsetWidth; _root.classList.add('lt-puff');
+  }
+
+  /* Se acaba la votación: las pompas que quedan explotan ya (no se quedan encima de los resultados) */
+  function _popAll() {
+    if (!_soap) return;
+    Array.prototype.slice.call(_soap.children).forEach(function (el) {
+      if (el._anim) el._anim.pause();
+      el.classList.add('lt-soap--pop');
+      setTimeout(function () { el.remove(); }, 320);
+    });
   }
 
   /* ── Voz → boca y bocadillo ─────────────────────────── */
@@ -306,6 +462,7 @@ var LiveTeacher = (function () {
   }
 
   function disable() {
+    present(false);
     _enabled = false;
     clearTimeout(_walkTimer); clearTimeout(_moodTimer); clearTimeout(_hideTimer); clearTimeout(_waveTimer);
     cancelAnimationFrame(_raf);
@@ -325,5 +482,6 @@ var LiveTeacher = (function () {
   var observer = { start: _onStart, boundary: _onBoundary, end: _onEnd };
   if (typeof LiveVoice !== 'undefined' && LiveVoice.setObserver) LiveVoice.setObserver(observer);
 
-  return { enable: enable, disable: disable, setSpot: setSpot, react: react, voiceObserver: observer };
+  return { enable: enable, disable: disable, setSpot: setSpot, react: react, present: present, bubbles: bubbles,
+    voiceObserver: observer };
 })();

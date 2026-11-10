@@ -368,12 +368,12 @@ botPanel.on('connection', socket => {
 });
 
 /* ── Endpoints de prueba (simulan el directo sin estar en TikTok) ──
- *   /api/test-vote?user=pepe&text=b     /api/test-join?user=pepe     /api/test-like?user=pepe&count=5
+ *   /api/test-vote?user=pepe&text=b[&avatar=https://...]     /api/test-join?user=pepe     /api/test-like?user=pepe&count=5
  *   /api/test-gift?user=pepe&diamonds=10   /api/test-follow?user=pepe   /api/test-chat?user=pepe&text=!yo
  */
 function testUser(req, prefix) {
   const name = String(req.query.user || `${prefix}_${Math.random().toString(36).slice(2, 7)}`);
-  return fromTikTokUser({ uniqueId: name, nickname: name });
+  return fromTikTokUser({ uniqueId: name, nickname: name, profilePictureUrl: req.query.avatar });
 }
 
 app.get('/api/test-vote', (req, res) => {

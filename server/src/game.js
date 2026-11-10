@@ -26,6 +26,8 @@ const MAX_WINNERS_SENT = 500;   // la tabla de acertantes de la pantalla de resu
 const POSITION_POINTS = [10, 8, 6, 5, 4, 3, 2];
 const MIN_POINTS = 1;
 const RANKING_SIZE = 25;      // la tabla de resultados enseña hasta 25; el resto de pantallas, menos
+const FINAL_RANKING_SIZE = 500;   // pantalla final: clasificación entera (TOP 10 fijo y el resto pasando)
+const RECENT_VOTERS_SENT = 8;     // round:votes.recent: quién acaba de responder (pompas de la profe), sin su voto
 const MAX_TOTAL_ROUNDS = 2000;
 const LETTERS = ['A', 'B', 'C', 'D'];
 const ANSWER_RE = /^\s*([abcd])\s*$/i;
@@ -62,11 +64,13 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
     lastResults: null,
     timer: null,
     votesDirty: false,
+    recentVoters: [],       // { nickname, avatar } desde el último round:votes
   };
 
-  function addPoints(pid, nickname, at, points) {
-    const s = scores.get(pid) || { nickname, points: 0, reachedAt: 0 };
+  function addPoints(pid, nickname, at, points, avatar) {
+    const s = scores.get(pid) || { nickname, points: 0, reachedAt: 0, avatar: '' };
     s.nickname = nickname;    // el nick puede cambiar durante el directo
+    if (avatar) s.avatar = avatar;
     s.points += points;
     s.reachedAt = at;
     scores.set(pid, s);
@@ -77,9 +81,9 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
   }
 
   // gained: Map pid -> puntos ganados en la ronda (para el "+N" del ranking)
-  function topRanking(gained) {
-    return sortedScores().slice(0, RANKING_SIZE)
-      .map(([id, s]) => ({ nickname: s.nickname, points: s.points, gained: (gained && gained.get(id)) || 0 }));
+  function topRanking(gained, size) {
+    return sortedScores().slice(0, size || RANKING_SIZE)
+      .map(([id, s]) => ({ nickname: s.nickname, points: s.points, gained: (gained && gained.get(id)) || 0, avatar: s.avatar || '' }));
   }
 
   function rankingPayload(gained) {
@@ -111,6 +115,7 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
     game.question = buildQuestion();
     game.roundStartedAt = Date.now();
     game.votes.clear();
+    game.recentVoters = [];
     game.lastResults = null;
     emit('round:question', questionPayload());
     console.log(`❓ Ronda ${game.round} [${game.question.mode}]: ${game.question.correct.flag} ${game.question.correct.names.es} → ${LETTERS[game.question.correctIndex]}`);
@@ -126,7 +131,7 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
     const gained = new Map();
     winnerEntries.forEach(([id, v], pos) => {
       gained.set(id, winners[pos].points);
-      addPoints(id, v.nickname, v.at, winners[pos].points);
+      addPoints(id, v.nickname, v.at, winners[pos].points, v.avatar);
     });
     const total = all.length;
     const correctPct = total ? Math.round((winners.length / total) * 100) : 0;
@@ -219,7 +224,7 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
       correct: st.correct,
       accuracy: st.answers ? Math.round((st.correct / st.answers) * 100) : 0,
       hardest: st.hardest,
-      ranking: topRanking(),
+      ranking: topRanking(null, FINAL_RANKING_SIZE),
     };
   }
 
@@ -265,8 +270,11 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
       index: LETTERS.indexOf(match[1].toUpperCase()),
       nickname: player.nickname,
       handle: player.handle,
+      avatar: player.avatar || '',
       at: Date.now(),
     });
+    game.recentVoters.push({ nickname: player.nickname, avatar: player.avatar || '' });
+    if (game.recentVoters.length > RECENT_VOTERS_SENT) game.recentVoters.shift();
     game.votesDirty = true;
     return true;
   }
@@ -275,7 +283,9 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
   setInterval(() => {
     if (!game.votesDirty || game.phase !== 'answer') return;
     game.votesDirty = false;
-    emit('round:votes', { round: game.round, counts: voteCounts(), total: game.votes.size });
+    const recent = game.recentVoters;
+    game.recentVoters = [];
+    emit('round:votes', { round: game.round, counts: voteCounts(), total: game.votes.size, recent });
   }, VOTES_BROADCAST_MS);
 
   /* Un cliente que entra a mitad de ronda recibe el estado actual */
