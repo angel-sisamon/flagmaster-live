@@ -7,7 +7,9 @@
  * (se puede reanudar); al acabar la última ronda o con "Terminar" pasa a 'over' y se emite game:over.
  * La siguiente partida empieza de cero.
  *
- * Puntos por orden de llegada entre quienes aciertan: 10, 8, 6, 5, 4, 3, 2 y luego 1; los fallos suman 0.
+ * Puntos por orden entre quienes aciertan: 10, 8, 6, 5, 4, 3, 2 y luego 1; los fallos suman 0.
+ * El orden es el de TikTok (createTime: cuando el mensaje llegó a TikTok), no el de llegada al servidor, que varía
+ * por lotes y red. Qué votos cuentan no cambia: los que llegan al servidor durante la votación.
  * Empates en el ranking: va delante quien llegó antes a esa puntuación.
  *
  * Emite (EventEmitter) para el grabador y la clasificación mensual, sin saber nada de ellos:
@@ -126,12 +128,12 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
     const all = [...game.votes.values()];
     const winnerEntries = [...game.votes.entries()]
       .filter(([, v]) => v.index === correctIndex)
-      .sort((a, b) => a[1].at - b[1].at);
+      .sort((a, b) => a[1].sentAt - b[1].sentAt);   // estable: mismo createTime, manda la llegada
     const winners = winnerEntries.map(([, v], pos) => ({ nickname: v.nickname, points: pointsForPosition(pos) }));
     const gained = new Map();
     winnerEntries.forEach(([id, v], pos) => {
       gained.set(id, winners[pos].points);
-      addPoints(id, v.nickname, v.at, winners[pos].points, v.avatar);
+      addPoints(id, v.nickname, v.sentAt, winners[pos].points, v.avatar);
     });
     const total = all.length;
     const correctPct = total ? Math.round((winners.length / total) * 100) : 0;
@@ -261,7 +263,7 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
   }
 
   /* Un voto por usuario y ronda: cuenta el primero. Devuelve true si el comentario era un voto. */
-  function vote(player, comment) {
+  function vote(player, comment, createTime) {
     if (game.phase !== 'answer' || !player) return false;
     const match = ANSWER_RE.exec(String(comment || ''));
     if (!match) return false;
@@ -271,7 +273,8 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
       nickname: player.nickname,
       handle: player.handle,
       avatar: player.avatar || '',
-      at: Date.now(),
+      at: Date.now(),   // llegada (reloj del PC): estadísticas de rapidez
+      sentAt: Number.isFinite(createTime) && createTime > 0 ? createTime : Date.now(),   // orden de los puntos
     });
     game.recentVoters.push({ nickname: player.nickname, avatar: player.avatar || '' });
     if (game.recentVoters.length > RECENT_VOTERS_SENT) game.recentVoters.shift();

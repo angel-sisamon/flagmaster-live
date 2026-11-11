@@ -44,3 +44,34 @@ test('game: round:votes dice quién acaba de responder (sin su voto) y el rankin
   const over = sent.find(([ev]) => ev === 'game:over')[1];
   assert.strictEqual(over.ranking[0].avatar, PIC);
 });
+
+test('game: los puntos van por el orden de TikTok (createTime), no por el de llegada al servidor', t => {
+  t.mock.timers.enable({ apis: ['setInterval', 'Date'], now: 1_000_000 });
+  const sent = [];
+  const game = createGame({
+    emit: (ev, data) => sent.push([ev, data]),
+    buildQuestion: () => ({ mode: 'flag', correctIndex: 1, correct: { flag: '🇪🇸', names: { es: 'España' } }, options: [] }),
+    answerSeconds: 3,
+    resultsSeconds: 2,
+  });
+  const user = (id, name) => fromTikTokUser({ userId: id, uniqueId: name, nickname: name });
+  const [ana, luis, eva, leo] = [user('1', 'Ana'), user('2', 'Luis'), user('3', 'Eva'), user('4', 'Leo')];
+  game.start({ totalRounds: 1 });
+  game.vote(ana, 'b', 5_000_300);   // llega la primera, pero TikTok la recibió la última
+  game.vote(luis, 'b', 5_000_100);
+  game.vote(eva, 'b', 5_000_100);   // mismo milisegundo que Luis: va detrás (llegó después)
+  game.vote(leo, 'b');              // sin createTime (voto de prueba): cuenta y se ordena por la llegada
+  t.mock.timers.tick(3000);
+  const results = sent.find(([ev]) => ev === 'round:results')[1];
+  assert.deepStrictEqual(results.winners.map(w => w.nickname), ['Leo', 'Luis', 'Eva', 'Ana']);
+  assert.strictEqual(results.totalVotes, 4, 'cuentan todos los votos que llegan durante la votación');
+});
+
+test('tiktok: createTime de v2 (common) y v1 (aplanado)', () => {
+  const { createTimeOf } = require('../server/src/tiktok');
+  assert.strictEqual(createTimeOf({ common: { createTime: '1794408826045' } }), 1794408826045);
+  assert.strictEqual(createTimeOf({ createTime: '1794408826045' }), 1794408826045);
+  assert.strictEqual(createTimeOf({ common: { createTime: '0' } }), 0);
+  assert.strictEqual(createTimeOf({}), 0);
+  assert.strictEqual(createTimeOf(null), 0);
+});
