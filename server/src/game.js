@@ -7,13 +7,8 @@
  * (se puede reanudar); al acabar la última ronda o con "Terminar" pasa a 'over' y se emite game:over.
  * La siguiente partida empieza de cero.
  *
- * Puntos por orden entre quienes aciertan: 10, 8, 6, 5, 4, 3, 2 y luego 1; los fallos suman 0. El orden es el de
- * TikTok (createTime: cuando el mensaje llegó a TikTok, el orden del chat), no el de llegada al servidor, que
- * puede variar por lotes y red. Sin createTime (votos de prueba) se usa la hora de llegada.
- * La hora de llegada (at, reloj del PC) sigue cerrando la votación y midiendo la rapidez de las estadísticas.
- * No cuentan los votos con createTime anterior al inicio de la ronda: al (re)conectar TikTok reenvía mensajes ya
- * escritos, que si no entrarían como votos de la ronda en curso (y los primeros).
- * Empates en el ranking: va delante quien llegó antes (orden de TikTok) a esa puntuación.
+ * Puntos por orden de llegada entre quienes aciertan: 10, 8, 6, 5, 4, 3, 2 y luego 1; los fallos suman 0.
+ * Empates en el ranking: va delante quien llegó antes a esa puntuación.
  *
  * Emite (EventEmitter) para el grabador y la clasificación mensual, sin saber nada de ellos:
  *   'gameStart' { number, totalRounds }
@@ -36,11 +31,6 @@ const RECENT_VOTERS_SENT = 8;     // round:votes.recent: quién acaba de respond
 const MAX_TOTAL_ROUNDS = 2000;
 const LETTERS = ['A', 'B', 'C', 'D'];
 const ANSWER_RE = /^\s*([abcd])\s*$/i;
-// Desfase reloj del PC − reloj de TikTok: mínimo de (llegada − createTime) en los últimos mensajes del chat.
-// Es el desfase más la red más rápida vista, así que la ronda "empieza" algo antes en hora de TikTok: en la duda,
-// el voto se acepta. Los mensajes viejos que TikTok reenvía al reconectar dan valores enormes y no cuentan en el mínimo.
-const CLOCK_SAMPLES = 200;
-const STALE_MARGIN_MS = 500;   // holgura extra antes de dar un voto por escrito antes de la ronda
 
 function pointsForPosition(pos) {
   return pos < POSITION_POINTS.length ? POSITION_POINTS[pos] : MIN_POINTS;
@@ -70,7 +60,7 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
     remaining: 0,
     question: null,
     roundStartedAt: 0,
-    votes: new Map(),       // pid -> { index, nickname, handle, avatar, at (llegada, reloj del PC), sentAt (createTime de TikTok) }
+    votes: new Map(),       // pid -> { index, nickname, handle, at }
     lastResults: null,
     timer: null,
     votesDirty: false,
@@ -134,15 +124,14 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
   function finishRound() {
     const correctIndex = game.question.correctIndex;
     const all = [...game.votes.values()];
-    // sort estable: con el mismo createTime manda el orden de llegada
     const winnerEntries = [...game.votes.entries()]
       .filter(([, v]) => v.index === correctIndex)
-      .sort((a, b) => a[1].sentAt - b[1].sentAt);
+      .sort((a, b) => a[1].at - b[1].at);
     const winners = winnerEntries.map(([, v], pos) => ({ nickname: v.nickname, points: pointsForPosition(pos) }));
     const gained = new Map();
     winnerEntries.forEach(([id, v], pos) => {
       gained.set(id, winners[pos].points);
-      addPoints(id, v.nickname, v.sentAt, winners[pos].points, v.avatar);
+      addPoints(id, v.nickname, v.at, winners[pos].points, v.avatar);
     });
     const total = all.length;
     const correctPct = total ? Math.round((winners.length / total) * 100) : 0;
@@ -271,48 +260,18 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
     console.log('⏹️  Juego detenido');
   }
 
-  const clockDelays = [];   // llegada − createTime de los últimos CLOCK_SAMPLES mensajes (ms)
-
-  /* Inicio de la ronda en hora de TikTok, o null si aún no hay mensajes con los que calcular el desfase */
-  function roundStartInTikTokTime() {
-    if (!clockDelays.length) return null;
-    return game.roundStartedAt - Math.min(...clockDelays) - STALE_MARGIN_MS;
-  }
-
-  /* Un voto por usuario y ronda: cuenta el primero según TikTok (createTime, ms), aunque llegue después.
-   * Se descarta lo escrito antes de empezar la ronda (los mensajes viejos que TikTok reenvía al reconectar).
-   * Recibe todos los mensajes del chat (también fuera de la votación): con ellos calcula el desfase de relojes.
-   * Devuelve true si el comentario era un voto. */
-  function vote(player, comment, createTime) {
-    const at = Date.now();
-    const hasCreateTime = Number.isFinite(createTime) && createTime > 0;
-    const start = hasCreateTime ? roundStartInTikTokTime() : null;
-    if (hasCreateTime) {
-      clockDelays.push(at - createTime);
-      if (clockDelays.length > CLOCK_SAMPLES) clockDelays.shift();
-    }
+  /* Un voto por usuario y ronda: cuenta el primero. Devuelve true si el comentario era un voto. */
+  function vote(player, comment) {
     if (game.phase !== 'answer' || !player) return false;
     const match = ANSWER_RE.exec(String(comment || ''));
     if (!match) return false;
-    if (start != null && createTime < start) return true;   // escrito antes de la ronda: no cuenta
-    const sentAt = hasCreateTime ? createTime : at;
-    const index = LETTERS.indexOf(match[1].toUpperCase());
-    const prev = game.votes.get(player.pid);
-    if (prev) {
-      // Llega después otro voto que TikTok recibió antes (lotes desordenados): ese era el primero
-      if (sentAt < prev.sentAt) {
-        Object.assign(prev, { index, sentAt, at });
-        game.votesDirty = true;
-      }
-      return true;
-    }
+    if (game.votes.has(player.pid)) return true;
     game.votes.set(player.pid, {
-      index,
+      index: LETTERS.indexOf(match[1].toUpperCase()),
       nickname: player.nickname,
       handle: player.handle,
       avatar: player.avatar || '',
-      at,
-      sentAt,
+      at: Date.now(),
     });
     game.recentVoters.push({ nickname: player.nickname, avatar: player.avatar || '' });
     if (game.recentVoters.length > RECENT_VOTERS_SENT) game.recentVoters.shift();

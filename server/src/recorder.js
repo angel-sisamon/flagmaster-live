@@ -158,9 +158,7 @@ function createRecorder({ enabled, dataDir, stateDir, timeZone, host, resumeWind
         const run = (streaks.get(pid) || 0) + 1;
         streaks.set(pid, run);
         if (run > p.streak) p.streak = run;
-        // primero en acertar = quien se lleva el 1.er puesto: orden de TikTok (sentAt; sin él, llegada)
-        const order = v.sentAt != null ? v.sentAt : v.at;
-        if (order < firstAt) { firstAt = order; firstPid = pid; }
+        if (v.at < firstAt) { firstAt = v.at; firstPid = pid; }
       } else {
         streaks.set(pid, 0);
       }

@@ -221,11 +221,11 @@ function handleCommand(user, text) {
   emit('live:rank', { nickname: user.nickname, position: r.position, points: r.points });
 }
 
-function handleChat(user, text, createTime) {
+function handleChat(user, text) {
   if (!user) return;
   if (chatbot && chatbot.isOwnMessage(user, text)) return;   // lo que escribe el bot no cuenta como mensaje
   recorder.onChat(user);
-  if (game.vote(user, text, createTime)) return;
+  if (game.vote(user, text)) return;
   handleCommand(user, String(text || ''));
   if (chatbot) chatbot.onChat(user, String(text || ''));
   if (vtuber) vtuber.onChat(user, String(text || ''));
