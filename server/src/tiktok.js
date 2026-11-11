@@ -4,7 +4,8 @@
  * Compatible con tiktok-live-connector v2 (TikTokLiveConnection, protobuf) y v1 (WebcastPushConnection,
  * datos aplanados). Traduce cada evento a algo simple y con el usuario ya identificado (identity.js):
  *
- *   handlers.chat(user, text)        handlers.join(user)         handlers.like(user, count, roomTotal)
+ *   handlers.chat(user, text, createTime)   (createTime: ms en que llegó a TikTok, 0 si no viene)
+ *   handlers.join(user)         handlers.like(user, count, roomTotal)
  *   handlers.gift(user, diamonds)    handlers.follow(user)       handlers.share(user)
  *   handlers.viewers(count)          handlers.connected(roomId)  handlers.streamEnd()
  *   handlers.state(state, message)   'connecting' | 'connected' | 'disconnected' | 'disabled'
@@ -17,6 +18,12 @@ const { fromTikTokUser } = require('./identity');
 
 function userOf(data) {
   return fromTikTokUser((data && data.user) || data);
+}
+
+/* Momento en que el mensaje llegó a TikTok (ms; v2 en data.common, v1 aplanado). 0 si no viene */
+function createTimeOf(data) {
+  const t = Number(data && ((data.common && data.common.createTime) || data.createTime));
+  return Number.isFinite(t) && t > 0 ? t : 0;
 }
 
 /* Regalos: los de tipo 1 se pueden encadenar (combo) y llegan repetidos; solo cuenta el último (repeatEnd) */
@@ -60,7 +67,7 @@ function createTikTok({ username, signApiKey, reconnectMs, handlers }) {
     state.conn = conn;
 
     // v2 manda el texto en data.content; v1 en data.comment
-    conn.on(EV.CHAT, data => handlers.chat(userOf(data), data.content != null ? data.content : data.comment));
+    conn.on(EV.CHAT, data => handlers.chat(userOf(data), data.content != null ? data.content : data.comment, createTimeOf(data)));
     conn.on(EV.MEMBER, data => handlers.join(userOf(data)));
     conn.on(EV.LIKE, data => handlers.like(userOf(data),
       Math.max(1, Number(data.likeCount != null ? data.likeCount : data.count) || 1),
@@ -99,4 +106,4 @@ function createTikTok({ username, signApiKey, reconnectMs, handlers }) {
   return { connect };
 }
 
-module.exports = { createTikTok, giftDiamonds };
+module.exports = { createTikTok, giftDiamonds, createTimeOf };

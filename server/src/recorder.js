@@ -158,7 +158,8 @@ function createRecorder({ enabled, dataDir, stateDir, timeZone, host, resumeWind
         const run = (streaks.get(pid) || 0) + 1;
         streaks.set(pid, run);
         if (run > p.streak) p.streak = run;
-        if (v.at < firstAt) { firstAt = v.at; firstPid = pid; }
+        const order = v.sentAt != null ? v.sentAt : v.at;   // mismo orden que los puntos
+        if (order < firstAt) { firstAt = order; firstPid = pid; }
       } else {
         streaks.set(pid, 0);
       }
