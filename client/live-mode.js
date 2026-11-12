@@ -66,6 +66,7 @@ var LiveMode = (function () {
   var MAX_LIKE_HEARTS = 14;
   var MEDALS = ['🥇', '🥈', '🥉'];
   var ROUNDS_KEY = 'fm_live_rounds';           // localStorage: última duración elegida en la sala
+  var LOOP_KEY = 'fm_live_loop';               // localStorage: "Partidas en bucle" marcado ('1') o no
   var DURATION_MINUTES = [15, 30, 60, 120, 180, 0];   // botones de la sala (0 = sin límite)
   var DEFAULT_ROUNDS = 120;
   var MAX_ROUNDS = 2000;
@@ -110,6 +111,11 @@ var LiveMode = (function () {
   var _likesTotal = 0;
   var _totalRounds = 0;       // rondas de la partida en curso (0 = sin límite)
   var _selectedRounds = _loadRounds();
+  // Partidas en bucle: _loopOn es el interruptor de la sala; _loop, lo que dice el servidor (loop:status).
+  // Entre partida y partida el servidor cuenta el podio y la sala; aquí solo se enseña la cuenta atrás.
+  var _loopOn = _loadLoop();
+  var _loop = { enabled: false, phase: 'idle', remaining: 0, stopped: '' };
+  var _loopTimer = null;
   // Estado de la partida según el servidor (live:status): para "Reanudar" y la duración de cada ronda
   var _server = { paused: false, round: 0, totalRounds: 0, roundSecs: 30 };
 
@@ -122,6 +128,14 @@ var LiveMode = (function () {
 
   function _saveRounds(n) {
     try { localStorage.setItem(ROUNDS_KEY, String(n)); } catch (e) {}
+  }
+
+  function _loadLoop() {
+    try { return localStorage.getItem(LOOP_KEY) === '1'; } catch (e) { return false; }
+  }
+
+  function _saveLoop(on) {
+    try { localStorage.setItem(LOOP_KEY, on ? '1' : '0'); } catch (e) {}
   }
 
   /* "5/120" con límite de rondas; "5" sin límite */
@@ -265,6 +279,7 @@ var LiveMode = (function () {
     _renderLobbyControls();
     showScreen('live-lobby');
     _setStatus(_connected ? 'live' : 'connecting');
+    _renderLoop();
   }
 
   /* ── Duración de la partida y botones de la sala ──── */
@@ -307,11 +322,91 @@ var LiveMode = (function () {
         ? t('lobby_rounds', { n: _selectedRounds }) + ' · ≈ ' + _formatDuration(_selectedRounds * _server.roundSecs)
         : t('lobby_unlimited');
     }
+
+    // Partidas en bucle: sin límite de rondas (∞) la partida no acaba, así que no hay bucle
+    var unlimited = !_selectedRounds;
+    var loopBox = _el('lobby-loop');
+    if (loopBox) {
+      loopBox.checked = _loopOn && !unlimited;
+      loopBox.disabled = unlimited;
+      loopBox.parentNode.classList.toggle('lobby-loop--off', unlimited);
+    }
+    var note = _el('lobby-loop-note');
+    if (note) {
+      var waiting = _loop.enabled && _loop.phase !== 'idle';
+      var text = waiting ? t('loop_next', { n: _loop.remaining })
+        : _loop.stopped === 'empty' ? t('loop_stopped_empty')
+        : _loopOn && unlimited && !paused ? t('lobby_loop_unlimited') : '';
+      note.hidden = !text;
+      note.textContent = text;
+    }
+  }
+
+  /* ── Partidas en bucle ─────────────────────────────── */
+  function _onLoop(l) {
+    if (!_active || !l) return;
+    var wasStopped = _loop.stopped;
+    _loop = { enabled: !!l.enabled, phase: l.phase || 'idle', remaining: Math.max(0, Number(l.remaining) || 0), stopped: l.stopped || '' };
+    // El servidor manda: si lo para (nadie vota) se desmarca; si otra pantalla lo activa, se marca
+    if (_loop.stopped && !wasStopped && _loopOn) { _loopOn = false; _saveLoop(false); }
+    else if (_loop.enabled && !_loopOn) { _loopOn = true; _saveLoop(true); }
+    clearInterval(_loopTimer);
+    if (_loop.phase !== 'idle') {
+      _loopTimer = setInterval(function () {
+        if (_loop.remaining > 0) _loop.remaining--;
+        _renderLoop();
+      }, 1000);
+    }
+    // Del podio a la sala: la cuenta atrás de la siguiente partida se ve en la sala
+    if (_loop.enabled && _loop.phase === 'lobby' && _state === 'final') _showLobby();
+    else _renderLoop();
+  }
+
+  function _renderLoop() {
+    var waiting = _loop.enabled && _loop.phase !== 'idle';
+    var next = _el('lf-next');
+    if (next) {
+      next.hidden = !waiting || _state !== 'final';
+      next.textContent = waiting ? t('loop_next', { n: _loop.remaining }) : '';
+    }
+    var stopBtn = _el('btn-final-loop-stop');
+    if (stopBtn) stopBtn.hidden = !waiting;
+    if (_state !== 'lobby') return;
+    _renderLobbyControls();
+
+    // Últimos segundos en la sala: 3-2-1-¡YA! en grande, como al iniciar a mano
+    var n = _loop.enabled && _loop.phase === 'lobby' ? _loop.remaining : -1;
+    var show = n >= 0 && n <= 3;
+    var host = _el('lobby-host');
+    var cd = _el('lobby-countdown');
+    if (host) host.hidden = show;
+    if (!cd) return;
+    cd.hidden = !show;
+    var txt = show ? (n > 0 ? String(n) : t('lobby_go')) : '';
+    if (cd.dataset.loopStep === txt) return;
+    cd.dataset.loopStep = txt;
+    if (!show) return;
+    cd.textContent = txt;
+    cd.classList.remove('lobby-countdown--pop'); void cd.offsetWidth; cd.classList.add('lobby-countdown--pop');
+    _sfx(n > 0 ? 'timerWarning' : 'newRecord');
+  }
+
+  /* Interruptor de la sala. Con el bucle ya en marcha, desmarcarlo cancela la siguiente partida;
+   * marcarlo vale para la próxima vez que se pulse Iniciar. */
+  function _setLoopOn(on) {
+    _loopOn = !!on;
+    _saveLoop(_loopOn);
+    _loop.stopped = '';
+    if (_socket && _connected && _loop.enabled) _socket.emit('loop:set', { enabled: _loopOn, totalRounds: _selectedRounds });
+    _renderLoop();
+    _renderLobbyControls();
   }
 
   function _setSelectedRounds(n) {
     _selectedRounds = Math.max(0, Math.min(MAX_ROUNDS, n));
     _saveRounds(_selectedRounds);
+    // Bucle en marcha: la siguiente partida tendrá estas rondas (con ∞, el servidor para el bucle)
+    if (_socket && _connected && _loop.enabled) _socket.emit('loop:set', { enabled: _loopOn, totalRounds: _selectedRounds });
     _renderLobbyControls();
   }
 
@@ -322,6 +417,8 @@ var LiveMode = (function () {
     if (_state !== 'lobby' || !_connected) return;
     var opts = mode === 'new' ? { fresh: true, totalRounds: _selectedRounds }
       : _server.paused ? {} : { totalRounds: _selectedRounds };
+    var rounds = mode !== 'new' && _server.paused ? _server.totalRounds : _selectedRounds;
+    opts.loop = _loopOn && rounds > 0;
     _state = 'countdown';
     var host = _el('lobby-host');
     var cd = _el('lobby-countdown');
@@ -894,6 +991,7 @@ var LiveMode = (function () {
     if (typeof LiveFireworks !== 'undefined') LiveFireworks.start(_el('live-final-fx'), 1);
     var champ = d.ranking && d.ranking[0];
     _voice('announceWinner', champ ? champ.nickname : '', champ ? champ.points : 0);
+    _renderLoop();
   }
 
   function _onStatus(s) {
@@ -944,6 +1042,7 @@ var LiveMode = (function () {
       _socket.on('ranking:update', _onRanking);
       _socket.on('live:like', _onLike);
       _socket.on('game:over', _onGameOver);
+      _socket.on('loop:status', _onLoop);
       _socket.on('month:update', _onMonth);
       _socket.on('live:rank', _onRank);
       _socket.on('live:optout', _onOptout);
@@ -963,11 +1062,16 @@ var LiveMode = (function () {
     _state = 'off';
     _connected = false;
     clearInterval(_countdownTimer);
+    clearInterval(_loopTimer);
     _leaveRoundScreen();
     _voice('disable');
     _teacher('disable');
     _ranking = []; _players = 0; _month = null;
-    if (_socket) { _socket.emit('game:stop'); _socket.disconnect(); _socket = null; }
+    // Salir para el bucle (la preferencia del interruptor se queda para la próxima vez)
+    if (_socket) { _socket.emit('loop:set', { enabled: false }); _socket.emit('game:stop'); _socket.disconnect(); _socket = null; }
+    _loop = { enabled: false, phase: 'idle', remaining: 0, stopped: '' };
+    var next = _el('lf-next');
+    if (next) next.hidden = true;
     document.body.classList.remove('live-mode', 'live-in-game', 'live-limited', 'live-avatar', 'live-teacher');
     var box = _el('live-results');
     if (box) { box.hidden = true; box.innerHTML = ''; }
@@ -1036,6 +1140,10 @@ var LiveMode = (function () {
     if (exitBtn) exitBtn.addEventListener('click', stop);
     var finalBtn = _el('btn-final-lobby');
     if (finalBtn) finalBtn.addEventListener('click', _showLobby);
+    var loopStopBtn = _el('btn-final-loop-stop');
+    if (loopStopBtn) loopStopBtn.addEventListener('click', function () { _setLoopOn(false); });
+    var loopBox = _el('lobby-loop');
+    if (loopBox) loopBox.addEventListener('change', function () { _setLoopOn(loopBox.checked); });
 
     // Duración de la partida: botones rápidos (15 min … ∞) o número de rondas a mano
     var durations = _el('lobby-durations');

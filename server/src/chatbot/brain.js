@@ -19,7 +19,7 @@ const { blockedReason } = require('./content-filter');
 const PHRASES_DIR = path.join(__dirname, 'phrases');
 const FALLBACK_LANG = 'en';
 const CATEGORIES = ['greetings', 'game_rules_reminder', 'idle_chat', 'round_hard', 'round_easy',
-  'game_start', 'game_mid', 'game_final_stretch', 'game_last_round', 'game_end', 'game_end_winner'];
+  'game_start', 'game_mid', 'game_final_stretch', 'game_last_round', 'game_end', 'game_end_winner', 'game_next'];
 // Variable obligatoria por categoría ({user} = @ de quien escribe, {winner} = nick de quien gana)
 const NEEDS_VAR = { greetings: '{user}', game_rules_reminder: '{user}', game_end_winner: '{winner}' };
 const MAX_GREETING_WORDS = 6;   // "hola a todos desde méxico" sí; una frase larga que empieza por "hey" no

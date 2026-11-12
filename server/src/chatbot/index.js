@@ -5,7 +5,8 @@
  *   3. Nombre de un país en plena votación → recuerda que hay que escribir la letra (una vez por persona cada
  *      REMIND_USER_MS, y como mucho un recordatorio cada REMIND_GAP_MS: uno ya lo lee todo el chat).
  *   2. Saludo ("hola", "hey", "bonjour"...) → saluda a esa persona por su @ (una vez por directo).
- *   1. Momentos de la partida: empieza, va por la mitad, quedan pocas rondas, última ronda, gana fulano.
+ *   1. Momentos de la partida: empieza, va por la mitad, quedan pocas rondas, última ronda, gana fulano y,
+ *      con las partidas en bucle, que la siguiente empieza enseguida.
  *      Si no toca ninguno, a veces una reacción a una ronda muy difícil o muy fácil.
  *   0. Si nadie ha dicho nada en idleSeconds (45-90 s, aleatorio) → frase suelta, curiosidad o pregunta.
  * Todo pasa por la cola (queue.js), que marca el ritmo, y por content-filter.js, que veta pedir likes,
@@ -171,6 +172,11 @@ function createChatBot({
     totalRounds = 0;
   }
 
+  /* Partidas en bucle: la siguiente empieza en unos segundos (autoloop.js, al pasar del podio a la sala) */
+  function onNextGameSoon() {
+    if (running) gameMoment('game_next');
+  }
+
   function scheduleIdle() {
     clearTimeout(idleTimer);
     if (!running) return;
@@ -208,7 +214,7 @@ function createChatBot({
   }
 
   return {
-    start, stop, onChat, onGameStart, onRoundEnd, onGameEnd, isOwnMessage, status, reroll,
+    start, stop, onChat, onGameStart, onRoundEnd, onGameEnd, onNextGameSoon, isOwnMessage, status, reroll,
     history: () => (sender.history ? sender.history() : []),
     find: id => (sender.find ? sender.find(id) : null),
     pause: () => queue.pause(),

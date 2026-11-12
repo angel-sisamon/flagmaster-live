@@ -15,7 +15,7 @@
  * Emite (EventEmitter) para el grabador y la clasificación mensual, sin saber nada de ellos:
  *   'gameStart' { number, totalRounds }
  *   'roundEnd'  { number, round, question, startedAt, votes: [[pid, voto]], gained: Map pid → puntos }
- *   'gameEnd'   { number, rounds, ranking: [[pid, { nickname, points }]] }
+ *   'gameEnd'   { number, rounds, ranking: [[pid, { nickname, points }]], participants: cuántos votaron }
  *   'status'    (cambia algo de live:status)
  */
 
@@ -243,7 +243,7 @@ function createGame({ emit, buildQuestion, answerSeconds, resultsSeconds, lateSe
     game.votes.clear();
     game.lastGameOver = gameOverPayload();
     emit('game:over', game.lastGameOver);
-    events.emit('gameEnd', { number: game.number, rounds, ranking: sortedScores() });
+    events.emit('gameEnd', { number: game.number, rounds, ranking: sortedScores(), participants: game.lastGameOver.participants });
     events.emit('status');
     console.log(`🏁 Fin de la partida tras ${game.round} rondas · ${game.lastGameOver.participants} participantes`);
   }

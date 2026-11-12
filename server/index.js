@@ -27,6 +27,7 @@ const { Server } = require('socket.io');
 const config = require('./src/config');
 const { loadGameData, createQuestionFactory } = require('./src/questions');
 const { createGame } = require('./src/game');
+const { createAutoLoop } = require('./src/autoloop');
 const { createRecorder } = require('./src/recorder');
 const { createModerationStore } = require('./src/moderation');
 const { createStandings } = require('./src/standings');
@@ -128,6 +129,16 @@ const chatbot = config.CHATBOT ? createChatBot({
   queueOptions: { minGapMs: 3000, maxGapMs: 6000, thinkMs: [0, 0], maxPerMinute: 6 },
 }) : null;
 
+/* Partidas en bucle (interruptor de la sala): podio → sala con cuenta atrás → partida nueva */
+const autoloop = createAutoLoop({
+  startGame: opts => game.start(opts),
+  emit,
+  podiumSeconds: config.LOOP_PODIUM_SECONDS,
+  lobbySeconds: config.LOOP_LOBBY_SECONDS,
+  maxEmptyGames: config.LOOP_MAX_EMPTY_GAMES,
+  onLobby: () => { if (chatbot) chatbot.onNextGameSoon(); },
+});
+
 game.events.on('gameStart', e => {
   recorder.onGameStart(e);
   if (chatbot) chatbot.onGameStart(e);
@@ -141,6 +152,7 @@ game.events.on('roundEnd', e => {
 game.events.on('gameEnd', e => {
   recorder.onGameEnd(e);
   if (chatbot) chatbot.onGameEnd(e);
+  autoloop.onGameEnd(e);
 });
 game.events.on('status', broadcastStatus);
 
@@ -290,14 +302,26 @@ io.on('connection', socket => {
   socket.emit('live:status', statusPayload());
   socket.emit('month:update', standings.payload());
   game.syncSocket(socket);
+  socket.emit('loop:status', autoloop.status());
 
-  socket.on('game:start', opts => game.start(opts));
+  // opts.loop: "Partidas en bucle" marcado en la sala (con las rondas de esta partida)
+  socket.on('game:start', opts => {
+    opts = opts || {};
+    if (game.isRunning()) return;
+    autoloop.onManualStart();
+    game.start(opts);
+    autoloop.set({ enabled: !!opts.loop, totalRounds: game.status().totalRounds });
+  });
   socket.on('game:stop', () => game.stop());
-  socket.on('game:end', () => game.end());
+  socket.on('game:end', () => { autoloop.set({ enabled: false }); game.end(); });
+  socket.on('loop:set', opts => autoloop.set(opts || {}));
 
   socket.on('disconnect', () => {
     console.log(`🔌 Cliente desconectado (${io.of('/').sockets.size})`);
-    if (io.of('/').sockets.size === 0) game.stop();   // nadie mirando: no gastar rondas
+    if (io.of('/').sockets.size === 0) {   // nadie mirando: no gastar rondas
+      if (autoloop.isEnabled()) autoloop.set({ enabled: false });
+      game.stop();
+    }
   });
 });
 
@@ -465,6 +489,7 @@ async function shutdown(signal) {
   if (closing) return;
   closing = true;
   console.log(`\n👋 Cerrando (${signal})...`);
+  autoloop.stop();
   game.stop();
   if (autopilot) autopilot.stop();
   if (vtuber) vtuber.stop();
@@ -493,6 +518,7 @@ server.listen(config.PORT, () => {
   console.log(config.RECORD
     ? `💾 Grabando el directo en ${path.relative(config.ROOT, config.DATA_DIR)}/sessions · publicación automática: ${config.AUTOPUBLISH ? 'sí' : 'no'}`
     : '🧪 Modo prueba: no se graba el directo (LIVE_RECORD=1 para forzarlo)');
+  console.log(`🔁 Partidas en bucle (si se marca en la sala): ${config.LOOP_PODIUM_SECONDS} s de podio + ${config.LOOP_LOBBY_SECONDS} s de sala · se para tras ${config.LOOP_MAX_EMPTY_GAMES} partidas sin votos`);
   tiktok.connect();
   if (chatbot) {
     chatbot.start();

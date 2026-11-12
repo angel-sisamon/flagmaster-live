@@ -280,6 +280,15 @@ body.live-mode .live-promo--in { opacity:.88;transform:translateY(-50%) scale(1)
 .lobby-paused { margin:0;padding:.4rem 1rem;border-radius:999px;background:rgba(255,208,64,.15);border:1.5px solid rgba(255,208,64,.5);
   font-size:calc(var(--u) * 3.6);font-weight:800;color:var(--gold); }
 .lobby-paused[hidden] { display:none; }
+/* Partidas en bucle: interruptor de la sala y avisos de la siguiente partida (sala y podio) */
+.lobby-loop { display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;font-size:calc(var(--u) * 3.4);font-weight:800;color:var(--text); }
+.lobby-loop input { width:calc(var(--u) * 4.4);height:calc(var(--u) * 4.4);accent-color:var(--gold);cursor:pointer; }
+.lobby-loop--off { opacity:.45;cursor:not-allowed; }
+.lobby-loop--off input { cursor:not-allowed; }
+.lobby-loop-note, .lf-next { margin:0;padding:.4rem 1rem;border-radius:999px;background:rgba(255,208,64,.15);
+  border:1.5px solid rgba(255,208,64,.5);font-size:calc(var(--u) * 3.6);font-weight:800;color:var(--gold);text-align:center; }
+.lobby-loop-note[hidden], .lf-next[hidden] { display:none; }
+.lf-next { align-self:center;flex-shrink:0; }
 
 /* ── Vista intermedia de resultados (#screen-live-round, 10 s) ──── */
 #screen-live-round { overflow:hidden; }
@@ -530,8 +539,9 @@ body.live-mode .live-promo--in { opacity:.88;transform:translateY(-50%) scale(1)
 .lf-stat--wide { grid-column:1 / -1;flex-direction:row;justify-content:center;gap:calc(var(--u) * 2.4);text-align:left; }
 .lf-hard-flag { font-size:calc(var(--u) * 6);line-height:1; }
 .lf-hard-name { display:block;font-size:calc(var(--u) * 3.6);font-weight:900;color:var(--text); }
-.lf-actions { flex-shrink:0;display:flex;justify-content:center;margin-top:auto; }
+.lf-actions { flex-shrink:0;display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;margin-top:auto; }
 .lf-actions .btn { font-size:calc(var(--u) * 3.6); }
+.lf-actions .btn[hidden] { display:none; }
 
 /* ── Avatar VTuber abajo a la derecha (body.live-avatar) ────────────
  * El avatar lo pone TikTok LIVE Studio encima de la captura del navegador, en la caja de --avatar-w × --avatar-h

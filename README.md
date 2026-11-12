@@ -16,7 +16,7 @@ TikTok LIVE ──chat/likes/regalos──▶ server/ ──Socket.io──▶ p
 | Carpeta | Qué hay |
 |---|---|
 | `game/` | Copia del juego (index, css, js, assets) con la que se juega el directo. Se actualiza con `npm run sync:game` |
-| `server/` | Servidor del directo (Node). `index.js` conecta las piezas de `src/`: `tiktok.js` (conexión), `game.js` (rondas y puntos), `recorder.js` (graba cada directo), `standings.js` (TOP del mes en directo), `moderation.js` (`!optout`), `publisher.js` (sube a GitHub), `live-page.js` (página del directo), `chatbot/` (bot del chat, ver abajo), `vtuber/` (avatar en VTube Studio, ver abajo) |
+| `server/` | Servidor del directo (Node). `index.js` conecta las piezas de `src/`: `tiktok.js` (conexión), `game.js` (rondas y puntos), `autoloop.js` (partidas en bucle), `recorder.js` (graba cada directo), `standings.js` (TOP del mes en directo), `moderation.js` (`!optout`), `publisher.js` (sube a GitHub), `live-page.js` (página del directo), `chatbot/` (bot del chat, ver abajo), `vtuber/` (avatar en VTube Studio, ver abajo) |
 | `client/` | Capa LIVE que se inyecta sobre el juego: pantallas, estilos, voz, fuegos artificiales y textos. Y `bot-panel.html`, el panel del bot (`/bot`) |
 | `shared/stats.js` | Cálculo de clasificaciones, común al servidor y a la web |
 | `data/sessions/AAAA-MM/` | **Fuente de verdad**: un JSON por directo. Se sube al repo |
@@ -54,6 +54,13 @@ Si algo no se pudo subir, se reintenta al arrancar o con `npm run publish:data`.
 hasta el 25.º y los acertantes de la ronda, que bajan solas si no caben). El directo llega a quien lo ve con unos segundos de retraso, así que con el contador ya a 0
 se siguen aceptando votos `LATE_VOTE_SECONDS` más (4 por defecto; súbelo si emitiendo desde el móvil hay más retraso).
 
+**Partidas en bucle:** con **🔁 Partidas en bucle** marcado en la sala, al acabar una partida empieza otra sola con
+las mismas rondas: 30 s de podio (con "Siguiente partida en…") y 10 s de sala con cuenta atrás; el bot anuncia la
+siguiente. Sin límite de rondas (∞) no hay bucle. Se para con el interruptor, **⏹ Parar bucle** en el podio,
+Terminar, Salir o cerrando todas las pantallas, y solo si nadie vota en 2 partidas seguidas (p. ej. se ha caído
+la conexión con TikTok). Lo lleva el servidor (`server/src/autoloop.js`); tiempos en `LOOP_PODIUM_SECONDS`,
+`LOOP_LOBBY_SECONDS` y `LOOP_MAX_EMPTY_GAMES`.
+
 **Comandos en el chat:** `A`/`B`/`C`/`D` responde · `!yo` (`!me`, `!rank`) muestra tu puesto del mes en pantalla ·
 `!optout` te quita de la web.
 
@@ -82,7 +89,7 @@ como enviado (y no cuenta en las estadísticas de quien emite). **Pausar** deja 
 |---|---|
 | `index.js` | Las reglas de arriba: escucha `handleChat` y los eventos `gameStart` / `roundEnd` / `gameEnd` de `game.js` |
 | `brain.js` | Detecta saludos (varios idiomas) y nombres de país (los de `COUNTRIES`), carga y elige frases sin repetir, quita emojis |
-| `phrases/en.json` | ~420 frases por categoría: `greetings`, `game_rules_reminder`, `idle_chat`, `round_hard`, `round_easy`, `game_start`, `game_mid`, `game_final_stretch`, `game_last_round`, `game_end`, `game_end_winner`. `{user}` = @ de quien escribe, `{winner}` = nick de quien gana. Otro idioma: `<idioma>.json` + `CHATBOT_LANG` (lo que falte sale de inglés) |
+| `phrases/en.json` | ~420 frases por categoría: `greetings`, `game_rules_reminder`, `idle_chat`, `round_hard`, `round_easy`, `game_start`, `game_mid`, `game_final_stretch`, `game_last_round`, `game_end`, `game_end_winner`, `game_next` (partidas en bucle: la siguiente empieza ya). `{user}` = @ de quien escribe, `{winner}` = nick de quien gana. Otro idioma: `<idioma>.json` + `CHATBOT_LANG` (lo que falte sale de inglés) |
 | `content-filter.js` | Veta pedir likes, follows, compartir, regalos y enlaces (al cargar y al enviar; `npm test` falla si alguna frase lo incumple) |
 | `queue.js` | Cola de sugerencias: por prioridad, sin caducadas, como mucho 6 por minuto |
 | `senders.js` | Adónde van: al panel (`suggest`) o a la consola (`console`, `CHATBOT_SENDER=console`) |

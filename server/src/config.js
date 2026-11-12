@@ -69,6 +69,11 @@ module.exports = {
   // estos segundos (los de quien vota en el último momento de lo que ve). 0 = cierra en el acto.
   LATE_VOTE_SECONDS: process.env.LATE_VOTE_SECONDS === undefined || process.env.LATE_VOTE_SECONDS === ''
     ? 4 : Math.max(0, Math.min(10, Number(process.env.LATE_VOTE_SECONDS) || 0)),
+  // Partidas en bucle (interruptor de la sala): podio y sala con cuenta atrás entre partida y partida.
+  // El bucle se para solo si nadie vota en LOOP_MAX_EMPTY_GAMES partidas seguidas.
+  LOOP_PODIUM_SECONDS: Math.max(5, Number(process.env.LOOP_PODIUM_SECONDS) || 30),
+  LOOP_LOBBY_SECONDS: Math.max(5, Number(process.env.LOOP_LOBBY_SECONDS) || 10),
+  LOOP_MAX_EMPTY_GAMES: Math.max(1, Number(process.env.LOOP_MAX_EMPTY_GAMES) || 2),
   RECONNECT_MS: 15000,
   // Un directo caído (cierre o cuelgue) se retoma si se vuelve a arrancar antes de este margen
   RESUME_WINDOW_MS: 30 * 60 * 1000,

@@ -39,8 +39,10 @@
         <label class="lobby-custom"><span data-i18n="lobby_rounds_input">Rondas</span>
           <input type="number" id="lobby-rounds" min="1" max="2000" inputmode="numeric" /></label>
         <p class="lobby-estimate" id="lobby-estimate"></p>
+        <label class="lobby-loop"><input type="checkbox" id="lobby-loop" /> <span data-i18n="lobby_loop">🔁 Partidas en bucle</span></label>
       </div>
       <p class="lobby-paused" id="lobby-paused" hidden></p>
+      <p class="lobby-loop-note" id="lobby-loop-note" hidden></p>
       <div class="lobby-actions">
         <button class="btn btn-primary" id="btn-lobby-start" disabled>▶ Iniciar LIVE</button>
         <button class="btn btn-ghost" id="btn-lobby-new" hidden data-i18n="lobby_new">Nueva partida</button>
@@ -107,7 +109,11 @@
     <section class="lr-card lf-rest" id="lf-rest"></section>
     <div class="lf-stats" id="lf-stats"></div>
     <p class="lf-site" id="lf-site" hidden></p>
-    <div class="lf-actions"><button class="btn btn-primary" id="btn-final-lobby" data-i18n="final_back">Volver a la sala</button></div>
+    <p class="lf-next" id="lf-next" hidden aria-live="polite"></p>
+    <div class="lf-actions">
+      <button class="btn btn-primary" id="btn-final-lobby" data-i18n="final_back">Volver a la sala</button>
+      <button class="btn btn-ghost" id="btn-final-loop-stop" hidden data-i18n="loop_stop">⏹ Parar bucle</button>
+    </div>
   </div>
 </div>
 
