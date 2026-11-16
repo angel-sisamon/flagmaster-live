@@ -141,6 +141,7 @@ const autoloop = createAutoLoop({
 
 game.events.on('gameStart', e => {
   recorder.onGameStart(e);
+  recorder.setRoom(tiktok.roomId());   // la conexión suele llegar antes que la sesión
   if (chatbot) chatbot.onGameStart(e);
 });
 game.events.on('roundEnd', e => {
