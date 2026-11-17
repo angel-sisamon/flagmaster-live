@@ -10,7 +10,8 @@
  *   handlers.viewers(count)          handlers.connected(roomId)  handlers.streamEnd()
  *   handlers.state(state, message)   'connecting' | 'connected' | 'waiting' (aún no en directo) | 'disconnected' | 'disabled'
  *
- * Solo se queda en una sala en directo, y si @usuario abre otra (empieza un directo nuevo) se cambia a ella.
+ * El servidor se arranca antes del directo: hasta que @usuario está en directo (fetchIsLive) no se conecta, solo
+ * espera. Solo se queda en una sala en directo, y si @usuario abre otra (directo nuevo) se cambia a ella.
  */
 
 'use strict';
@@ -60,7 +61,7 @@ function createTikTok({
   lib = TikTok,             // inyectable para los tests
 }) {
   const TikTok = lib;
-  const state = { conn: null, retry: null, roomId: null, watch: null, probe: null };
+  const state = { conn: null, retry: null, roomId: null, watch: null, probe: null, attempt: 0, waiting: false };
   const isV2 = typeof TikTok.TikTokLiveConnection === 'function';
   const EV = isV2 ? TikTok.WebcastEvent : {
     CHAT: 'chat', MEMBER: 'member', LIKE: 'like', GIFT: 'gift', FOLLOW: 'follow', SHARE: 'share',
@@ -75,8 +76,47 @@ function createTikTok({
     }
     clearTimeout(state.retry);
     stopWatch();
-    handlers.state('connecting', `Conectando con @${username}...`);
+    const attempt = ++state.attempt;
+    if (!state.waiting) handlers.state('connecting', `Conectando con @${username}...`);
 
+    // Primero se pregunta si @username está en directo: con el directo sin empezar TikTok ya da una sala
+    // (y su room/info viene sin estado), pero en ella no llega el chat. Mientras no lo esté, se espera.
+    isLiveNow().then(live => {
+      if (attempt !== state.attempt) return;
+      if (live === false) {
+        if (!state.waiting) console.log(`⏳ @${username} todavía no está en directo: se espera a que empiece`);
+        state.waiting = true;
+        handlers.state('waiting', `Esperando a que @${username} empiece el directo (se mira cada ${reconnectMs / 1000} s)...`);
+        state.retry = setTimeout(connect, reconnectMs);
+        return;
+      }
+      if (state.waiting) handlers.state('connecting', `@${username} ya está en directo: conectando...`);
+      state.waiting = false;
+      open();
+    });
+  }
+
+  function probe() {
+    // v2.5 lee options.* sin comprobar que exista: hay que pasar siempre un objeto
+    if (!state.probe) state.probe = new TikTok.TikTokLiveConnection(username, signApiKey ? { signApiKey } : {});
+    return state.probe;
+  }
+
+  /* true/false si TikTok sabe decir si está en directo; null si no se puede saber (v1, o TikTok no responde) */
+  async function isLiveNow() {
+    if (!isV2) return null;
+    try {
+      const p = probe();
+      if (typeof p.fetchIsLive !== 'function') return null;
+      const live = await withTimeout(p.fetchIsLive(), 20000);
+      return typeof live === 'boolean' ? live : null;
+    } catch (err) {
+      console.error('⚠️  No se pudo saber si está en directo:', (err && err.message) || err);
+      return null;
+    }
+  }
+
+  function open() {
     // v2.5 lee options.* sin comprobar que exista: hay que pasar siempre un objeto
     const options = signApiKey ? { signApiKey } : {};
     let conn;
@@ -150,8 +190,7 @@ function createTikTok({
       if (busy || state.conn !== conn) return;
       busy = true;
       try {
-        if (!state.probe) state.probe = new TikTok.TikTokLiveConnection(username, signApiKey ? { signApiKey } : {});
-        const current = await withTimeout(state.probe.fetchRoomId(), 20000);
+        const current = await withTimeout(probe().fetchRoomId(), 20000);
         if (state.conn !== conn || !current || String(current) === state.roomId) return;
         console.log(`🔄 @${username} tiene una sala nueva (${state.roomId} → ${current}): cambiando a la nueva`);
         state.conn = null;

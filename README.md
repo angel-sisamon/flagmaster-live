@@ -16,7 +16,7 @@ TikTok LIVE ──chat/likes/regalos──▶ server/ ──Socket.io──▶ p
 | Carpeta | Qué hay |
 |---|---|
 | `game/` | Copia del juego (index, css, js, assets) con la que se juega el directo. Se actualiza con `npm run sync:game` |
-| `server/` | Servidor del directo (Node). `index.js` conecta las piezas de `src/`: `tiktok.js` (conexión: solo se queda en una sala en directo y, si empiezas un directo nuevo, salta a su sala), `game.js` (rondas y puntos), `autoloop.js` (partidas en bucle), `recorder.js` (graba cada directo), `standings.js` (TOP del mes en directo), `moderation.js` (`!optout`), `publisher.js` (sube a GitHub), `live-page.js` (página del directo), `chatbot/` (bot del chat, ver abajo), `vtuber/` (avatar en VTube Studio, ver abajo) |
+| `server/` | Servidor del directo (Node). `index.js` conecta las piezas de `src/`: `tiktok.js` (conexión: se arranca antes del directo y espera, mirando cada 15 s, hasta que @usuario está en directo; si empiezas un directo nuevo, salta a su sala), `game.js` (rondas y puntos), `autoloop.js` (partidas en bucle), `recorder.js` (graba cada directo), `standings.js` (TOP del mes en directo), `moderation.js` (`!optout`), `publisher.js` (sube a GitHub), `live-page.js` (página del directo), `chatbot/` (bot del chat, ver abajo), `vtuber/` (avatar en VTube Studio, ver abajo) |
 | `client/` | Capa LIVE que se inyecta sobre el juego: pantallas, estilos, voz, fuegos artificiales y textos. Y `bot-panel.html`, el panel del bot (`/bot`) |
 | `shared/stats.js` | Cálculo de clasificaciones, común al servidor y a la web |
 | `data/sessions/AAAA-MM/` | **Fuente de verdad**: un JSON por directo. Se sube al repo |
