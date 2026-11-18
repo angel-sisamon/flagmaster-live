@@ -5,8 +5,8 @@ var SITE_CONFIG = {
   // Ficha de Google Play con UTM: en Play Console → Adquisición se ve cuántas descargas llegan desde aquí
   playStoreUrl: 'https://play.google.com/store/apps/details?id=com.sisapicasso.flagmaster' +
     '&referrer=utm_source%3Dtiktok_live%26utm_medium%3Dleaderboard%26utm_campaign%3Dmonthly',
-  // Vacío = "Próximamente" (botón desactivado)
-  appStoreUrl: '',
+  // App Store (sin país en la URL: abre la tienda del país de cada visitante). Vacío = "Próximamente"
+  appStoreUrl: 'https://apps.apple.com/app/id6831765114',
   // Cuenta de TikTok que emite (sin @). Vacío = no se muestra el enlace
   tiktokUser: 'flagmaster_quiz',
   // Mínimos para las tablas de precisión y rapidez (evita que gane quien respondió 2 veces)
