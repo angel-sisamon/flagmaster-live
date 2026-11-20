@@ -1,0 +1,411 @@
+{
+ "schema": 1,
+ "id": "2026-11-20_1855",
+ "month": "2026-11",
+ "host": "flagmaster_game",
+ "startedAt": "2026-11-20T17:55:40.020Z",
+ "updatedAt": "2026-11-20T18:06:01.058Z",
+ "endedAt": "2026-11-20T18:06:12.588Z",
+ "roomId": "7710313591123004182",
+ "totals": {
+  "games": 1,
+  "rounds": 17,
+  "answers": 6,
+  "correct": 5,
+  "likes": 0,
+  "gifts": 0,
+  "follows": 0,
+  "shares": 0,
+  "joins": 3,
+  "messages": 8,
+  "peakViewers": 2
+ },
+ "games": [
+  {
+   "n": 1,
+   "startedAt": "2026-11-20T17:55:40.074Z",
+   "endedAt": "2026-11-20T18:06:12.588Z",
+   "totalRounds": 20,
+   "rounds": 17,
+   "players": 3,
+   "winner": null
+  }
+ ],
+ "questions": [
+  {
+   "g": 1,
+   "r": 1,
+   "mode": "guess-capital",
+   "code": "BF",
+   "flag": "🇧🇫",
+   "es": "Burkina Faso",
+   "en": "Burkina Faso",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 2,
+   "mode": "guess-country",
+   "code": "XK",
+   "flag": "🇽🇰",
+   "es": "Kosovo",
+   "en": "Kosovo",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 3,
+   "mode": "guess-country",
+   "code": "BJ",
+   "flag": "🇧🇯",
+   "es": "Benín",
+   "en": "Benin",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 4,
+   "mode": "guess-capital",
+   "code": "CH",
+   "flag": "🇨🇭",
+   "es": "Suiza",
+   "en": "Switzerland",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    0,
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 5,
+   "mode": "guess-flag",
+   "code": "KG",
+   "flag": "🇰🇬",
+   "es": "Kirguistán",
+   "en": "Kyrgyzstan",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    1,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 6,
+   "mode": "guess-flag",
+   "code": "GY",
+   "flag": "🇬🇾",
+   "es": "Guyana",
+   "en": "Guyana",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 7,
+   "mode": "guess-country",
+   "code": "AO",
+   "flag": "🇦🇴",
+   "es": "Angola",
+   "en": "Angola",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    0,
+    0,
+    1,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 8,
+   "mode": "guess-country-from-capital",
+   "code": "GN",
+   "flag": "🇬🇳",
+   "es": "Guinea",
+   "en": "Guinea",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 9,
+   "mode": "guess-flag",
+   "code": "MT",
+   "flag": "🇲🇹",
+   "es": "Malta",
+   "en": "Malta",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 10,
+   "mode": "guess-capital",
+   "code": "KM",
+   "flag": "🇰🇲",
+   "es": "Comoras",
+   "en": "Comoros",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 11,
+   "mode": "guess-country-from-capital",
+   "code": "ZM",
+   "flag": "🇿🇲",
+   "es": "Zambia",
+   "en": "Zambia",
+   "votes": 1,
+   "ok": 0,
+   "counts": [
+    1,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 12,
+   "mode": "guess-country",
+   "code": "HT",
+   "flag": "🇭🇹",
+   "es": "Haití",
+   "en": "Haiti",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 13,
+   "mode": "guess-flag",
+   "code": "US",
+   "flag": "🇺🇸",
+   "es": "Estados Unidos",
+   "en": "United States",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 14,
+   "mode": "guess-country-from-capital",
+   "code": "CR",
+   "flag": "🇨🇷",
+   "es": "Costa Rica",
+   "en": "Costa Rica",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "g": 1,
+   "r": 15,
+   "mode": "guess-capital",
+   "code": "EC",
+   "flag": "🇪🇨",
+   "es": "Ecuador",
+   "en": "Ecuador",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 16,
+   "mode": "guess-country",
+   "code": "PW",
+   "flag": "🇵🇼",
+   "es": "Palaos",
+   "en": "Palau",
+   "votes": 1,
+   "ok": 1,
+   "counts": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "g": 1,
+   "r": 17,
+   "mode": "guess-country",
+   "code": "FJ",
+   "flag": "🇫🇯",
+   "es": "Fiyi",
+   "en": "Fiji",
+   "votes": 0,
+   "ok": 0,
+   "counts": [
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ ],
+ "players": {
+  "pf8ea1ea30784": {
+   "u": "tatumreads",
+   "n": "tatum (taylor’s version) 🎧💌",
+   "pts": 30,
+   "ans": 3,
+   "ok": 3,
+   "first": 3,
+   "wins": 0,
+   "games": 1,
+   "streak": 3,
+   "fast": 7535,
+   "tms": 32319,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 5,
+   "modes": {
+    "guess-capital": [
+     1,
+     1
+    ],
+    "guess-flag": [
+     1,
+     1
+    ],
+    "guess-country": [
+     1,
+     1
+    ]
+   }
+  },
+  "pf0666e55d274": {
+   "u": "flagmaster_quiz",
+   "n": "FlagMaster",
+   "pts": 0,
+   "ans": 1,
+   "ok": 0,
+   "first": 0,
+   "wins": 0,
+   "games": 1,
+   "streak": 0,
+   "fast": 0,
+   "tms": 0,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 1,
+   "modes": {
+    "guess-country-from-capital": [
+     1,
+     0
+    ]
+   }
+  },
+  "p47960136fc6c": {
+   "u": "fredyleonelmatamo",
+   "n": "Fredy matamoros",
+   "pts": 20,
+   "ans": 2,
+   "ok": 2,
+   "first": 2,
+   "wins": 0,
+   "games": 1,
+   "streak": 2,
+   "fast": 8688,
+   "tms": 17406,
+   "likes": 0,
+   "gifts": 0,
+   "follows": 0,
+   "shares": 0,
+   "msgs": 2,
+   "modes": {
+    "guess-capital": [
+     1,
+     1
+    ],
+    "guess-country": [
+     1,
+     1
+    ]
+   }
+  }
+ }
+}
