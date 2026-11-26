@@ -1,11 +1,14 @@
 /**
  * server/src/chatbot/studio.js — Pega un mensaje en el chat de TikTok LIVE Studio con el ratón y el teclado del sistema.
  *
- *   const studio = createStudioPaster({ x: 1650, y: 980 });   // CHAT_X / CHAT_Y: la caja de chat de Studio
+ *   const studio = createStudioPaster({ x: 1650, y: 980, spread: { x: 20, y: 5 } });   // CHAT_X / CHAT_Y: la caja de chat
  *   await studio.sendChatMessage('Hello chat!');               // lanza StudioError si algo falla
  *   studio.setSettings({ method: 'type', typoPct: 3 });        // panel /bot → "Ajustes de escritura"
  *
- * Pasos: comprueba que bajo (x, y) está Studio y no otra ventana → copia el texto → acerca el ratón en varios
+ * Cada clic cae en un punto distinto dentro de (x ± spread.x, y ± spread.y) (CHAT_SPREAD_X / CHAT_SPREAD_Y): no
+ * siempre en el mismo píxel, como haría una persona. El rectángulo tiene que caber dentro de la caja de chat.
+ *
+ * Pasos: comprueba que bajo ese punto está Studio y no otra ventana → copia el texto → acerca el ratón en varios
  * pasos y pulsa/suelta por separado (Studio es Electron: un clic "teletransportado" a veces no le da el foco) →
  * comprueba que Studio ha quedado activo (si no, un segundo clic) → Ctrl+V (Cmd+V en macOS) o tecleo → Enter →
  * devuelve ratón y portapapeles. Un envío cada vez. Las comprobaciones usan win32.js (solo Windows).
@@ -29,6 +32,16 @@ const PASTE_MS = [150, 300];       // tras pegar, antes de Enter
 const MODIFIER_MS = 40;
 const RESTORE_CLIPBOARD_MS = 400;
 const CHECK_EVERY = 5;             // al teclear, cada tantas letras se comprueba que Studio sigue activo
+const DEFAULT_SPREAD = { x: 20, y: 5 };   // margen del clic alrededor de (x, y), en píxeles a cada lado
+const MAX_SPREAD = 200;
+
+/* Margen válido: números >= 0 (lo que no lo sea, el de por defecto); a cada lado del punto */
+function normalizeSpread(spread) {
+  const one = (v, def) => (v === undefined || v === null || v === '' || !Number.isFinite(Number(v)) ? def
+    : Math.min(MAX_SPREAD, Math.max(0, Math.round(Number(v)))));
+  const s = spread || {};
+  return { x: one(s.x, DEFAULT_SPREAD.x), y: one(s.y, DEFAULT_SPREAD.y) };
+}
 
 /*
  * Ajustes de escritura (se cambian en caliente desde el panel). Los de tecleo solo cuentan con method 'type':
@@ -96,11 +109,12 @@ async function step(stage, fn) {
  * robot, clipboard, windows, sleep, random: para los tests (por defecto los de verdad).
  */
 function createStudioPaster({
-  x, y, method, settings: initial, platform = process.platform, log = console.log,
+  x, y, spread: spreadOpt, method, settings: initial, platform = process.platform, log = console.log,
   robot = null, clipboard = null, windows = win32.load,
   sleep = ms => new Promise(r => setTimeout(r, ms)), random = Math.random,
 }) {
   let settings = normalizeSettings({ ...initial, ...(method ? { method } : {}) });
+  const spread = normalizeSpread(spreadOpt);
   const pause = sleep;
   const pick = range => between(range, random);
   const pasteModifier = platform === 'darwin' ? 'command' : 'control';
@@ -122,15 +136,22 @@ function createStudioPaster({
     }
   }
 
+  /* Un punto al azar dentro del margen: cada clic en un sitio distinto de la caja */
+  function clickPoint() {
+    const off = d => Math.round((random() * 2 - 1) * d);
+    return { x: x + off(spread.x), y: y + off(spread.y) };
+  }
+
   /* ¿Está Studio bajo el punto? Si lo tapa otra ventana, el clic se lo llevaría ella */
-  function checkTarget(report) {
+  function checkTarget(report, p) {
     const w = windows();
     if (!w) return;
-    const target = w.windowAt(x, y);
+    const target = w.windowAt(p.x, p.y);
     report.target = win32.label(target);
     if (!win32.isStudio(target)) {
-      throw new StudioError('comprobar ventana', `en (${x}, ${y}) está ${win32.label(target)}, no TikTok LIVE Studio: ` +
-        'algo la tapa, Studio está minimizado o se ha movido (vuelve a sacar las coordenadas)');
+      throw new StudioError('comprobar ventana', `en (${p.x}, ${p.y}) está ${win32.label(target)}, no TikTok LIVE Studio: ` +
+        'algo la tapa, Studio está minimizado o se ha movido (vuelve a sacar las coordenadas' +
+        (spread.x || spread.y ? ` o baja CHAT_SPREAD_X / CHAT_SPREAD_Y, ahora ±${spread.x} / ±${spread.y}` : '') + ')');
     }
     if (w.isElevated(target.pid) && !w.isElevated(process.pid)) {
       throw new StudioError('permisos', 'TikTok LIVE Studio se está ejecutando como administrador y este programa no: ' +
@@ -139,19 +160,19 @@ function createStudioPaster({
     }
   }
 
-  async function humanClick() {
+  async function humanClick(p) {
     const from = robot.getMousePos();
     // Último tramo de lado y desde abajo-izquierda: así el ratón "entra" en la caja aunque viniera de muy lejos
-    const sx = x - 40, sy = y + 12;
+    const sx = p.x - 40, sy = p.y + 12;
     robot.moveMouse(sx, sy);
     for (let i = 1; i <= APPROACH_STEPS; i++) {
       await pause(APPROACH_MS);
-      robot.moveMouse(Math.round(sx + ((x - sx) * i) / APPROACH_STEPS), Math.round(sy + ((y - sy) * i) / APPROACH_STEPS));
+      robot.moveMouse(Math.round(sx + ((p.x - sx) * i) / APPROACH_STEPS), Math.round(sy + ((p.y - sy) * i) / APPROACH_STEPS));
     }
     const at = robot.getMousePos();
     // Con varios monitores, unas coordenadas fuera del principal pueden no alcanzarse
-    if (Math.abs(at.x - x) > 2 || Math.abs(at.y - y) > 2) {
-      throw new Error(`el ratón quedó en (${at.x}, ${at.y}) y no en (${x}, ${y}); pon Studio en el monitor principal`);
+    if (Math.abs(at.x - p.x) > 2 || Math.abs(at.y - p.y) > 2) {
+      throw new Error(`el ratón quedó en (${at.x}, ${at.y}) y no en (${p.x}, ${p.y}); pon Studio en el monitor principal`);
     }
     await pause(HOVER_MS);
     robot.mouseToggle('down', 'left');
@@ -242,14 +263,18 @@ function createStudioPaster({
     const previousClipboard = await clipboard.read().catch(() => null);   // puede no ser texto (una imagen)
     let previousMouse = robot.getMousePos();
     try {
-      await step('comprobar ventana', () => checkTarget(report));
+      report.click = clickPoint();
+      await step('comprobar ventana', () => checkTarget(report, report.click));
       if (s.method === 'paste') await step('copiar al portapapeles', () => clipboard.write(msg));
-      previousMouse = await step('clic en la caja de chat', humanClick);
+      previousMouse = await step('clic en la caja de chat', () => humanClick(report.click));
       await pause(pick(FOCUS_MS));
       report.focus = focusState();
       if (report.focus.checked && !report.focus.studioActive) {
-        // El primer clic a veces solo activa la ventana: segundo intento
-        await step('clic en la caja de chat (2º intento)', humanClick);
+        // El primer clic a veces solo activa la ventana: segundo intento, en otro punto de la caja
+        const again = clickPoint();
+        await step('comprobar ventana (2º intento)', () => checkTarget(report, again));
+        await step('clic en la caja de chat (2º intento)', () => humanClick(again));
+        report.click = again;
         await pause(pick(FOCUS_MS));
         report.focus = focusState();
         report.retried = true;
@@ -287,6 +312,7 @@ function createStudioPaster({
     /* Para probar_studio.bat: hace todo menos pulsar Enter y devuelve qué ha visto */
     dryRun: text => run(text, { pressEnter: false }),
     getSettings: () => JSON.parse(JSON.stringify(settings)),
+    getSpread: () => ({ ...spread }),
     /* Cambia algunos ajustes (lo que no es válido se ignora) y devuelve cómo quedan */
     setSettings(patch) {
       settings = normalizeSettings(patch, settings);
@@ -295,4 +321,4 @@ function createStudioPaster({
   };
 }
 
-module.exports = { createStudioPaster, StudioError, normalizeSettings, DEFAULT_SETTINGS };
+module.exports = { createStudioPaster, StudioError, normalizeSettings, normalizeSpread, DEFAULT_SETTINGS, DEFAULT_SPREAD };

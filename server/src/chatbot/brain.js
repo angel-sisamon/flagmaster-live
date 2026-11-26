@@ -4,7 +4,8 @@
  *   detectGreeting(text)          ¿es un saludo? (en, es, pt, fr, it, de... aunque el bot responda en inglés)
  *   createCountryMatcher(list)    ¿el mensaje es el nombre de un país? (todos los idiomas de COUNTRIES)
  *   loadPhrases(lang)             phrases/<lang>.json con lo que falte tomado de en.json, ya filtrado
- *   createPhrasePicker(phrases)   frase aleatoria por categoría sin repetir hasta agotarlas
+ *   createPhrasePicker(phrases)   frase aleatoria por categoría sin repetir hasta agotarlas (y sin repetir
+ *                                 tampoco entre categorías una frase dicha hace poco: "oof", "gg"...)
  *
  * Para añadir un idioma de respuesta basta con phrases/<idioma>.json (CHATBOT_LANG); los saludos que se
  * reconocen en el chat no dependen de él.
@@ -18,12 +19,13 @@ const { blockedReason } = require('./content-filter');
 
 const PHRASES_DIR = path.join(__dirname, 'phrases');
 const FALLBACK_LANG = 'en';
-const CATEGORIES = ['greetings', 'game_rules_reminder', 'idle_chat', 'round_hard', 'round_easy',
-  'game_start', 'game_mid', 'game_final_stretch', 'game_last_round', 'game_end', 'game_end_winner', 'game_next'];
+const CATEGORIES = ['greetings', 'game_rules_reminder', 'idle_chat', 'idle_short', 'chat_busy',
+  'round_hard', 'round_easy', 'round_mid', 'round_perfect', 'round_none', 'game_start', 'game_mid', 'game_final_stretch', 'game_last_round', 'game_end', 'game_end_winner', 'game_next'];
 // Variable obligatoria por categoría ({user} = @ de quien escribe, {winner} = nick de quien gana)
 const NEEDS_VAR = { greetings: '{user}', game_rules_reminder: '{user}', game_end_winner: '{winner}' };
 const MAX_GREETING_WORDS = 6;   // "hola a todos desde méxico" sí; una frase larga que empieza por "hey" no
 const MAX_MESSAGE_CHARS = 150;  // límite de un comentario de TikTok
+const RECENT_GLOBAL = 40;       // frases recientes (de cualquier categoría) que se evitan si hay alternativa
 
 // TikTok LIVE Studio pinta los emojis como una X: los mensajes van sin ellos (banderas, tonos de piel, ZWJ incluidos)
 const EMOJI_RE = /[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\u{1F3FB}-\u{1F3FF}️‍⃣]/gu;
@@ -118,10 +120,16 @@ function shuffle(arr, random) {
   return a;
 }
 
-/* Bolsa barajada por categoría: no repite una frase hasta haber dicho todas (ni la última al rebarajar) */
-function createPhrasePicker(phrases, { random = Math.random } = {}) {
+/*
+ * Bolsa barajada por categoría: no repite una frase hasta haber dicho todas (ni la última al rebarajar).
+ * Además recuerda las RECENT_GLOBAL últimas de todas las categorías: si la que toca se dijo hace poco en otra
+ * ("gg" está en idle_short y en game_end), se coge otra de la bolsa que no.
+ */
+function createPhrasePicker(phrases, { random = Math.random, recentMax = RECENT_GLOBAL } = {}) {
   const bags = new Map();
   const last = new Map();
+  const recent = [];
+  const key = p => normalize(p);
   return function pick(category, vars) {
     const all = phrases[category] || [];
     if (!all.length) return null;
@@ -131,8 +139,12 @@ function createPhrasePicker(phrases, { random = Math.random } = {}) {
       if (bag.length > 1 && bag[bag.length - 1] === last.get(category)) bag.unshift(bag.pop());
       bags.set(category, bag);
     }
-    const phrase = bag.pop();
+    let i = bag.length - 1;
+    while (i >= 0 && recent.includes(key(bag[i]))) i--;
+    const [phrase] = bag.splice(i >= 0 ? i : bag.length - 1, 1);
     last.set(category, phrase);
+    recent.push(key(phrase));
+    if (recent.length > recentMax) recent.shift();
     return render(phrase, vars);
   };
 }

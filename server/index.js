@@ -332,7 +332,8 @@ function readStudioSettings() {
   try { return JSON.parse(fs.readFileSync(STUDIO_SETTINGS_FILE, 'utf8')); } catch { return {}; }
 }
 const studio = chatbot && config.CHATBOT_STUDIO ? createStudioPaster({
-  x: config.CHAT_X, y: config.CHAT_Y, settings: { method: config.CHAT_INPUT_METHOD, ...readStudioSettings() },
+  x: config.CHAT_X, y: config.CHAT_Y, spread: { x: config.CHAT_SPREAD_X, y: config.CHAT_SPREAD_Y },
+  settings: { method: config.CHAT_INPUT_METHOD, ...readStudioSettings() },
 }) : null;
 const winApi = loadWin32();
 
@@ -524,7 +525,7 @@ server.listen(config.PORT, () => {
   if (chatbot) {
     chatbot.start();
     const panel = `http://localhost:${config.PORT}/bot`;
-    console.log(`🤖 Sugerencias para el chat en ${panel}${studio ? ` · "Enviar a Studio" pega en (${config.CHAT_X}, ${config.CHAT_Y})` : ''}`);
+    console.log(`🤖 Sugerencias para el chat en ${panel}${studio ? ` · "Enviar a Studio" pega en (${config.CHAT_X}, ${config.CHAT_Y}) ±${studio.getSpread().x}/±${studio.getSpread().y} px` : ''}`);
     if (config.CHATBOT_OPEN_PANEL && config.CHATBOT_SENDER === 'suggest' && process.platform === 'win32') {
       spawn('cmd', ['/c', 'start', '', panel], { detached: true, stdio: 'ignore' }).unref();
     }

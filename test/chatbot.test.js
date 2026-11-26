@@ -356,3 +356,97 @@ test('sin emojis: ni en las frases ni en lo que se envía (Studio los pinta como
   const pick = createPhrasePicker({ idle_chat: ['Last round! 🔥'] });
   assert.strictEqual(pick('idle_chat'), 'Last round!');
 });
+
+test('frases cortas y tipos nuevos: hay de sobra y las cortas se escriben rápido', () => {
+  const en = loadPhrases('en', { log: () => {} });
+  assert.ok(en.idle_short.length >= 80);
+  for (const p of en.idle_short) assert.ok(p.length <= 25, `idle_short demasiado larga: ${p}`);
+  for (const cat of ['round_mid', 'round_perfect', 'round_none', 'chat_busy']) assert.ok(en[cat].length >= 12, cat);
+  const total = Object.values(en).reduce((n, l) => n + l.length, 0);
+  assert.ok(total >= 700, `total ${total}`);
+});
+
+test('no repite una frase dicha hace poco aunque esté en otra categoría', () => {
+  const pick = createPhrasePicker({ idle_short: ['gg', 'nice'], game_end: ['gg', 'well played'] }, { random: () => 0.99 });
+  const seen = [];
+  for (let i = 0; i < 2; i++) seen.push(pick('idle_short'));
+  seen.push(pick('game_end'));
+  assert.deepStrictEqual(seen.slice().sort(), ['gg', 'nice', 'well played']);
+  // Si en la categoría solo queda lo repetido, se dice igual (mejor repetir que callar)
+  const solo = createPhrasePicker({ a: ['gg'], b: ['gg'] });
+  assert.strictEqual(solo('a'), 'gg');
+  assert.strictEqual(solo('b'), 'gg');
+});
+
+test('bot: reacciona a rondas perfectas, sin aciertos y reñidas', async () => {
+  const en = loadPhrases('en', { log: () => {} });
+  const { bot, sent } = makeBot({ random: () => 0 });
+  await bot.start();
+  const votes = correct => [0, 1, 2, 3].map(i => [`p${i}`, { index: i < correct ? 0 : 2 }]);
+  for (const correct of [4, 0, 2]) {
+    bot.onRoundEnd({ question: { correctIndex: 0 }, votes: votes(correct) });
+    await flush();
+  }
+  assert.ok(en.round_perfect.includes(sent[0]), sent[0]);
+  assert.ok(en.round_none.includes(sent[1]), sent[1]);
+  assert.ok(en.round_mid.includes(sent[2]), sent[2]);
+  await bot.stop();
+});
+
+test('bot: con el chat a tope, a veces lo comenta (y no deja de saludar)', async () => {
+  const en = loadPhrases('en', { log: () => {} });
+  const { bot, sent } = makeBot({ random: () => 0 });
+  await bot.start();
+  const people = [1, 2, 3, 4, 5, 6].map(i => fromTikTokUser({ userId: `80${i}`, uniqueId: `u${i}`, nickname: `U${i}` }));
+  for (let i = 0; i < 15; i++) bot.onChat(people[i % 6], i === 14 ? 'hola' : 'b');
+  await flush();
+  assert.strictEqual(sent.filter(t => en.chat_busy.includes(t)).length, 1, sent.join(' | '));
+  assert.ok(sent.some(t => t.includes('@u3')), 'el saludo sigue saliendo');
+  // Y no vuelve a comentarlo enseguida
+  for (let i = 0; i < 15; i++) bot.onChat(people[i % 6], 'c');
+  await flush();
+  assert.strictEqual(sent.filter(t => en.chat_busy.includes(t)).length, 1);
+  await bot.stop();
+});
+
+test('Studio: cada clic cae en un punto distinto dentro del margen de la caja', async () => {
+  const { createStudioPaster, normalizeSpread } = require('../server/src/chatbot/studio');
+  const kb = fakeKeyboard();
+  const clicks = [];
+  kb.robot.mouseToggle = dir => { if (dir === 'down') clicks.push({ ...kb.mouse }); };
+  const opts = { x: 1000, y: 800, log: () => {}, robot: kb.robot, clipboard: kb.clipboard, windows: () => null, sleep: async () => {} };
+  const studio = createStudioPaster({ ...opts, spread: { x: 20, y: 5 } });
+  assert.deepStrictEqual(studio.getSpread(), { x: 20, y: 5 });
+  for (let i = 0; i < 40; i++) await studio.sendChatMessage(`msg ${i}`);
+  assert.strictEqual(clicks.length, 40);
+  for (const c of clicks) assert.ok(c.x >= 980 && c.x <= 1020 && c.y >= 795 && c.y <= 805, `${c.x},${c.y}`);
+  assert.ok(new Set(clicks.map(c => `${c.x},${c.y}`)).size > 20, 'no siempre en el mismo sitio');
+  assert.deepStrictEqual(kb.mouse, { x: 0, y: 0 });
+
+  // Margen 0: siempre en (x, y)
+  clicks.length = 0;
+  const exact = createStudioPaster({ ...opts, spread: { x: 0, y: 0 } });
+  await exact.sendChatMessage('a');
+  await exact.sendChatMessage('b');
+  assert.deepStrictEqual(clicks, [{ x: 1000, y: 800 }, { x: 1000, y: 800 }]);
+
+  assert.deepStrictEqual(normalizeSpread(undefined), { x: 20, y: 5 });
+  assert.deepStrictEqual(normalizeSpread({ x: NaN, y: -3 }), { x: 20, y: 0 });
+  assert.deepStrictEqual(normalizeSpread({ x: '12', y: 9999 }), { x: 12, y: 200 });
+});
+
+test('Studio: comprueba la ventana en el punto donde va a hacer clic', async () => {
+  const { createStudioPaster } = require('../server/src/chatbot/studio');
+  const kb = fakeKeyboard();
+  const asked = [];
+  const studioWin = { exe: 'TikTok LIVE Studio.exe', title: 'TikTok LIVE Studio', pid: 9 };
+  const windows = () => ({
+    windowAt: (x, y) => { asked.push({ x, y }); return x > 1015 ? { exe: 'chrome.exe', title: 'otra', pid: 2 } : studioWin; },
+    isElevated: () => false, foreground: () => studioWin, threadFocus: () => ({}),
+  });
+  const studio = createStudioPaster({ x: 1000, y: 800, spread: { x: 20, y: 5 }, log: () => {}, robot: kb.robot,
+    clipboard: kb.clipboard, windows, sleep: async () => {}, random: () => 1 });   // random 1 → esquina (1020, 805)
+  await assert.rejects(studio.sendChatMessage('hi'), err => err.stage === 'comprobar ventana' && /CHAT_SPREAD_X/.test(err.message));
+  assert.deepStrictEqual(asked, [{ x: 1020, y: 805 }]);
+  assert.deepStrictEqual(kb.sent, []);
+});

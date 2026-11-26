@@ -80,16 +80,17 @@ como enviado (y no cuenta en las estadísticas de quien emite). **Pausar** deja 
 | 1 | En plena votación alguien escribe el nombre de un país ("España", "spain") | Recordarle que cuenta la letra A/B/C/D (una vez por persona cada 10 min; como mucho uno cada 25 s) |
 | 2 | Alguien saluda ("hola", "hey", "buenas noches", "bonjour"…) | Saludarle por su @ (una vez por directo) |
 | 3 | Empieza la partida, va por la mitad (≥ 6 rondas), quedan 3 (≥ 8 rondas), última ronda, termina | Un mensaje del momento ("Halfway there!", "Last round!", "GG! Congrats Ana" — no nombra a quien hizo `!optout`) |
-| 3 | Si no toca ninguno: acaba una ronda que casi nadie (≤ 25 %) o casi todo el mundo (≥ 85 %) acertó | A veces, una reacción ("That one was tough!") |
-| 4 | No se ha propuesto nada en 45–90 s (`CHATBOT_IDLE_MIN/MAX`) | Una frase suelta, curiosidad de banderas o pregunta |
+| 3 | Si no toca ninguno: acaba una ronda con 3+ votos. Según los aciertos: nadie (0 %), casi nadie (≤ 25 %), reñida, casi todo el mundo (≥ 85 %) o todo el mundo (100 %) | A veces, una reacción (`round_none`, `round_hard`, `round_mid`, `round_easy`, `round_perfect`) |
+| 4 | El chat va a tope (15+ mensajes de 6+ personas en 30 s; como mucho cada 8 min) | A veces, un comentario sobre eso (`chat_busy`: "chat is flying") |
+| 4 | No se ha propuesto nada en 45–90 s (`CHATBOT_IDLE_MIN/MAX`) | Una frase suelta, curiosidad o pregunta (`idle_chat`) o, casi la mitad de las veces, una corta y rápida de escribir (`idle_short`: "so close!", "gg") |
 
 ### Piezas (`server/src/chatbot/`)
 
 | Fichero | Qué hace |
 |---|---|
 | `index.js` | Las reglas de arriba: escucha `handleChat` y los eventos `gameStart` / `roundEnd` / `gameEnd` de `game.js` |
-| `brain.js` | Detecta saludos (varios idiomas) y nombres de país (los de `COUNTRIES`), carga y elige frases sin repetir, quita emojis |
-| `phrases/en.json` | ~420 frases por categoría: `greetings`, `game_rules_reminder`, `idle_chat`, `round_hard`, `round_easy`, `game_start`, `game_mid`, `game_final_stretch`, `game_last_round`, `game_end`, `game_end_winner`, `game_next` (partidas en bucle: la siguiente empieza ya). `{user}` = @ de quien escribe, `{winner}` = nick de quien gana. Otro idioma: `<idioma>.json` + `CHATBOT_LANG` (lo que falte sale de inglés) |
+| `brain.js` | Detecta saludos (varios idiomas) y nombres de país (los de `COUNTRIES`), carga y elige frases sin repetir (ni dentro de una categoría hasta agotarla, ni una de las 40 últimas aunque esté en otra), quita emojis |
+| `phrases/en.json` | ~780 frases (muchas cortas) por categoría: `greetings`, `game_rules_reminder`, `idle_chat`, `idle_short`, `chat_busy`, `round_hard`, `round_easy`, `round_mid`, `round_perfect`, `round_none`, `game_start`, `game_mid`, `game_final_stretch`, `game_last_round`, `game_end`, `game_end_winner`, `game_next` (partidas en bucle: la siguiente empieza ya). `{user}` = @ de quien escribe, `{winner}` = nick de quien gana. Otro idioma: `<idioma>.json` + `CHATBOT_LANG` (lo que falte sale de inglés) |
 | `content-filter.js` | Veta pedir likes, follows, compartir, regalos y enlaces (al cargar y al enviar; `npm test` falla si alguna frase lo incumple) |
 | `queue.js` | Cola de sugerencias: por prioridad, sin caducadas, como mucho 6 por minuto |
 | `senders.js` | Adónde van: al panel (`suggest`) o a la consola (`console`, `CHATBOT_SENDER=console`) |
@@ -108,6 +109,10 @@ pulsar Enter) si cambias de ventana mientras escribe. Al teclear comete de vez e
 escribe alguna letra más, lo borra con Retroceso y sigue. El botón **Ajustes** del panel cambia en caliente el método,
 el ritmo, las pausas y los errores; se guarda en `server/.chatbot-studio.json` (no va al repo) y manda sobre
 `CHAT_INPUT_METHOD`. **Restablecer** vuelve a los valores de fábrica.
+
+Cada clic cae en un punto distinto: al azar dentro del rectángulo `CHAT_X ± CHAT_SPREAD_X`, `CHAT_Y ± CHAT_SPREAD_Y`
+(por defecto ±20 px en horizontal y ±5 px en vertical; `0` = siempre el mismo punto). El rectángulo tiene que caber
+en la caja de chat: `probar_studio.bat` comprueba sus cuatro esquinas y dice en qué punto ha hecho clic.
 
 1. Una vez: abre Studio donde lo vayas a tener (mejor en el monitor principal), doble clic en `coordenadas_chat.bat`,
    deja el ratón sobre la caja de chat 15 s y copia `CHAT_X` / `CHAT_Y` al `.env`. Si mueves o redimensionas Studio,

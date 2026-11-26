@@ -7,8 +7,11 @@
  *   2. Saludo ("hola", "hey", "bonjour"...) → saluda a esa persona por su @ (una vez por directo).
  *   1. Momentos de la partida: empieza, va por la mitad, quedan pocas rondas, última ronda, gana fulano y,
  *      con las partidas en bucle, que la siguiente empieza enseguida.
- *      Si no toca ninguno, a veces una reacción a una ronda muy difícil o muy fácil.
- *   0. Si nadie ha dicho nada en idleSeconds (45-90 s, aleatorio) → frase suelta, curiosidad o pregunta.
+ *      Si no toca ninguno, a veces una reacción a la ronda: nadie acierta, muy difícil, reñida, muy fácil o
+ *      todo el mundo acierta.
+ *   0. Si nadie ha dicho nada en idleSeconds (45-90 s, aleatorio) → frase suelta, curiosidad o pregunta, o una
+ *      frase corta (idle_short, rápida de escribir). Si el chat va a tope (BUSY_MSGS mensajes en BUSY_WINDOW_MS),
+ *      de vez en cuando un comentario sobre eso (chat_busy).
  * Todo pasa por la cola (queue.js), que marca el ritmo, y por content-filter.js, que veta pedir likes,
  * follows, compartir o regalos. Lo que sale va al panel de sugerencias (senders.js): quien emite lo pega en el
  * chat con su cuenta (CHATBOT_ACCOUNT, por defecto la del directo). Al volver por el chat se marca como usado.
@@ -32,6 +35,20 @@ const MID_MIN_ROUNDS = 6;          // "vamos por la mitad" solo en partidas de a
 const STRETCH_MIN_ROUNDS = 8;      // "quedan pocas" (3 antes del final) solo en partidas largas
 const STRETCH_ROUNDS_LEFT = 3;
 const WINNER_CHANCE = 0.7;         // al acabar: felicitar a quien gana o un "GG" general
+const IDLE_SHORT_CHANCE = 0.45;    // chat parado: frase corta en vez de una larga
+// Reacción a la ronda según el % de aciertos, y probabilidad de decir algo
+const ROUND_REACTIONS = [
+  { max: 0, category: 'round_none', chance: 0.6 },
+  { max: HARD_PCT, category: 'round_hard', chance: 0.5 },
+  { max: EASY_PCT - 0.001, category: 'round_mid', chance: 0.2 },
+  { max: 99.999, category: 'round_easy', chance: 0.35 },
+  { max: 100, category: 'round_perfect', chance: 0.6 },
+];
+const BUSY_WINDOW_MS = 30000;
+const BUSY_MSGS = 15;              // mensajes de al menos BUSY_USERS personas distintas en la ventana
+const BUSY_USERS = 6;
+const BUSY_GAP_MS = 8 * 60 * 1000; // como mucho un "qué chat más animado" cada tanto
+const BUSY_CHANCE = 0.5;
 
 function createChatBot({
   sender,
@@ -54,6 +71,8 @@ function createChatBot({
   const reminded = new Map();      // pid -> último recordatorio
   const recentSent = new Map();    // texto normalizado -> cuándo se envió
   let lastReminderAt = 0;
+  const chatLog = [];              // [cuándo, pid] de los últimos mensajes, para chat_busy
+  let lastBusyAt = -Infinity;
   let totalRounds = 0;             // de la partida en curso (0 = sin límite)
   let idleTimer = null;
   let running = false;
@@ -112,6 +131,7 @@ function createChatBot({
     if (accountHandle && String(user.handle || '').toLowerCase() === accountHandle) return;   // quien emite
     if (isHidden({ id: user.pid, u: user.handle })) return;
     const t = now();
+    checkBusy(user, t);   // no corta: un saludo o un recordatorio siguen su curso
 
     if (getPhase() === 'answer' && isCountryName(text)) {
       if (t - (reminded.get(user.pid) || 0) < REMIND_USER_MS || t - lastReminderAt < REMIND_GAP_MS) return;
@@ -127,6 +147,18 @@ function createChatBot({
       greeted.add(user.pid);   // aunque la cola lo descarte: no se le saluda dos veces
       if (enqueue('greeting', 'greetings', { user, trigger: text })) stats.greetings++;
     }
+  }
+
+  /* ¿El chat va a tope? Entonces, a veces, un comentario sobre eso */
+  function checkBusy(user, t) {
+    chatLog.push([t, user.pid]);
+    while (chatLog.length && t - chatLog[0][0] > BUSY_WINDOW_MS) chatLog.shift();
+    if (chatLog.length < BUSY_MSGS || t - lastBusyAt < BUSY_GAP_MS) return false;
+    if (new Set(chatLog.map(([, pid]) => pid)).size < BUSY_USERS) return false;
+    lastBusyAt = t;   // se pruebe o no, hasta dentro de BUSY_GAP_MS no se vuelve a mirar
+    if (random() >= BUSY_CHANCE || !enqueue('idle', 'chat_busy')) return false;
+    stats.idle++;
+    return true;
   }
 
   function gameMoment(category) {
@@ -158,9 +190,8 @@ function createChatBot({
     if (totalRounds && round >= totalRounds) return;   // la última: ya viene el de fin de partida
     if (!question || !votes || votes.length < MIN_VOTES_FOR_REACTION) return;
     const pct = (votes.filter(([, v]) => v.index === question.correctIndex).length / votes.length) * 100;
-    const category = pct <= HARD_PCT ? 'round_hard' : pct >= EASY_PCT ? 'round_easy' : null;
-    const chance = category === 'round_hard' ? 0.5 : 0.35;
-    if (category && random() < chance && enqueue('round', category)) stats.rounds++;
+    const { category, chance } = ROUND_REACTIONS.find(r => pct <= r.max);
+    if (random() < chance && enqueue('round', category)) stats.rounds++;
   }
 
   function onGameEnd({ ranking } = {}) {
@@ -184,7 +215,7 @@ function createChatBot({
     const ms = (min + random() * Math.max(0, max - min)) * 1000;
     idleTimer = setTimeout(() => {
       // Solo si el bot lleva un rato callado y no hay nada más importante esperando
-      if (!queue.isPaused() && !queue.size() && queue.msSinceLastSend() >= min * 1000 && enqueue('idle', 'idle_chat')) stats.idle++;
+      if (!queue.isPaused() && !queue.size() && queue.msSinceLastSend() >= min * 1000 && enqueue('idle', random() < IDLE_SHORT_CHANCE ? 'idle_short' : 'idle_chat')) stats.idle++;
       scheduleIdle();
     }, ms);
     if (idleTimer.unref) idleTimer.unref();

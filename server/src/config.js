@@ -55,6 +55,9 @@ module.exports = {
   CHATBOT_STUDIO: flag(process.env.CHATBOT_STUDIO, false),
   CHAT_X: process.env.CHAT_X === undefined || process.env.CHAT_X === '' ? NaN : Number(process.env.CHAT_X),
   CHAT_Y: process.env.CHAT_Y === undefined || process.env.CHAT_Y === '' ? NaN : Number(process.env.CHAT_Y),
+  // Margen del clic alrededor de CHAT_X / CHAT_Y (px a cada lado): cada clic cae en un punto distinto de la caja
+  CHAT_SPREAD_X: process.env.CHAT_SPREAD_X === undefined || process.env.CHAT_SPREAD_X === '' ? 20 : Number(process.env.CHAT_SPREAD_X),
+  CHAT_SPREAD_Y: process.env.CHAT_SPREAD_Y === undefined || process.env.CHAT_SPREAD_Y === '' ? 5 : Number(process.env.CHAT_SPREAD_Y),
   // 'paste' (Ctrl+V) o 'type' (teclea el texto), por si Studio no acepta el pegado
   CHAT_INPUT_METHOD: process.env.CHAT_INPUT_METHOD === 'type' ? 'type' : 'paste',
 
